@@ -5,6 +5,7 @@ import { useServerFn } from "@tanstack/react-start";
 import { Edit } from "lucide-react";
 
 import { PageShell, PageHeader } from "@/components/layout/page-shell";
+import { PageHeaderSkeleton, DetailFormSkeleton } from "@/components/layout/skeletons";
 import ReactMarkdown from "react-markdown";
 
 import { Button } from "@/components/ui/button";

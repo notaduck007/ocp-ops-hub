@@ -22,6 +22,7 @@ import { SlaForm } from "@/components/slas/sla-form";
 import { BreachForm } from "@/components/slas/breach-form";
 import { BreachStatusBadge } from "@/components/vendors/badges";
 import { PageShell, PageHeader } from "@/components/layout/page-shell";
+import { PageHeaderSkeleton, DetailFormSkeleton } from "@/components/layout/skeletons";
 import { RecordLink } from "@/components/record-link";
 import { useCurrentRole } from "@/hooks/use-auth";
 import {

@@ -24,6 +24,7 @@ import {
 import { ScenarioBadge, DrResultBadge } from "@/components/runbooks/badges";
 import { LogTestDialog } from "@/components/runbooks/log-test-dialog";
 import { PageShell, PageHeader } from "@/components/layout/page-shell";
+import { PageHeaderSkeleton, DetailFormSkeleton } from "@/components/layout/skeletons";
 import {
   getRunbook,
   listDrTests,

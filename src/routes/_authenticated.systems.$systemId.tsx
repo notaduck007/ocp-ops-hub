@@ -18,6 +18,7 @@ import {
 import { CategoryBadge, CriticalityBadge } from "@/components/systems/badges";
 import { SystemForm } from "@/components/systems/system-form";
 import { PageShell, PageHeader } from "@/components/layout/page-shell";
+import { PageHeaderSkeleton, DetailFormSkeleton } from "@/components/layout/skeletons";
 import { useCurrentRole } from "@/hooks/use-auth";
 import {
   archiveSystem,

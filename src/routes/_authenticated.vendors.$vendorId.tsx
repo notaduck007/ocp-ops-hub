@@ -6,6 +6,7 @@ import { Archive, ArchiveRestore, Plus } from "lucide-react";
 import { toast } from "sonner";
 
 import { PageShell, PageHeader } from "@/components/layout/page-shell";
+import { PageHeaderSkeleton, DetailFormSkeleton } from "@/components/layout/skeletons";
 
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";

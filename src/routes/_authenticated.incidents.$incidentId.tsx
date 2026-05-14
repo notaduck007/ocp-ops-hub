@@ -7,6 +7,7 @@ import { format, formatDistanceToNow } from "date-fns";
 import ReactMarkdown from "react-markdown";
 
 import { PageShell, PageHeader } from "@/components/layout/page-shell";
+import { PageHeaderSkeleton, DetailFormSkeleton } from "@/components/layout/skeletons";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
