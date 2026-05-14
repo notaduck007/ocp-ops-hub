@@ -16,6 +16,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { TableSkeleton } from "@/components/layout/skeletons";
 import { PolicyStatusBadge } from "@/components/policies/badges";
 import { NewPolicyDialog } from "@/components/policies/new-policy-dialog";
 import { listPolicies } from "@/lib/policies.functions";
@@ -77,9 +78,7 @@ function PoliciesListPage() {
           </TableHeader>
           <TableBody>
             {isLoading ? (
-              <TableRow>
-                <TableCell colSpan={5} className="text-muted-foreground">Loading…</TableCell>
-              </TableRow>
+              <TableSkeleton rows={8} cols={5} />
             ) : rows.length === 0 ? (
               <TableRow>
                 <TableCell colSpan={5} className="text-muted-foreground">No policies.</TableCell>

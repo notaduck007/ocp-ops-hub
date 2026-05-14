@@ -13,6 +13,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { TableSkeleton } from "@/components/layout/skeletons";
 import { ContinuityScenarioDialog } from "@/components/continuity/scenario-dialog";
 import { listContinuityScenarios } from "@/lib/continuity.functions";
 import { useCurrentRole } from "@/hooks/use-auth";
@@ -60,7 +61,7 @@ function ContinuityList() {
           </TableHeader>
           <TableBody>
             {isLoading ? (
-              <TableRow><TableCell colSpan={4} className="text-muted-foreground">Loading…</TableCell></TableRow>
+              <TableSkeleton rows={8} cols={4} />
             ) : rows.length === 0 ? (
               <TableRow><TableCell colSpan={4} className="text-muted-foreground">No scenarios yet.</TableCell></TableRow>
             ) : (

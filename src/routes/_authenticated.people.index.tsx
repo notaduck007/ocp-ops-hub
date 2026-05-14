@@ -32,6 +32,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { TableSkeleton } from "@/components/layout/skeletons";
 import { PersonStatusBadge, PersonTypeBadge } from "@/components/people/badges";
 import { PersonForm } from "@/components/people/person-form";
 import { ExportCsvButton } from "@/components/export-csv-button";
@@ -183,11 +184,7 @@ function PeopleListPage() {
           </TableHeader>
           <TableBody>
             {isLoading ? (
-              <TableRow>
-                <TableCell colSpan={5} className="text-center text-sm text-muted-foreground">
-                  Loading…
-                </TableCell>
-              </TableRow>
+              <TableSkeleton rows={8} cols={5} />
             ) : rows.length === 0 ? (
               <TableRow>
                 <TableCell colSpan={5} className="text-center text-sm text-muted-foreground">

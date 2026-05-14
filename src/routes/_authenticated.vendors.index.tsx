@@ -14,6 +14,7 @@ import {
 import {
   Table, TableBody, TableCell, TableHead, TableHeader, TableRow,
 } from "@/components/ui/table";
+import { TableSkeleton } from "@/components/layout/skeletons";
 import {
   Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger,
 } from "@/components/ui/sheet";
@@ -111,7 +112,7 @@ function VendorsListPage() {
           </TableHeader>
           <TableBody>
             {isLoading ? (
-              <TableRow><TableCell colSpan={5} className="text-center text-sm text-muted-foreground">Loading…</TableCell></TableRow>
+              <TableSkeleton rows={8} cols={5} />
             ) : rows.length === 0 ? (
               <TableRow><TableCell colSpan={5} className="text-center text-sm text-muted-foreground">No vendors yet.</TableCell></TableRow>
             ) : rows.map((v) => (

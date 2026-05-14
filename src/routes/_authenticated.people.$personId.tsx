@@ -31,7 +31,7 @@ import { PersonStatusBadge, PersonTypeBadge, RoleLevelBadge } from "@/components
 import { PersonForm } from "@/components/people/person-form";
 import { AccessGrantForm } from "@/components/access/access-grant-form";
 import { PageShell, PageHeader } from "@/components/layout/page-shell";
-import { PageHeaderSkeleton, DetailFormSkeleton } from "@/components/layout/skeletons";
+import { PageHeaderSkeleton, DetailFormSkeleton } TMPMARK;
 import { useCurrentRole } from "@/hooks/use-auth";
 import {
   archivePerson,
@@ -270,11 +270,7 @@ function AccessTab({ personId, canEdit }: { personId: string; canEdit: boolean }
           </TableHeader>
           <TableBody>
             {isLoading ? (
-              <TableRow>
-                <TableCell colSpan={6} className="text-center text-sm text-muted-foreground">
-                  Loading…
-                </TableCell>
-              </TableRow>
+              <TableSkeleton rows={8} cols={6} />
             ) : grants.length === 0 ? (
               <TableRow>
                 <TableCell colSpan={6} className="text-center text-sm text-muted-foreground">

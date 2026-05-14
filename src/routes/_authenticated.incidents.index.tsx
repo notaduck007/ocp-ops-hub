@@ -22,6 +22,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { TableSkeleton } from "@/components/layout/skeletons";
 import {
   SeverityBadge,
   IncidentStatusBadge,
@@ -128,11 +129,7 @@ function IncidentsListPage() {
           </TableHeader>
           <TableBody>
             {isLoading ? (
-              <TableRow>
-                <TableCell colSpan={6} className="text-muted-foreground">
-                  Loading…
-                </TableCell>
-              </TableRow>
+              <TableSkeleton rows={8} cols={6} />
             ) : filtered.length === 0 ? (
               <TableRow>
                 <TableCell colSpan={6} className="text-muted-foreground">
