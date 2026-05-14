@@ -1,9 +1,7 @@
-import { Fragment, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { createFileRoute, redirect } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
-import { format } from "date-fns";
-import { ChevronDown, ChevronRight } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -17,6 +15,7 @@ import {
 import { useCurrentRole } from "@/hooks/use-auth";
 import { listAudit, listAuditFilters } from "@/lib/audit.functions";
 import { Skeleton } from "@/components/ui/skeleton";
+import { AuditEntry } from "@/components/audit/audit-entry";
 
 export const Route = createFileRoute("/_authenticated/admin/audit")({
   component: AuditPage,
@@ -32,7 +31,7 @@ function AuditPage() {
   const [from, setFrom] = useState("");
   const [to, setTo] = useState("");
   const [page, setPage] = useState(0);
-  const [expanded, setExpanded] = useState<Set<string>>(new Set());
+  
 
   const list = useServerFn(listAudit);
   const filters = useServerFn(listAuditFilters);
@@ -68,14 +67,6 @@ function AuditPage() {
   const total = data?.total ?? 0;
   const pageCount = Math.max(1, Math.ceil(total / PAGE_SIZE));
 
-  const toggle = (id: string) => {
-    setExpanded((prev) => {
-      const next = new Set(prev);
-      if (next.has(id)) next.delete(id);
-      else next.add(id);
-      return next;
-    });
-  };
 
   return (
     <div className="space-y-4">
@@ -127,67 +118,18 @@ function AuditPage() {
         </div>
       </div>
 
-      <div className="rounded-lg border bg-card">
-        <table className="w-full text-sm">
-          <thead className="border-b text-left text-xs uppercase text-muted-foreground">
-            <tr>
-              <th className="w-8 px-2 py-2"></th>
-              <th className="px-3 py-2">When</th>
-              <th className="px-3 py-2">Actor</th>
-              <th className="px-3 py-2">Action</th>
-              <th className="px-3 py-2">Entity</th>
-            </tr>
-          </thead>
-          <tbody className="divide-y">
-            {isLoading ? (
-              Array.from({ length: 6 }).map((_, i) => (
-                <tr key={i}><td colSpan={5} className="px-3 py-3"><Skeleton className="h-4 w-full" /></td></tr>
-              ))
-            ) : rows.length === 0 ? (
-              <tr><td colSpan={5} className="px-3 py-6 text-center text-muted-foreground">No matching audit entries.</td></tr>
-            ) : (
-              rows.map((r: any) => {
-                const isOpen = expanded.has(r.id);
-                return (
-                  <Fragment key={r.id}>
-                    <tr className="hover:bg-muted/30">
-                      <td className="px-2 py-2">
-                        <button onClick={() => toggle(r.id)} className="text-muted-foreground">
-                          {isOpen ? <ChevronDown className="h-4 w-4" /> : <ChevronRight className="h-4 w-4" />}
-                        </button>
-                      </td>
-                      <td className="px-3 py-2 whitespace-nowrap text-muted-foreground">{format(new Date(r.created_at), "PP p")}</td>
-                      <td className="px-3 py-2">{r.actor?.full_name ?? r.actor?.email ?? "—"}</td>
-                      <td className="px-3 py-2 font-medium">{r.action}</td>
-                      <td className="px-3 py-2 text-muted-foreground">{r.entity_type}{r.entity_id ? ` · ${r.entity_id.slice(0, 8)}` : ""}</td>
-                    </tr>
-                    {isOpen && (
-                      <tr className="bg-muted/20">
-                        <td></td>
-                        <td colSpan={4} className="px-3 py-3">
-                          <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
-                            <div>
-                              <div className="mb-1 text-xs font-medium text-muted-foreground">Before</div>
-                              <pre className="max-h-64 overflow-auto rounded border bg-background p-2 text-xs">
-{r.before ? JSON.stringify(r.before, null, 2) : "—"}
-                              </pre>
-                            </div>
-                            <div>
-                              <div className="mb-1 text-xs font-medium text-muted-foreground">After</div>
-                              <pre className="max-h-64 overflow-auto rounded border bg-background p-2 text-xs">
-{r.after ? JSON.stringify(r.after, null, 2) : "—"}
-                              </pre>
-                            </div>
-                          </div>
-                        </td>
-                      </tr>
-                    )}
-                  </Fragment>
-                );
-              })
-            )}
-          </tbody>
-        </table>
+      <div className="space-y-3">
+        {isLoading ? (
+          Array.from({ length: 6 }).map((_, i) => (
+            <Skeleton key={i} className="h-24 w-full" />
+          ))
+        ) : rows.length === 0 ? (
+          <div className="rounded-md border bg-card p-6 text-center text-sm text-muted-foreground">
+            No matching audit entries.
+          </div>
+        ) : (
+          rows.map((r: any) => <AuditEntry key={r.id} entry={r} showEntity />)
+        )}
       </div>
 
       <div className="flex items-center justify-between text-sm text-muted-foreground">

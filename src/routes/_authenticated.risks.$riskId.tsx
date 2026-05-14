@@ -6,14 +6,7 @@ import { useServerFn } from "@tanstack/react-start";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
+import { AuditEntry } from "@/components/audit/audit-entry";
 import {
   KindBadge,
   LikelihoodBadge,
@@ -104,7 +97,7 @@ function RiskDetailPage() {
           <TabsTrigger value="overview">Overview</TabsTrigger>
           <TabsTrigger value="links">Linked records</TabsTrigger>
           <TabsTrigger value="files">Files</TabsTrigger>
-          {canEdit && <TabsTrigger value="activity">Activity</TabsTrigger>}
+          <TabsTrigger value="activity">Activity</TabsTrigger>
           {canEdit && <TabsTrigger value="acceptance">Acceptance</TabsTrigger>}
         </TabsList>
 
@@ -161,11 +154,9 @@ function RiskDetailPage() {
           <EvidenceFilesTab kind="risk_review" linkedEntityType="risk" linkedEntityId={riskId} />
         </TabsContent>
 
-        {canEdit && (
-          <TabsContent value="activity" className="mt-4">
-            <AuditTable entries={auditEntries} />
-          </TabsContent>
-        )}
+        <TabsContent value="activity" className="mt-4">
+          <AuditTable entries={auditEntries} />
+        </TabsContent>
 
         {canEdit && (
           <TabsContent value="acceptance" className="mt-4 space-y-4">
@@ -222,54 +213,18 @@ function AuditTable({
   entries: { id: string; action: string; before: any; after: any; created_at: string; actor: { full_name: string | null; email: string } | null }[];
   emptyText?: string;
 }) {
+  if (entries.length === 0) {
+    return (
+      <div className="rounded-md border bg-card p-4 text-sm text-muted-foreground">
+        {emptyText}
+      </div>
+    );
+  }
   return (
-    <div className="rounded-md border bg-card">
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead>Action</TableHead>
-            <TableHead>Actor</TableHead>
-            <TableHead>Changes</TableHead>
-            <TableHead>When</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {entries.length === 0 ? (
-            <TableRow>
-              <TableCell colSpan={4} className="text-center text-sm text-muted-foreground">
-                {emptyText}
-              </TableCell>
-            </TableRow>
-          ) : (
-            entries.map((e) => (
-              <TableRow key={e.id}>
-                <TableCell>
-                  <Badge variant="secondary">{e.action}</Badge>
-                </TableCell>
-                <TableCell className="text-sm">
-                  {e.actor?.full_name || e.actor?.email || "—"}
-                </TableCell>
-                <TableCell>
-                  <details className="text-xs">
-                    <summary className="cursor-pointer text-muted-foreground">View diff</summary>
-                    <div className="mt-2 grid gap-2 md:grid-cols-2">
-                      <pre className="overflow-x-auto rounded bg-muted p-2 text-[11px]">
-                        {JSON.stringify(e.before, null, 2)}
-                      </pre>
-                      <pre className="overflow-x-auto rounded bg-muted p-2 text-[11px]">
-                        {JSON.stringify(e.after, null, 2)}
-                      </pre>
-                    </div>
-                  </details>
-                </TableCell>
-                <TableCell className="text-sm text-muted-foreground">
-                  {new Date(e.created_at).toLocaleString()}
-                </TableCell>
-              </TableRow>
-            ))
-          )}
-        </TableBody>
-      </Table>
+    <div className="space-y-3">
+      {entries.map((e) => (
+        <AuditEntry key={e.id} entry={e} />
+      ))}
     </div>
   );
 }

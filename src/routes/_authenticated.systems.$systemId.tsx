@@ -16,6 +16,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { CategoryBadge, CriticalityBadge } from "@/components/systems/badges";
+import { AuditEntry } from "@/components/audit/audit-entry";
 import { SystemForm } from "@/components/systems/system-form";
 import { SystemSummary } from "@/components/systems/system-summary";
 import { PageShell, PageHeader } from "@/components/layout/page-shell";
@@ -56,7 +57,6 @@ function SystemDetailPage() {
   const { data: auditEntries = [] } = useQuery({
     queryKey: ["system-audit", systemId],
     queryFn: () => audit({ data: { systemId } }),
-    enabled: canEdit,
   });
 
   const archiveMut = useMutation({
@@ -137,7 +137,7 @@ function SystemDetailPage() {
       <Tabs defaultValue="overview">
         <TabsList>
           <TabsTrigger value="overview">Overview</TabsTrigger>
-          {canEdit && <TabsTrigger value="activity">Activity</TabsTrigger>}
+          <TabsTrigger value="activity">Activity</TabsTrigger>
         </TabsList>
         <TabsContent value="overview" className="mt-4 max-w-2xl">
           {editing ? (
@@ -151,60 +151,17 @@ function SystemDetailPage() {
             <SystemSummary system={system} />
           )}
         </TabsContent>
-        {canEdit && (
-          <TabsContent value="activity" className="mt-4">
-            <div className="rounded-md border bg-card">
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Action</TableHead>
-                    <TableHead>Actor</TableHead>
-                    <TableHead>Changes</TableHead>
-                    <TableHead>When</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {auditEntries.length === 0 ? (
-                    <TableRow>
-                      <TableCell colSpan={4} className="text-center text-sm text-muted-foreground">
-                        No activity yet.
-                      </TableCell>
-                    </TableRow>
-                  ) : (
-                    auditEntries.map((e) => (
-                      <TableRow key={e.id}>
-                        <TableCell>
-                          <Badge variant="secondary">{e.action}</Badge>
-                        </TableCell>
-                        <TableCell className="text-sm">
-                          {e.actor?.full_name || e.actor?.email || "—"}
-                        </TableCell>
-                        <TableCell>
-                          <details className="text-xs">
-                            <summary className="cursor-pointer text-muted-foreground">
-                              View diff
-                            </summary>
-                            <div className="mt-2 grid gap-2 md:grid-cols-2">
-                              <pre className="overflow-x-auto rounded bg-muted p-2 text-[11px]">
-                                {JSON.stringify(e.before, null, 2)}
-                              </pre>
-                              <pre className="overflow-x-auto rounded bg-muted p-2 text-[11px]">
-                                {JSON.stringify(e.after, null, 2)}
-                              </pre>
-                            </div>
-                          </details>
-                        </TableCell>
-                        <TableCell className="text-sm text-muted-foreground">
-                          {new Date(e.created_at).toLocaleString()}
-                        </TableCell>
-                      </TableRow>
-                    ))
-                  )}
-                </TableBody>
-              </Table>
-            </div>
-          </TabsContent>
-        )}
+        <TabsContent value="activity" className="mt-4">
+          <div className="space-y-3">
+            {auditEntries.length === 0 ? (
+              <div className="rounded-md border bg-card p-4 text-sm text-muted-foreground">
+                No activity yet.
+              </div>
+            ) : (
+              auditEntries.map((e) => <AuditEntry key={e.id} entry={e} />)
+            )}
+          </div>
+        </TabsContent>
       </Tabs>
     </PageShell>
   );

@@ -6,6 +6,8 @@ import { useServerFn } from "@tanstack/react-start";
 import { format, formatDistanceToNow } from "date-fns";
 import { toast } from "sonner";
 
+import { AuditEntry } from "@/components/audit/audit-entry";
+
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -231,34 +233,14 @@ function ChangeDetailPage() {
           />
         </TabsContent>
 
-        <TabsContent value="activity" className="space-y-2">
-          <Card>
-            <CardContent className="p-0">
-              {audit.length === 0 ? (
-                <div className="p-4 text-sm text-muted-foreground">
-                  No activity yet.
-                </div>
-              ) : (
-                <ul className="divide-y">
-                  {audit.map((a) => (
-                    <li key={a.id} className="p-3 text-sm">
-                      <div className="flex items-center justify-between">
-                        <span className="font-medium">{a.action}</span>
-                        <span className="text-xs text-muted-foreground">
-                          {formatDistanceToNow(new Date(a.created_at), {
-                            addSuffix: true,
-                          })}
-                        </span>
-                      </div>
-                      <div className="text-xs text-muted-foreground">
-                        {a.actor?.full_name ?? a.actor?.email ?? "system"}
-                      </div>
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </CardContent>
-          </Card>
+        <TabsContent value="activity" className="space-y-3">
+          {audit.length === 0 ? (
+            <div className="rounded-md border bg-card p-4 text-sm text-muted-foreground">
+              No activity yet.
+            </div>
+          ) : (
+            audit.map((a) => <AuditEntry key={a.id} entry={a} />)
+          )}
         </TabsContent>
 
         <TabsContent value="files" className="space-y-2">

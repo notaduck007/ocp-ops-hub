@@ -22,6 +22,7 @@ import {
 import { ScenarioBadge, DrResultBadge } from "@/components/runbooks/badges";
 import { LogTestDialog } from "@/components/runbooks/log-test-dialog";
 import { RunbookSummary } from "@/components/runbooks/runbook-summary";
+import { AuditEntry } from "@/components/audit/audit-entry";
 import { PageShell, PageHeader } from "@/components/layout/page-shell";
 import { PageHeaderSkeleton, DetailFormSkeleton } from "@/components/layout/skeletons";
 import { EditToggle } from "@/components/layout/edit-toggle";
@@ -184,19 +185,13 @@ function RunbookDetail() {
         </TabsContent>
 
         <TabsContent value="activity" className="mt-4">
-          <div className="rounded-lg border bg-card divide-y">
+          <div className="space-y-3">
             {activity.length === 0 ? (
-              <div className="p-4 text-sm text-muted-foreground">No activity yet.</div>
+              <div className="rounded-md border bg-card p-4 text-sm text-muted-foreground">
+                No activity yet.
+              </div>
             ) : (
-              activity.map((a: any) => (
-                <div key={a.id} className="flex items-center justify-between p-3 text-sm">
-                  <div>
-                    <span className="font-mono text-xs text-muted-foreground">{a.action}</span>
-                    {" — "}{a.actor?.full_name ?? a.actor?.email ?? "system"}
-                  </div>
-                  <div className="text-xs text-muted-foreground">{format(new Date(a.created_at), "PP p")}</div>
-                </div>
-              ))
+              activity.map((a: any) => <AuditEntry key={a.id} entry={a} />)
             )}
           </div>
         </TabsContent>

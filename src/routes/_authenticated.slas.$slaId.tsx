@@ -20,6 +20,7 @@ import {
 } from "@/components/ui/table";
 import { SlaForm } from "@/components/slas/sla-form";
 import { SlaSummary } from "@/components/slas/sla-summary";
+import { AuditEntry } from "@/components/audit/audit-entry";
 import { BreachForm } from "@/components/slas/breach-form";
 import { BreachStatusBadge } from "@/components/vendors/badges";
 import { PageShell, PageHeader } from "@/components/layout/page-shell";
@@ -64,7 +65,7 @@ function SlaDetailPage() {
     queryKey: ["breaches", { slaId }], queryFn: () => lBreaches({ data: { slaId } }),
   });
   const { data: auditRows = [] } = useQuery({
-    queryKey: ["sla-audit", slaId], queryFn: () => audit({ data: { slaId } }), enabled: canEdit,
+    queryKey: ["sla-audit", slaId], queryFn: () => audit({ data: { slaId } }),
   });
 
   const breachMut = useMutation({
@@ -113,7 +114,7 @@ function SlaDetailPage() {
           <TabsTrigger value="overview">Overview</TabsTrigger>
           <TabsTrigger value="breaches">Breaches ({breaches.length})</TabsTrigger>
           <TabsTrigger value="files">Files</TabsTrigger>
-          {canEdit && <TabsTrigger value="activity">Activity</TabsTrigger>}
+          <TabsTrigger value="activity">Activity</TabsTrigger>
         </TabsList>
 
         <TabsContent value="overview" className="mt-4 max-w-2xl">
@@ -199,32 +200,17 @@ function SlaDetailPage() {
           <EvidenceFilesTab kind="sla_review" linkedEntityType="sla" linkedEntityId={slaId} />
         </TabsContent>
 
-        {canEdit && (
-          <TabsContent value="activity" className="mt-4">
-            <div className="rounded-md border bg-card">
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Action</TableHead>
-                    <TableHead>Actor</TableHead>
-                    <TableHead>When</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {auditRows.length === 0 ? (
-                    <TableRow><TableCell colSpan={3} className="text-center text-sm text-muted-foreground">No activity yet.</TableCell></TableRow>
-                  ) : auditRows.map((e: any) => (
-                    <TableRow key={e.id}>
-                      <TableCell><Badge variant="secondary">{e.action}</Badge></TableCell>
-                      <TableCell className="text-sm">{e.actor?.full_name || e.actor?.email || "—"}</TableCell>
-                      <TableCell className="text-sm text-muted-foreground">{new Date(e.created_at).toLocaleString()}</TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </div>
-          </TabsContent>
-        )}
+        <TabsContent value="activity" className="mt-4">
+          <div className="space-y-3">
+            {auditRows.length === 0 ? (
+              <div className="rounded-md border bg-card p-4 text-sm text-muted-foreground">
+                No activity yet.
+              </div>
+            ) : (
+              auditRows.map((e: any) => <AuditEntry key={e.id} entry={e} />)
+            )}
+          </div>
+        </TabsContent>
       </Tabs>
     </PageShell>
   );

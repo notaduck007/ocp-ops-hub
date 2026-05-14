@@ -10,6 +10,7 @@ import { PageShell, PageHeader } from "@/components/layout/page-shell";
 import { PageHeaderSkeleton, DetailFormSkeleton } from "@/components/layout/skeletons";
 import { EditToggle } from "@/components/layout/edit-toggle";
 import { IncidentSummary } from "@/components/incidents/incident-summary";
+import { AuditDiff } from "@/components/audit/diff-row";
 import { detailSearchValidator } from "@/lib/detail-search";
 
 import { Button } from "@/components/ui/button";
@@ -366,13 +367,18 @@ function Timeline({ comms, audit }: { comms: Comm[]; audit: AuditEntry[] }) {
         kind: "audit",
         at: e.created_at,
         node: (
-          <>
-            <span className="text-xs font-medium">{e.action}</span>
-            <span className="text-xs text-muted-foreground">
-              {" "}
-              by {e.actor?.full_name ?? e.actor?.email ?? "—"}
-            </span>
-          </>
+          <div className="space-y-1.5">
+            <div className="text-xs">
+              <span className="font-medium">{e.action}</span>
+              <span className="text-muted-foreground">
+                {" "}by {e.actor?.full_name ?? e.actor?.email ?? "—"}
+              </span>
+            </div>
+            <AuditDiff
+              before={(e.before ?? null) as Record<string, unknown> | null}
+              after={(e.after ?? null) as Record<string, unknown> | null}
+            />
+          </div>
         ),
       });
     }
