@@ -77,7 +77,7 @@ function CampaignWorkspace() {
     onError: (e: any) => toast.error(e?.message ?? "Cannot complete"),
   });
 
-  if (!campaign) return <div className="text-muted-foreground">Loading…</div>;
+  if (!campaign) return (<PageShell><PageHeaderSkeleton /><DetailFormSkeleton /></PageShell>);
   const pct = campaign.total_items
     ? Math.round((campaign.decided_items / campaign.total_items) * 100)
     : 0;

@@ -118,7 +118,7 @@ function ChangeDetailPage() {
   });
 
   if (!change) {
-    return <div className="text-sm text-muted-foreground">Loading…</div>;
+    return (<PageShell><PageHeaderSkeleton /><DetailFormSkeleton /></PageShell>);
   }
 
   return (

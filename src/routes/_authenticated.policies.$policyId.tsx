@@ -102,7 +102,7 @@ function PolicyDetailPage() {
     onError: (e: any) => toast.error(e?.message ?? "Failed"),
   });
 
-  if (isLoading) return <div className="text-muted-foreground">Loading…</div>;
+  if (isLoading) return (<PageShell><PageHeaderSkeleton /><DetailFormSkeleton /></PageShell>);
   if (!policy) return <div>Policy not found.</div>;
 
   return (

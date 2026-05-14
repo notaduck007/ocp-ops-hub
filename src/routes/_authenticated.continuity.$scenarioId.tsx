@@ -31,7 +31,7 @@ function ContinuityDetail() {
     queryFn: () => get({ data: { id: scenarioId } }),
   });
 
-  if (isLoading) return <div className="text-muted-foreground">Loading…</div>;
+  if (isLoading) return (<PageShell><PageHeaderSkeleton /><DetailFormSkeleton /></PageShell>);
   if (!s) return <div>Scenario not found.</div>;
 
   return (

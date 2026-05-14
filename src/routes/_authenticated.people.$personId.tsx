@@ -80,7 +80,7 @@ function PersonDetailPage() {
     onError: (err: any) => toast.error(String(err?.message ?? err)),
   });
 
-  if (isLoading) return <div className="text-sm text-muted-foreground">Loading…</div>;
+  if (isLoading) return (<PageShell><PageHeaderSkeleton /><DetailFormSkeleton /></PageShell>);
   if (!person) {
     return (
       <div className="space-y-3">
