@@ -43,6 +43,10 @@ const NAV_GROUPS: NavGroup[] = [
     ],
   },
   {
+    label: "Governance",
+    items: [{ to: "/risks", label: "Risks", icon: ShieldAlert }],
+  },
+  {
     label: "Admin",
     items: [{ to: "/admin/users", label: "Users", icon: Users, adminOnly: true }],
   },
