@@ -17,8 +17,11 @@ import {
 } from "@/components/ui/table";
 import { CategoryBadge, CriticalityBadge } from "@/components/systems/badges";
 import { SystemForm } from "@/components/systems/system-form";
+import { SystemSummary } from "@/components/systems/system-summary";
 import { PageShell, PageHeader } from "@/components/layout/page-shell";
 import { PageHeaderSkeleton, DetailFormSkeleton } from "@/components/layout/skeletons";
+import { EditToggle } from "@/components/layout/edit-toggle";
+import { detailSearchValidator } from "@/lib/detail-search";
 import { useCurrentRole } from "@/hooks/use-auth";
 import {
   archiveSystem,
@@ -27,6 +30,7 @@ import {
 } from "@/lib/systems.functions";
 
 export const Route = createFileRoute("/_authenticated/systems/$systemId")({
+  validateSearch: detailSearchValidator,
   component: SystemDetailPage,
 });
 
