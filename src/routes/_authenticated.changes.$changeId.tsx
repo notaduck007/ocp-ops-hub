@@ -278,7 +278,7 @@ function OverviewTab({
 }: {
   change: any;
   canEdit: boolean;
-  onSave: (patch: Record<string, unknown>) => void;
+  onSave: (patch: Record<string, unknown>) => void | Promise<void>;
   onSetSystems: (ids: string[]) => void;
   incidentSearch: ReturnType<typeof useServerFn<typeof searchOpenIncidents>>;
 }) {
