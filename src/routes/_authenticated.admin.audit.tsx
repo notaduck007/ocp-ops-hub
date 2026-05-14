@@ -16,6 +16,7 @@ import {
 } from "@/components/ui/select";
 import { useCurrentRole } from "@/hooks/use-auth";
 import { listAudit, listAuditFilters } from "@/lib/audit.functions";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export const Route = createFileRoute("/_authenticated/admin/audit")({
   component: AuditPage,

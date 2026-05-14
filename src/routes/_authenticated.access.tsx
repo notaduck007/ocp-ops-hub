@@ -29,6 +29,7 @@ import { RoleLevelBadge, PersonTypeBadge } from "@/components/people/badges";
 import { CategoryBadge } from "@/components/systems/badges";
 import { useCurrentRole } from "@/hooks/use-auth";
 import {
+import { TableSkeleton } from "@/components/layout/skeletons";
   PERSON_TYPES,
   listAccessGrants,
   markGrantsReviewed,

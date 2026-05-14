@@ -22,6 +22,8 @@ import {
 } from "@/components/ui/select";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import type { Database } from "@/integrations/supabase/types";
+import { Skeleton } from "@/components/ui/skeleton";
+import { TableSkeleton } from "@/components/layout/skeletons";
 
 type AppRole = Database["public"]["Enums"]["app_role"];
 

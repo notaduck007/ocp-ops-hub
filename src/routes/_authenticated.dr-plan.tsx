@@ -16,6 +16,7 @@ import {
 } from "@/components/ui/table";
 import { DrResultBadge } from "@/components/runbooks/badges";
 import { getDrPlan } from "@/lib/dr-plan.functions";
+import { DetailFormSkeleton } from "@/components/layout/skeletons";
 
 export const Route = createFileRoute("/_authenticated/dr-plan")({
   component: DrPlanPage,
