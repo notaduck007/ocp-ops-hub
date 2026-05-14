@@ -19,10 +19,7 @@ export const listAudit = createServerFn({ method: "POST" })
     const { supabase } = context;
     let q = supabase
       .from("audit_log")
-      .select(
-        "*, actor:users!audit_log_actor_id_fkey(id,email,full_name)",
-        { count: "exact" },
-      )
+      .select("*", { count: "exact" })
       .order("created_at", { ascending: false });
 
     if (data.actor_id) q = q.eq("actor_id", data.actor_id);
