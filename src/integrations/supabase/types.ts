@@ -459,6 +459,132 @@ export type Database = {
           },
         ]
       }
+      policies: {
+        Row: {
+          approved_at: string | null
+          approved_by: string | null
+          archived_at: string | null
+          body_md: string
+          created_at: string
+          created_by: string | null
+          id: string
+          next_review_due_at: string | null
+          owner_id: string
+          review_cadence_days: number
+          status: Database["public"]["Enums"]["policy_status"]
+          title: string
+          updated_at: string
+          updated_by: string | null
+          version: number
+        }
+        Insert: {
+          approved_at?: string | null
+          approved_by?: string | null
+          archived_at?: string | null
+          body_md: string
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          next_review_due_at?: string | null
+          owner_id: string
+          review_cadence_days?: number
+          status?: Database["public"]["Enums"]["policy_status"]
+          title: string
+          updated_at?: string
+          updated_by?: string | null
+          version?: number
+        }
+        Update: {
+          approved_at?: string | null
+          approved_by?: string | null
+          archived_at?: string | null
+          body_md?: string
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          next_review_due_at?: string | null
+          owner_id?: string
+          review_cadence_days?: number
+          status?: Database["public"]["Enums"]["policy_status"]
+          title?: string
+          updated_at?: string
+          updated_by?: string | null
+          version?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "policies_approved_by_fkey"
+            columns: ["approved_by"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "policies_owner_id_fkey"
+            columns: ["owner_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      policy_versions: {
+        Row: {
+          approved_at: string | null
+          approved_by: string | null
+          body_md: string
+          created_at: string
+          created_by: string | null
+          id: string
+          policy_id: string
+          status: Database["public"]["Enums"]["policy_status"]
+          updated_at: string
+          updated_by: string | null
+          version: number
+        }
+        Insert: {
+          approved_at?: string | null
+          approved_by?: string | null
+          body_md: string
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          policy_id: string
+          status: Database["public"]["Enums"]["policy_status"]
+          updated_at?: string
+          updated_by?: string | null
+          version: number
+        }
+        Update: {
+          approved_at?: string | null
+          approved_by?: string | null
+          body_md?: string
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          policy_id?: string
+          status?: Database["public"]["Enums"]["policy_status"]
+          updated_at?: string
+          updated_by?: string | null
+          version?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "policy_versions_approved_by_fkey"
+            columns: ["approved_by"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "policy_versions_policy_id_fkey"
+            columns: ["policy_id"]
+            isOneToOne: false
+            referencedRelation: "policies"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       risks: {
         Row: {
           acceptance_justification: string | null
@@ -551,6 +677,13 @@ export type Database = {
             columns: ["owner_id"]
             isOneToOne: false
             referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "risks_policy_id_fkey"
+            columns: ["policy_id"]
+            isOneToOne: false
+            referencedRelation: "policies"
             referencedColumns: ["id"]
           },
           {
@@ -1176,6 +1309,7 @@ export type Database = {
         | "closed"
       person_status: "active" | "inactive" | "offboarded"
       person_type: "staff" | "contractor" | "vendor_user" | "service_account"
+      policy_status: "draft" | "approved" | "retired"
       risk_kind: "risk" | "exception"
       risk_status: "open" | "mitigating" | "accepted" | "closed"
       sla_target_type:
@@ -1360,6 +1494,7 @@ export const Constants = {
       ],
       person_status: ["active", "inactive", "offboarded"],
       person_type: ["staff", "contractor", "vendor_user", "service_account"],
+      policy_status: ["draft", "approved", "retired"],
       risk_kind: ["risk", "exception"],
       risk_status: ["open", "mitigating", "accepted", "closed"],
       sla_target_type: [
