@@ -1,9 +1,10 @@
 import { EvidenceFilesTab } from "@/components/evidence/files-tab";
 import { useState, useMemo } from "react";
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
-import { ArrowLeft, Check } from "lucide-react";
+import { Check } from "lucide-react";
+import { PageShell, PageHeader } from "@/components/layout/page-shell";
 import { format } from "date-fns";
 import { toast } from "sonner";
 
