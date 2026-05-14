@@ -159,6 +159,7 @@ function ChangeDetailPage() {
           <TabsTrigger value="overview">Overview</TabsTrigger>
           <TabsTrigger value="approval">Approval</TabsTrigger>
           <TabsTrigger value="execution">Execution</TabsTrigger>
+          <TabsTrigger value="files">Files</TabsTrigger>
           <TabsTrigger value="activity">
             Activity {audit.length ? `(${audit.length})` : ""}
           </TabsTrigger>
@@ -238,6 +239,10 @@ function ChangeDetailPage() {
               )}
             </CardContent>
           </Card>
+        </TabsContent>
+
+        <TabsContent value="files" className="space-y-2">
+          <EvidenceFilesTab kind="change" linkedEntityType="change" linkedEntityId={changeId} />
         </TabsContent>
       </Tabs>
     </div>

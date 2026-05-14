@@ -89,6 +89,7 @@ function RiskDetailPage() {
         <TabsList>
           <TabsTrigger value="overview">Overview</TabsTrigger>
           <TabsTrigger value="links">Linked records</TabsTrigger>
+          <TabsTrigger value="files">Files</TabsTrigger>
           {canEdit && <TabsTrigger value="activity">Activity</TabsTrigger>}
           {canEdit && <TabsTrigger value="acceptance">Acceptance</TabsTrigger>}
         </TabsList>
@@ -140,6 +141,10 @@ function RiskDetailPage() {
               value={risk.owner?.full_name || risk.owner?.email || null}
             />
           </div>
+        </TabsContent>
+
+        <TabsContent value="files" className="mt-4 max-w-3xl">
+          <EvidenceFilesTab kind="risk_review" linkedEntityType="risk" linkedEntityId={riskId} />
         </TabsContent>
 
         {canEdit && (
