@@ -43,6 +43,8 @@ export const Route = createFileRoute("/_authenticated/runbooks/$runbookId")({
 
 function RunbookDetail() {
   const { runbookId } = Route.useParams();
+  const { edit } = Route.useSearch();
+  const navigate = useNavigate();
   const qc = useQueryClient();
   const { data: role } = useCurrentRole();
   const canEdit = role === "admin" || role === "editor";
@@ -65,16 +67,27 @@ function RunbookDetail() {
     queryFn: () => listAct({ data: { runbookId } }),
   });
 
-  const [editing, setEditing] = useState(false);
+  const editing = !!edit && canEdit;
   const [body, setBody] = useState("");
   const [logOpen, setLogOpen] = useState(false);
+
+  // Seed body from server data when entering edit mode.
+  useEffect(() => {
+    if (editing && rb) setBody((prev) => (prev ? prev : rb.body_md));
+  }, [editing, rb]);
+
+  const enterEdit = () => {
+    if (rb) setBody(rb.body_md);
+    navigate({ to: ".", search: { edit: true } });
+  };
+  const exitEdit = () => navigate({ to: ".", search: { edit: undefined } });
 
   const save = useMutation({
     mutationFn: () => upd({ data: { id: runbookId, patch: { body_md: body } } }),
     onSuccess: () => {
       toast.success("Saved");
       qc.invalidateQueries({ queryKey: ["runbook", runbookId] });
-      setEditing(false);
+      exitEdit();
     },
     onError: (e: any) => toast.error(e?.message ?? "Failed"),
   });
@@ -94,6 +107,11 @@ function RunbookDetail() {
             {rb.last_tested_at && <> · Last tested {format(new Date(rb.last_tested_at), "PP")}</>}
             {rb.next_test_due_at && <> · Next due {format(new Date(rb.next_test_due_at), "PP")}</>}
           </>
+        }
+        actions={
+          canEdit && (
+            <EditToggle editing={editing} onEdit={enterEdit} onCancel={exitEdit} />
+          )
         }
       />
 
@@ -117,24 +135,11 @@ function RunbookDetail() {
               />
               <div className="flex gap-2">
                 <Button onClick={() => save.mutate()} disabled={save.isPending || !body.trim()}>Save</Button>
-                <Button variant="ghost" onClick={() => setEditing(false)}>Cancel</Button>
+                <Button variant="ghost" onClick={exitEdit}>Cancel</Button>
               </div>
             </div>
           ) : (
-            <>
-              {canEdit && (
-                <div className="flex justify-end">
-                  <Button variant="outline" onClick={() => { setBody(rb.body_md); setEditing(true); }}>
-                    Edit
-                  </Button>
-                </div>
-              )}
-              <Card>
-                <CardContent className="prose prose-sm max-w-none p-6 dark:prose-invert">
-                  <ReactMarkdown>{rb.body_md}</ReactMarkdown>
-                </CardContent>
-              </Card>
-            </>
+            <RunbookSummary runbook={rb} />
           )}
         </TabsContent>
 
