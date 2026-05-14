@@ -78,22 +78,20 @@ function SlaDetailPage() {
   }
 
   return (
-    <div className="space-y-5">
-      <div>
-        <Link to="/slas" className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground">
-          <ArrowLeft className="h-3 w-3" /> SLAs
-        </Link>
-        <h1 className="mt-1 text-2xl font-semibold tracking-tight">{sla.name}</h1>
-        <div className="mt-2 flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
-          {sla.vendor && (
-            <Link to="/vendors/$vendorId" params={{ vendorId: sla.vendor.id }} className="hover:underline">
-              {sla.vendor.name}
-            </Link>
-          )}
-          {sla.system && <span>· {sla.system.name}</span>}
-          {sla.is_overdue && <Badge variant="destructive">Review overdue</Badge>}
-        </div>
-      </div>
+    <PageShell>
+      <PageHeader
+        backTo={{ to: "/slas", label: "SLAs" }}
+        title={sla.name}
+        badges={sla.is_overdue ? <Badge variant="destructive">Review overdue</Badge> : undefined}
+        meta={
+          <span className="flex flex-wrap items-center gap-2">
+            {sla.vendor && (
+              <RecordLink kind="vendor" id={sla.vendor.id} label={sla.vendor.name} />
+            )}
+            {sla.system && <span>· {sla.system.name}</span>}
+          </span>
+        }
+      />
 
       <Tabs defaultValue="overview">
         <TabsList>
