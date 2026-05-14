@@ -204,6 +204,6 @@ function CampaignWorkspace() {
         <h2 className="mb-2 text-sm font-semibold text-muted-foreground">Files</h2>
         <EvidenceFilesTab kind="access_review" linkedEntityType="campaign" linkedEntityId={campaignId} />
       </div>
-    </div>
+    </PageShell>
   );
 }
