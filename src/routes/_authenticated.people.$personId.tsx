@@ -93,45 +93,40 @@ function PersonDetailPage() {
   const archived = !!person.archived_at;
 
   return (
-    <div className="space-y-5">
-      <div className="flex flex-wrap items-start justify-between gap-3">
-        <div>
-          <Link
-            to="/people"
-            className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground"
-          >
-            <ArrowLeft className="h-3 w-3" /> People
-          </Link>
-          <h1 className="mt-1 text-2xl font-semibold tracking-tight">{person.full_name}</h1>
-          <div className="mt-2 flex flex-wrap items-center gap-2">
+    <PageShell>
+      <PageHeader
+        backTo={{ to: "/people", label: "People" }}
+        title={person.full_name}
+        badges={
+          <>
             <PersonTypeBadge value={person.type} />
             <PersonStatusBadge value={person.status} />
-            {person.email && (
-              <span className="text-sm text-muted-foreground">{person.email}</span>
-            )}
             {archived && <Badge variant="outline">Archived</Badge>}
-          </div>
-        </div>
-        {isAdmin && (
-          <Button
-            variant="outline"
-            onClick={() => archiveMut.mutate(!archived)}
-            disabled={archiveMut.isPending}
-          >
-            {archived ? (
-              <>
-                <ArchiveRestore className="mr-2 h-4 w-4" />
-                Unarchive
-              </>
-            ) : (
-              <>
-                <Archive className="mr-2 h-4 w-4" />
-                Archive
-              </>
-            )}
-          </Button>
-        )}
-      </div>
+          </>
+        }
+        meta={person.email ?? undefined}
+        actions={
+          isAdmin && (
+            <Button
+              variant="outline"
+              onClick={() => archiveMut.mutate(!archived)}
+              disabled={archiveMut.isPending}
+            >
+              {archived ? (
+                <>
+                  <ArchiveRestore className="mr-2 h-4 w-4" />
+                  Unarchive
+                </>
+              ) : (
+                <>
+                  <Archive className="mr-2 h-4 w-4" />
+                  Archive
+                </>
+              )}
+            </Button>
+          )
+        }
+      />
 
       <Tabs defaultValue="overview">
         <TabsList>
