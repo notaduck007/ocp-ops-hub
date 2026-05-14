@@ -5,6 +5,7 @@ import { useServerFn } from "@tanstack/react-start";
 import { toast } from "sonner";
 import { format, formatDistanceToNow } from "date-fns";
 import ReactMarkdown from "react-markdown";
+import { AlertOctagon, ClipboardList, MessageSquareOff } from "lucide-react";
 
 import { PageShell, PageHeader } from "@/components/layout/page-shell";
 import { PageHeaderSkeleton, DetailFormSkeleton } from "@/components/layout/skeletons";
@@ -12,6 +13,8 @@ import { EditToggle } from "@/components/layout/edit-toggle";
 import { IncidentSummary } from "@/components/incidents/incident-summary";
 import { AuditDiff } from "@/components/audit/diff-row";
 import { detailSearchValidator } from "@/lib/detail-search";
+import { EmptyState } from "@/components/states/empty-state";
+import { ErrorState } from "@/components/states/error-state";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -67,7 +70,7 @@ function IncidentDetailPage() {
   const commsAdd = useServerFn(addComms);
   const auditList = useServerFn(listIncidentAudit);
 
-  const { data: incident } = useQuery({
+  const { data: incident, isError, error, refetch } = useQuery({
     queryKey: ["incident", incidentId],
     queryFn: () => get({ data: { id: incidentId } }),
   });
@@ -93,6 +96,18 @@ function IncidentDetailPage() {
     onError: (err: any) => toast.error(String(err?.message ?? err)),
   });
 
+  if (isError) {
+    return (
+      <PageShell>
+        <ErrorState
+          title="Couldn't load this incident"
+          message={(error as Error)?.message}
+          onRetry={() => refetch()}
+          variant="card"
+        />
+      </PageShell>
+    );
+  }
   if (!incident) {
     return (<PageShell><PageHeaderSkeleton /><DetailFormSkeleton /></PageShell>);
   }
