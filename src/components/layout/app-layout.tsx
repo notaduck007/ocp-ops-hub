@@ -44,7 +44,10 @@ const NAV_GROUPS: NavGroup[] = [
   },
   {
     label: "Governance",
-    items: [{ to: "/risks", label: "Risks", icon: ShieldAlert }],
+    items: [
+      { to: "/risks", label: "Risks", icon: ShieldAlert },
+      { to: "/policies", label: "Policies", icon: BookText },
+    ],
   },
   {
     label: "Operations",
