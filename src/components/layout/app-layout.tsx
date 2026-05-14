@@ -1,6 +1,7 @@
 import { type ReactNode } from "react";
 import { Link, useRouterState } from "@tanstack/react-router";
-import { LayoutDashboard, Users, Search, Server, UserCircle, KeyRound, Building2, FileCheck2, ShieldAlert, AlertOctagon, GitPullRequestArrow, BookText } from "lucide-react";
+import { LayoutDashboard, Users, Search, Server, UserCircle, KeyRound, Building2, FileCheck2, ShieldAlert, AlertOctagon, GitPullRequestArrow, BookText, ClipboardCheck } from "lucide-react";
+import { NotificationBell } from "@/components/notifications/notification-bell";
 
 import { cn } from "@/lib/utils";
 import { Input } from "@/components/ui/input";
@@ -47,6 +48,7 @@ const NAV_GROUPS: NavGroup[] = [
     items: [
       { to: "/risks", label: "Risks", icon: ShieldAlert },
       { to: "/policies", label: "Policies", icon: BookText },
+      { to: "/reviews", label: "Access Reviews", icon: ClipboardCheck },
     ],
   },
   {
@@ -182,6 +184,7 @@ function TopBar() {
           onChange={() => undefined}
         />
       </div>
+      <NotificationBell />
       <UserMenu />
     </header>
   );
