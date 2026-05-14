@@ -79,7 +79,7 @@ function ReportPage() {
         {reportId === "vendor-sla" && <VendorSlaBody />}
         {reportId === "dr" && <DrBody />}
       </article>
-    </div>
+    </PageShell>
   );
 }
 
