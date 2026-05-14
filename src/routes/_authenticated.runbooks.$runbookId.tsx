@@ -78,21 +78,19 @@ function RunbookDetail() {
   if (!rb) return <div>Runbook not found.</div>;
 
   return (
-    <div className="space-y-6">
-      <div className="space-y-1">
-        <Button asChild variant="ghost" size="sm" className="-ml-2">
-          <Link to="/runbooks"><ArrowLeft className="mr-1 h-4 w-4" /> Back</Link>
-        </Button>
-        <div className="flex flex-wrap items-center gap-3">
-          <h1 className="text-2xl font-semibold tracking-tight">{rb.title}</h1>
-          <ScenarioBadge value={rb.scenario} />
-        </div>
-        <p className="text-sm text-muted-foreground">
-          {rb.system?.name ?? "—"} · Owner {rb.owner?.full_name ?? rb.owner?.email ?? "—"}
-          {rb.last_tested_at && <> · Last tested {format(new Date(rb.last_tested_at), "PP")}</>}
-          {rb.next_test_due_at && <> · Next due {format(new Date(rb.next_test_due_at), "PP")}</>}
-        </p>
-      </div>
+    <PageShell>
+      <PageHeader
+        backTo={{ to: "/runbooks", label: "Runbooks" }}
+        title={rb.title}
+        badges={<ScenarioBadge value={rb.scenario} />}
+        meta={
+          <>
+            {rb.system?.name ?? "—"} · Owner {rb.owner?.full_name ?? rb.owner?.email ?? "—"}
+            {rb.last_tested_at && <> · Last tested {format(new Date(rb.last_tested_at), "PP")}</>}
+            {rb.next_test_due_at && <> · Next due {format(new Date(rb.next_test_due_at), "PP")}</>}
+          </>
+        }
+      />
 
       <Tabs defaultValue="overview">
         <TabsList>
