@@ -195,6 +195,6 @@ function RunbookDetail() {
       </Tabs>
 
       <LogTestDialog open={logOpen} onOpenChange={setLogOpen} runbookId={runbookId} />
-    </div>
+    </PageShell>
   );
 }
