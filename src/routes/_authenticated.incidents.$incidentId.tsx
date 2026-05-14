@@ -23,6 +23,7 @@ import {
   AudienceBadge,
 } from "@/components/incidents/badges";
 import { SystemMultiCombobox } from "@/components/incidents/system-multi-combobox";
+import { EvidenceFilesTab } from "@/components/evidence/files-tab";
 import { useCurrentRole } from "@/hooks/use-auth";
 import {
   getIncident,
@@ -119,6 +120,7 @@ function IncidentDetailPage() {
           <TabsTrigger value="comms">Comms</TabsTrigger>
           <TabsTrigger value="postmortem">Post-mortem</TabsTrigger>
           <TabsTrigger value="systems">Systems</TabsTrigger>
+          <TabsTrigger value="files">Files</TabsTrigger>
         </TabsList>
 
         <TabsContent value="overview" className="space-y-4 pt-4">
@@ -184,6 +186,10 @@ function IncidentDetailPage() {
               }
             }}
           />
+        </TabsContent>
+
+        <TabsContent value="files" className="pt-4">
+          <EvidenceFilesTab kind="incident" linkedEntityType="incident" linkedEntityId={incidentId} />
         </TabsContent>
       </Tabs>
     </div>

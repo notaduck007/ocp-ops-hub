@@ -1,3 +1,4 @@
+import { EvidenceFilesTab } from "@/components/evidence/files-tab";
 import { useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -96,6 +97,7 @@ function RunbookDetail() {
         <TabsList>
           <TabsTrigger value="overview">Overview</TabsTrigger>
           <TabsTrigger value="tests">Tests {tests.length > 0 && `(${tests.length})`}</TabsTrigger>
+          <TabsTrigger value="files">Files</TabsTrigger>
           <TabsTrigger value="activity">Activity</TabsTrigger>
         </TabsList>
 
@@ -168,6 +170,10 @@ function RunbookDetail() {
               </TableBody>
             </Table>
           </div>
+        </TabsContent>
+
+        <TabsContent value="files" className="mt-4">
+          <EvidenceFilesTab kind="dr_test" linkedEntityType="runbook" linkedEntityId={runbookId} />
         </TabsContent>
 
         <TabsContent value="activity" className="mt-4">

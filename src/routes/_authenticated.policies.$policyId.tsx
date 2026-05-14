@@ -1,3 +1,4 @@
+import { EvidenceFilesTab } from "@/components/evidence/files-tab";
 import { useMemo, useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -133,6 +134,7 @@ function PolicyDetailPage() {
           <TabsTrigger value="current">Current</TabsTrigger>
           <TabsTrigger value="drafts">Drafts {drafts.length > 0 && `(${drafts.length})`}</TabsTrigger>
           <TabsTrigger value="history">History</TabsTrigger>
+          <TabsTrigger value="files">Files</TabsTrigger>
         </TabsList>
 
         <TabsContent value="current" className="mt-4 space-y-3">
@@ -229,6 +231,10 @@ function PolicyDetailPage() {
               </Card>
             ))
           )}
+        </TabsContent>
+
+        <TabsContent value="files" className="mt-4">
+          <EvidenceFilesTab kind="policy" linkedEntityType="policy" linkedEntityId={policyId} />
         </TabsContent>
       </Tabs>
     </div>

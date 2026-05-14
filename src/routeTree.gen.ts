@@ -51,6 +51,7 @@ import { Route as AuthenticatedIncidentsIncidentIdRouteImport } from './routes/_
 import { Route as AuthenticatedContinuityScenarioIdRouteImport } from './routes/_authenticated.continuity.$scenarioId'
 import { Route as AuthenticatedChangesChangeIdRouteImport } from './routes/_authenticated.changes.$changeId'
 import { Route as AuthenticatedAdminUsersRouteImport } from './routes/_authenticated.admin.users'
+import { Route as AuthenticatedAdminAuditRouteImport } from './routes/_authenticated.admin.audit'
 import { Route as ApiPublicHooksCadenceTickRouteImport } from './routes/api/public/hooks/cadence-tick'
 
 const LoginRoute = LoginRouteImport.update({
@@ -281,6 +282,11 @@ const AuthenticatedAdminUsersRoute = AuthenticatedAdminUsersRouteImport.update({
   path: '/admin/users',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
+const AuthenticatedAdminAuditRoute = AuthenticatedAdminAuditRouteImport.update({
+  id: '/admin/audit',
+  path: '/admin/audit',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
 const ApiPublicHooksCadenceTickRoute =
   ApiPublicHooksCadenceTickRouteImport.update({
     id: '/api/public/hooks/cadence-tick',
@@ -306,6 +312,7 @@ export interface FileRoutesByFullPath {
   '/systems': typeof AuthenticatedSystemsRouteWithChildren
   '/vendors': typeof AuthenticatedVendorsRouteWithChildren
   '/auth/callback': typeof AuthCallbackRoute
+  '/admin/audit': typeof AuthenticatedAdminAuditRoute
   '/admin/users': typeof AuthenticatedAdminUsersRoute
   '/changes/$changeId': typeof AuthenticatedChangesChangeIdRoute
   '/continuity/$scenarioId': typeof AuthenticatedContinuityScenarioIdRoute
@@ -339,6 +346,7 @@ export interface FileRoutesByTo {
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/dr-plan': typeof AuthenticatedDrPlanRoute
   '/auth/callback': typeof AuthCallbackRoute
+  '/admin/audit': typeof AuthenticatedAdminAuditRoute
   '/admin/users': typeof AuthenticatedAdminUsersRoute
   '/changes/$changeId': typeof AuthenticatedChangesChangeIdRoute
   '/continuity/$scenarioId': typeof AuthenticatedContinuityScenarioIdRoute
@@ -385,6 +393,7 @@ export interface FileRoutesById {
   '/_authenticated/systems': typeof AuthenticatedSystemsRouteWithChildren
   '/_authenticated/vendors': typeof AuthenticatedVendorsRouteWithChildren
   '/auth/callback': typeof AuthCallbackRoute
+  '/_authenticated/admin/audit': typeof AuthenticatedAdminAuditRoute
   '/_authenticated/admin/users': typeof AuthenticatedAdminUsersRoute
   '/_authenticated/changes/$changeId': typeof AuthenticatedChangesChangeIdRoute
   '/_authenticated/continuity/$scenarioId': typeof AuthenticatedContinuityScenarioIdRoute
@@ -431,6 +440,7 @@ export interface FileRouteTypes {
     | '/systems'
     | '/vendors'
     | '/auth/callback'
+    | '/admin/audit'
     | '/admin/users'
     | '/changes/$changeId'
     | '/continuity/$scenarioId'
@@ -464,6 +474,7 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/dr-plan'
     | '/auth/callback'
+    | '/admin/audit'
     | '/admin/users'
     | '/changes/$changeId'
     | '/continuity/$scenarioId'
@@ -509,6 +520,7 @@ export interface FileRouteTypes {
     | '/_authenticated/systems'
     | '/_authenticated/vendors'
     | '/auth/callback'
+    | '/_authenticated/admin/audit'
     | '/_authenticated/admin/users'
     | '/_authenticated/changes/$changeId'
     | '/_authenticated/continuity/$scenarioId'
@@ -840,6 +852,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminUsersRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
+    '/_authenticated/admin/audit': {
+      id: '/_authenticated/admin/audit'
+      path: '/admin/audit'
+      fullPath: '/admin/audit'
+      preLoaderRoute: typeof AuthenticatedAdminAuditRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
     '/api/public/hooks/cadence-tick': {
       id: '/api/public/hooks/cadence-tick'
       path: '/api/public/hooks/cadence-tick'
@@ -1022,6 +1041,7 @@ interface AuthenticatedRouteChildren {
   AuthenticatedSlasRoute: typeof AuthenticatedSlasRouteWithChildren
   AuthenticatedSystemsRoute: typeof AuthenticatedSystemsRouteWithChildren
   AuthenticatedVendorsRoute: typeof AuthenticatedVendorsRouteWithChildren
+  AuthenticatedAdminAuditRoute: typeof AuthenticatedAdminAuditRoute
   AuthenticatedAdminUsersRoute: typeof AuthenticatedAdminUsersRoute
 }
 
@@ -1040,6 +1060,7 @@ const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedSlasRoute: AuthenticatedSlasRouteWithChildren,
   AuthenticatedSystemsRoute: AuthenticatedSystemsRouteWithChildren,
   AuthenticatedVendorsRoute: AuthenticatedVendorsRouteWithChildren,
+  AuthenticatedAdminAuditRoute: AuthenticatedAdminAuditRoute,
   AuthenticatedAdminUsersRoute: AuthenticatedAdminUsersRoute,
 }
 

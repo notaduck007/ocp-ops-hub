@@ -1,3 +1,4 @@
+import { EvidenceFilesTab } from "@/components/evidence/files-tab";
 import { useState } from "react";
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -96,6 +97,7 @@ function SlaDetailPage() {
         <TabsList>
           <TabsTrigger value="overview">Overview</TabsTrigger>
           <TabsTrigger value="breaches">Breaches ({breaches.length})</TabsTrigger>
+          <TabsTrigger value="files">Files</TabsTrigger>
           {canEdit && <TabsTrigger value="activity">Activity</TabsTrigger>}
         </TabsList>
 
@@ -172,6 +174,10 @@ function SlaDetailPage() {
               </TableBody>
             </Table>
           </div>
+        </TabsContent>
+
+        <TabsContent value="files" className="mt-4">
+          <EvidenceFilesTab kind="sla_review" linkedEntityType="sla" linkedEntityId={slaId} />
         </TabsContent>
 
         {canEdit && (

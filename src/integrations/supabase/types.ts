@@ -479,6 +479,71 @@ export type Database = {
           },
         ]
       }
+      evidence_files: {
+        Row: {
+          archived_at: string | null
+          bucket: string
+          created_at: string
+          created_by: string | null
+          description: string | null
+          file_name: string
+          id: string
+          kind: Database["public"]["Enums"]["evidence_kind"]
+          linked_entity_id: string
+          linked_entity_type: string
+          mime_type: string | null
+          size_bytes: number | null
+          storage_path: string
+          updated_at: string
+          updated_by: string | null
+          uploaded_by: string
+        }
+        Insert: {
+          archived_at?: string | null
+          bucket?: string
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          file_name: string
+          id?: string
+          kind: Database["public"]["Enums"]["evidence_kind"]
+          linked_entity_id: string
+          linked_entity_type: string
+          mime_type?: string | null
+          size_bytes?: number | null
+          storage_path: string
+          updated_at?: string
+          updated_by?: string | null
+          uploaded_by: string
+        }
+        Update: {
+          archived_at?: string | null
+          bucket?: string
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          file_name?: string
+          id?: string
+          kind?: Database["public"]["Enums"]["evidence_kind"]
+          linked_entity_id?: string
+          linked_entity_type?: string
+          mime_type?: string | null
+          size_bytes?: number | null
+          storage_path?: string
+          updated_at?: string
+          updated_by?: string | null
+          uploaded_by?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "evidence_files_uploaded_by_fkey"
+            columns: ["uploaded_by"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       incident_comms: {
         Row: {
           audience: Database["public"]["Enums"]["comms_audience"]
@@ -1698,6 +1763,15 @@ export type Database = {
         | "unpublished_spec"
         | "public"
       dr_test_result: "pass" | "partial" | "fail"
+      evidence_kind:
+        | "access_review"
+        | "dr_test"
+        | "policy"
+        | "incident"
+        | "change"
+        | "sla_review"
+        | "risk_review"
+        | "control"
       incident_status:
         | "declared"
         | "contained"
@@ -1889,6 +1963,16 @@ export const Constants = {
         "public",
       ],
       dr_test_result: ["pass", "partial", "fail"],
+      evidence_kind: [
+        "access_review",
+        "dr_test",
+        "policy",
+        "incident",
+        "change",
+        "sla_review",
+        "risk_review",
+        "control",
+      ],
       incident_status: [
         "declared",
         "contained",
