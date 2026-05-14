@@ -7,7 +7,7 @@ import { Link2Off, ScrollText, ShieldAlert } from "lucide-react";
 import { EmptyState } from "@/components/states/empty-state";
 import { ErrorState } from "@/components/states/error-state";
 
-import { Button } from "@/components/ui/button";
+
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { AuditEntry } from "@/components/audit/audit-entry";
