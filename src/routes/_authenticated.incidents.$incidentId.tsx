@@ -366,13 +366,18 @@ function Timeline({ comms, audit }: { comms: Comm[]; audit: AuditEntry[] }) {
         kind: "audit",
         at: e.created_at,
         node: (
-          <>
-            <span className="text-xs font-medium">{e.action}</span>
-            <span className="text-xs text-muted-foreground">
-              {" "}
-              by {e.actor?.full_name ?? e.actor?.email ?? "—"}
-            </span>
-          </>
+          <div className="space-y-1.5">
+            <div className="text-xs">
+              <span className="font-medium">{e.action}</span>
+              <span className="text-muted-foreground">
+                {" "}by {e.actor?.full_name ?? e.actor?.email ?? "—"}
+              </span>
+            </div>
+            <AuditDiff
+              before={(e.before ?? null) as Record<string, unknown> | null}
+              after={(e.after ?? null) as Record<string, unknown> | null}
+            />
+          </div>
         ),
       });
     }
