@@ -4,6 +4,7 @@ import { LayoutDashboard, Inbox, Users, Search, Server, UserCircle, KeyRound, Bu
 import { useAttentionCount } from "@/hooks/use-attention";
 import { NotificationBell } from "@/components/notifications/notification-bell";
 import { CommandPalette } from "@/components/command-palette";
+import { Logo } from "@/components/brand/logo";
 
 import { cn } from "@/lib/utils";
 
