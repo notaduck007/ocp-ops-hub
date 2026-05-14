@@ -3,6 +3,7 @@ import { createFileRoute, Outlet, useNavigate } from "@tanstack/react-router";
 
 import { supabase } from "@/integrations/supabase/client";
 import { AppLayout } from "@/components/layout/app-layout";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export const Route = createFileRoute("/_authenticated")({
   component: AuthenticatedLayout,
