@@ -46,16 +46,22 @@ import {
 } from "@/lib/people.functions";
 
 export const Route = createFileRoute("/_authenticated/people/$personId")({
+  validateSearch: detailSearchValidator,
   component: PersonDetailPage,
 });
 
 function PersonDetailPage() {
   const { personId } = Route.useParams();
+  const { edit } = Route.useSearch();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const { data: role } = useCurrentRole();
   const canEdit = role === "admin" || role === "editor";
   const isAdmin = role === "admin";
+  const editing = !!edit && canEdit;
+
+  const enterEdit = () => navigate({ to: ".", search: { edit: true } });
+  const exitEdit = () => navigate({ to: ".", search: { edit: undefined } });
 
   const get = useServerFn(getPerson);
   const audit = useServerFn(listPersonAudit);
