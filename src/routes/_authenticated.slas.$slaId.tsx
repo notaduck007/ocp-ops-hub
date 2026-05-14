@@ -207,6 +207,6 @@ function SlaDetailPage() {
           </TabsContent>
         )}
       </Tabs>
-    </div>
+    </PageShell>
   );
 }
