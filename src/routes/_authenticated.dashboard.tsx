@@ -297,19 +297,15 @@ function DashboardPage() {
             Next 10 items overdue for review
           </p>
         </div>
-        <div className="divide-y">
+        <div>
           {overdue.data == null ? (
-            <>
+            <div className="divide-y">
               <FeedRowSkeleton />
               <FeedRowSkeleton />
               <FeedRowSkeleton />
-            </>
-          ) : overdue.data.items.length === 0 ? (
-            <div className="p-5 text-sm text-muted-foreground">
-              All current. Nice.
             </div>
           ) : (
-            overdue.data.items.map((it) => <FeedRow key={`${it.kind}-${it.id}`} item={it} />)
+            <AttentionList items={overdue.data.items as any} maxRows={10} />
           )}
         </div>
       </div>
