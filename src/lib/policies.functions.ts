@@ -3,6 +3,7 @@ import { z } from "zod";
 
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import type { Database } from "@/integrations/supabase/types";
+import { attachActors } from "@/lib/load-actors";
 
 export type PolicyStatus = Database["public"]["Enums"]["policy_status"];
 export const POLICY_STATUSES = ["draft", "approved", "retired"] as const satisfies readonly PolicyStatus[];

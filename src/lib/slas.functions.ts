@@ -116,7 +116,7 @@ export const getSla = createServerFn({ method: "POST" })
     if (error) throw new Error(error.message);
     if (!row) return null;
     const [enriched] = await attachVendorSystem(supabase, [row]);
-    return enriched as SlaRow;
+    return (await attachActors(supabase, enriched)) as SlaRow;
   });
 
 export const createSla = createServerFn({ method: "POST" })

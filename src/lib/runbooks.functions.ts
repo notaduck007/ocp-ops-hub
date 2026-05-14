@@ -3,6 +3,7 @@ import { z } from "zod";
 
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import type { Database } from "@/integrations/supabase/types";
+import { attachActors } from "@/lib/load-actors";
 
 export type RunbookScenario = Database["public"]["Enums"]["runbook_scenario"];
 export const RUNBOOK_SCENARIOS = [
