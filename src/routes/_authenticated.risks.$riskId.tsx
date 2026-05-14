@@ -38,9 +38,11 @@ export const Route = createFileRoute("/_authenticated/risks/$riskId")({
 
 function RiskDetailPage() {
   const { riskId } = Route.useParams();
+  const { edit } = Route.useSearch();
   const navigate = useNavigate();
   const { data: role } = useCurrentRole();
   const canEdit = role === "admin" || role === "editor";
+  const editing = !!edit && canEdit;
 
   const get = useServerFn(getRisk);
   const audit = useServerFn(listRiskAudit);
@@ -55,6 +57,9 @@ function RiskDetailPage() {
     queryFn: () => audit({ data: { riskId } }),
     enabled: canEdit,
   });
+
+  const enterEdit = () => navigate({ to: ".", search: { edit: true } });
+  const exitEdit = () => navigate({ to: ".", search: { edit: undefined } });
 
   if (isLoading) return (<PageShell><PageHeaderSkeleton /><DetailFormSkeleton /></PageShell>);
   if (!risk) {
@@ -86,6 +91,11 @@ function RiskDetailPage() {
             <ScoreBadge value={risk.score} />
             {risk.archived_at && <Badge variant="outline">Archived</Badge>}
           </>
+        }
+        actions={
+          canEdit && (
+            <EditToggle editing={editing} onEdit={enterEdit} onCancel={exitEdit} />
+          )
         }
       />
 
