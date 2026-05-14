@@ -5,7 +5,7 @@ import { useServerFn } from "@tanstack/react-start";
 import { toast } from "sonner";
 import { format, formatDistanceToNow } from "date-fns";
 import ReactMarkdown from "react-markdown";
-import { AlertOctagon, ClipboardList, MessageSquareOff } from "lucide-react";
+import { ClipboardList, MessageSquareOff } from "lucide-react";
 
 import { PageShell, PageHeader } from "@/components/layout/page-shell";
 import { PageHeaderSkeleton, DetailFormSkeleton } from "@/components/layout/skeletons";
