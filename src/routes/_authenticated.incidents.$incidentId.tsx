@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { toast } from "sonner";
@@ -8,6 +8,9 @@ import ReactMarkdown from "react-markdown";
 
 import { PageShell, PageHeader } from "@/components/layout/page-shell";
 import { PageHeaderSkeleton, DetailFormSkeleton } from "@/components/layout/skeletons";
+import { EditToggle } from "@/components/layout/edit-toggle";
+import { IncidentSummary } from "@/components/incidents/incident-summary";
+import { detailSearchValidator } from "@/lib/detail-search";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
