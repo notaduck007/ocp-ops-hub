@@ -22,7 +22,9 @@ import { Route as AuthenticatedReviewsRouteImport } from './routes/_authenticate
 import { Route as AuthenticatedPoliciesRouteImport } from './routes/_authenticated.policies'
 import { Route as AuthenticatedPeopleRouteImport } from './routes/_authenticated.people'
 import { Route as AuthenticatedIncidentsRouteImport } from './routes/_authenticated.incidents'
+import { Route as AuthenticatedDrPlanRouteImport } from './routes/_authenticated.dr-plan'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated.dashboard'
+import { Route as AuthenticatedContinuityRouteImport } from './routes/_authenticated.continuity'
 import { Route as AuthenticatedChangesRouteImport } from './routes/_authenticated.changes'
 import { Route as AuthenticatedAccessRouteImport } from './routes/_authenticated.access'
 import { Route as AuthenticatedVendorsIndexRouteImport } from './routes/_authenticated.vendors.index'
@@ -34,6 +36,7 @@ import { Route as AuthenticatedReviewsIndexRouteImport } from './routes/_authent
 import { Route as AuthenticatedPoliciesIndexRouteImport } from './routes/_authenticated.policies.index'
 import { Route as AuthenticatedPeopleIndexRouteImport } from './routes/_authenticated.people.index'
 import { Route as AuthenticatedIncidentsIndexRouteImport } from './routes/_authenticated.incidents.index'
+import { Route as AuthenticatedContinuityIndexRouteImport } from './routes/_authenticated.continuity.index'
 import { Route as AuthenticatedChangesIndexRouteImport } from './routes/_authenticated.changes.index'
 import { Route as AuthenticatedVendorsVendorIdRouteImport } from './routes/_authenticated.vendors.$vendorId'
 import { Route as AuthenticatedSystemsSystemIdRouteImport } from './routes/_authenticated.systems.$systemId'
@@ -45,6 +48,7 @@ import { Route as AuthenticatedReviewsCampaignIdRouteImport } from './routes/_au
 import { Route as AuthenticatedPoliciesPolicyIdRouteImport } from './routes/_authenticated.policies.$policyId'
 import { Route as AuthenticatedPeoplePersonIdRouteImport } from './routes/_authenticated.people.$personId'
 import { Route as AuthenticatedIncidentsIncidentIdRouteImport } from './routes/_authenticated.incidents.$incidentId'
+import { Route as AuthenticatedContinuityScenarioIdRouteImport } from './routes/_authenticated.continuity.$scenarioId'
 import { Route as AuthenticatedChangesChangeIdRouteImport } from './routes/_authenticated.changes.$changeId'
 import { Route as AuthenticatedAdminUsersRouteImport } from './routes/_authenticated.admin.users'
 import { Route as ApiPublicHooksCadenceTickRouteImport } from './routes/api/public/hooks/cadence-tick'
@@ -113,9 +117,19 @@ const AuthenticatedIncidentsRoute = AuthenticatedIncidentsRouteImport.update({
   path: '/incidents',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
+const AuthenticatedDrPlanRoute = AuthenticatedDrPlanRouteImport.update({
+  id: '/dr-plan',
+  path: '/dr-plan',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
 const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
+const AuthenticatedContinuityRoute = AuthenticatedContinuityRouteImport.update({
+  id: '/continuity',
+  path: '/continuity',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
 const AuthenticatedChangesRoute = AuthenticatedChangesRouteImport.update({
@@ -179,6 +193,12 @@ const AuthenticatedIncidentsIndexRoute =
     id: '/',
     path: '/',
     getParentRoute: () => AuthenticatedIncidentsRoute,
+  } as any)
+const AuthenticatedContinuityIndexRoute =
+  AuthenticatedContinuityIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => AuthenticatedContinuityRoute,
   } as any)
 const AuthenticatedChangesIndexRoute =
   AuthenticatedChangesIndexRouteImport.update({
@@ -244,6 +264,12 @@ const AuthenticatedIncidentsIncidentIdRoute =
     path: '/$incidentId',
     getParentRoute: () => AuthenticatedIncidentsRoute,
   } as any)
+const AuthenticatedContinuityScenarioIdRoute =
+  AuthenticatedContinuityScenarioIdRouteImport.update({
+    id: '/$scenarioId',
+    path: '/$scenarioId',
+    getParentRoute: () => AuthenticatedContinuityRoute,
+  } as any)
 const AuthenticatedChangesChangeIdRoute =
   AuthenticatedChangesChangeIdRouteImport.update({
     id: '/$changeId',
@@ -267,7 +293,9 @@ export interface FileRoutesByFullPath {
   '/login': typeof LoginRoute
   '/access': typeof AuthenticatedAccessRoute
   '/changes': typeof AuthenticatedChangesRouteWithChildren
+  '/continuity': typeof AuthenticatedContinuityRouteWithChildren
   '/dashboard': typeof AuthenticatedDashboardRoute
+  '/dr-plan': typeof AuthenticatedDrPlanRoute
   '/incidents': typeof AuthenticatedIncidentsRouteWithChildren
   '/people': typeof AuthenticatedPeopleRouteWithChildren
   '/policies': typeof AuthenticatedPoliciesRouteWithChildren
@@ -280,6 +308,7 @@ export interface FileRoutesByFullPath {
   '/auth/callback': typeof AuthCallbackRoute
   '/admin/users': typeof AuthenticatedAdminUsersRoute
   '/changes/$changeId': typeof AuthenticatedChangesChangeIdRoute
+  '/continuity/$scenarioId': typeof AuthenticatedContinuityScenarioIdRoute
   '/incidents/$incidentId': typeof AuthenticatedIncidentsIncidentIdRoute
   '/people/$personId': typeof AuthenticatedPeoplePersonIdRoute
   '/policies/$policyId': typeof AuthenticatedPoliciesPolicyIdRoute
@@ -291,6 +320,7 @@ export interface FileRoutesByFullPath {
   '/systems/$systemId': typeof AuthenticatedSystemsSystemIdRoute
   '/vendors/$vendorId': typeof AuthenticatedVendorsVendorIdRoute
   '/changes/': typeof AuthenticatedChangesIndexRoute
+  '/continuity/': typeof AuthenticatedContinuityIndexRoute
   '/incidents/': typeof AuthenticatedIncidentsIndexRoute
   '/people/': typeof AuthenticatedPeopleIndexRoute
   '/policies/': typeof AuthenticatedPoliciesIndexRoute
@@ -307,9 +337,11 @@ export interface FileRoutesByTo {
   '/login': typeof LoginRoute
   '/access': typeof AuthenticatedAccessRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
+  '/dr-plan': typeof AuthenticatedDrPlanRoute
   '/auth/callback': typeof AuthCallbackRoute
   '/admin/users': typeof AuthenticatedAdminUsersRoute
   '/changes/$changeId': typeof AuthenticatedChangesChangeIdRoute
+  '/continuity/$scenarioId': typeof AuthenticatedContinuityScenarioIdRoute
   '/incidents/$incidentId': typeof AuthenticatedIncidentsIncidentIdRoute
   '/people/$personId': typeof AuthenticatedPeoplePersonIdRoute
   '/policies/$policyId': typeof AuthenticatedPoliciesPolicyIdRoute
@@ -321,6 +353,7 @@ export interface FileRoutesByTo {
   '/systems/$systemId': typeof AuthenticatedSystemsSystemIdRoute
   '/vendors/$vendorId': typeof AuthenticatedVendorsVendorIdRoute
   '/changes': typeof AuthenticatedChangesIndexRoute
+  '/continuity': typeof AuthenticatedContinuityIndexRoute
   '/incidents': typeof AuthenticatedIncidentsIndexRoute
   '/people': typeof AuthenticatedPeopleIndexRoute
   '/policies': typeof AuthenticatedPoliciesIndexRoute
@@ -339,7 +372,9 @@ export interface FileRoutesById {
   '/login': typeof LoginRoute
   '/_authenticated/access': typeof AuthenticatedAccessRoute
   '/_authenticated/changes': typeof AuthenticatedChangesRouteWithChildren
+  '/_authenticated/continuity': typeof AuthenticatedContinuityRouteWithChildren
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
+  '/_authenticated/dr-plan': typeof AuthenticatedDrPlanRoute
   '/_authenticated/incidents': typeof AuthenticatedIncidentsRouteWithChildren
   '/_authenticated/people': typeof AuthenticatedPeopleRouteWithChildren
   '/_authenticated/policies': typeof AuthenticatedPoliciesRouteWithChildren
@@ -352,6 +387,7 @@ export interface FileRoutesById {
   '/auth/callback': typeof AuthCallbackRoute
   '/_authenticated/admin/users': typeof AuthenticatedAdminUsersRoute
   '/_authenticated/changes/$changeId': typeof AuthenticatedChangesChangeIdRoute
+  '/_authenticated/continuity/$scenarioId': typeof AuthenticatedContinuityScenarioIdRoute
   '/_authenticated/incidents/$incidentId': typeof AuthenticatedIncidentsIncidentIdRoute
   '/_authenticated/people/$personId': typeof AuthenticatedPeoplePersonIdRoute
   '/_authenticated/policies/$policyId': typeof AuthenticatedPoliciesPolicyIdRoute
@@ -363,6 +399,7 @@ export interface FileRoutesById {
   '/_authenticated/systems/$systemId': typeof AuthenticatedSystemsSystemIdRoute
   '/_authenticated/vendors/$vendorId': typeof AuthenticatedVendorsVendorIdRoute
   '/_authenticated/changes/': typeof AuthenticatedChangesIndexRoute
+  '/_authenticated/continuity/': typeof AuthenticatedContinuityIndexRoute
   '/_authenticated/incidents/': typeof AuthenticatedIncidentsIndexRoute
   '/_authenticated/people/': typeof AuthenticatedPeopleIndexRoute
   '/_authenticated/policies/': typeof AuthenticatedPoliciesIndexRoute
@@ -381,7 +418,9 @@ export interface FileRouteTypes {
     | '/login'
     | '/access'
     | '/changes'
+    | '/continuity'
     | '/dashboard'
+    | '/dr-plan'
     | '/incidents'
     | '/people'
     | '/policies'
@@ -394,6 +433,7 @@ export interface FileRouteTypes {
     | '/auth/callback'
     | '/admin/users'
     | '/changes/$changeId'
+    | '/continuity/$scenarioId'
     | '/incidents/$incidentId'
     | '/people/$personId'
     | '/policies/$policyId'
@@ -405,6 +445,7 @@ export interface FileRouteTypes {
     | '/systems/$systemId'
     | '/vendors/$vendorId'
     | '/changes/'
+    | '/continuity/'
     | '/incidents/'
     | '/people/'
     | '/policies/'
@@ -421,9 +462,11 @@ export interface FileRouteTypes {
     | '/login'
     | '/access'
     | '/dashboard'
+    | '/dr-plan'
     | '/auth/callback'
     | '/admin/users'
     | '/changes/$changeId'
+    | '/continuity/$scenarioId'
     | '/incidents/$incidentId'
     | '/people/$personId'
     | '/policies/$policyId'
@@ -435,6 +478,7 @@ export interface FileRouteTypes {
     | '/systems/$systemId'
     | '/vendors/$vendorId'
     | '/changes'
+    | '/continuity'
     | '/incidents'
     | '/people'
     | '/policies'
@@ -452,7 +496,9 @@ export interface FileRouteTypes {
     | '/login'
     | '/_authenticated/access'
     | '/_authenticated/changes'
+    | '/_authenticated/continuity'
     | '/_authenticated/dashboard'
+    | '/_authenticated/dr-plan'
     | '/_authenticated/incidents'
     | '/_authenticated/people'
     | '/_authenticated/policies'
@@ -465,6 +511,7 @@ export interface FileRouteTypes {
     | '/auth/callback'
     | '/_authenticated/admin/users'
     | '/_authenticated/changes/$changeId'
+    | '/_authenticated/continuity/$scenarioId'
     | '/_authenticated/incidents/$incidentId'
     | '/_authenticated/people/$personId'
     | '/_authenticated/policies/$policyId'
@@ -476,6 +523,7 @@ export interface FileRouteTypes {
     | '/_authenticated/systems/$systemId'
     | '/_authenticated/vendors/$vendorId'
     | '/_authenticated/changes/'
+    | '/_authenticated/continuity/'
     | '/_authenticated/incidents/'
     | '/_authenticated/people/'
     | '/_authenticated/policies/'
@@ -589,11 +637,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedIncidentsRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
+    '/_authenticated/dr-plan': {
+      id: '/_authenticated/dr-plan'
+      path: '/dr-plan'
+      fullPath: '/dr-plan'
+      preLoaderRoute: typeof AuthenticatedDrPlanRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
     '/_authenticated/dashboard': {
       id: '/_authenticated/dashboard'
       path: '/dashboard'
       fullPath: '/dashboard'
       preLoaderRoute: typeof AuthenticatedDashboardRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/continuity': {
+      id: '/_authenticated/continuity'
+      path: '/continuity'
+      fullPath: '/continuity'
+      preLoaderRoute: typeof AuthenticatedContinuityRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
     '/_authenticated/changes': {
@@ -673,6 +735,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedIncidentsIndexRouteImport
       parentRoute: typeof AuthenticatedIncidentsRoute
     }
+    '/_authenticated/continuity/': {
+      id: '/_authenticated/continuity/'
+      path: '/'
+      fullPath: '/continuity/'
+      preLoaderRoute: typeof AuthenticatedContinuityIndexRouteImport
+      parentRoute: typeof AuthenticatedContinuityRoute
+    }
     '/_authenticated/changes/': {
       id: '/_authenticated/changes/'
       path: '/'
@@ -750,6 +819,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedIncidentsIncidentIdRouteImport
       parentRoute: typeof AuthenticatedIncidentsRoute
     }
+    '/_authenticated/continuity/$scenarioId': {
+      id: '/_authenticated/continuity/$scenarioId'
+      path: '/$scenarioId'
+      fullPath: '/continuity/$scenarioId'
+      preLoaderRoute: typeof AuthenticatedContinuityScenarioIdRouteImport
+      parentRoute: typeof AuthenticatedContinuityRoute
+    }
     '/_authenticated/changes/$changeId': {
       id: '/_authenticated/changes/$changeId'
       path: '/$changeId'
@@ -786,6 +862,23 @@ const AuthenticatedChangesRouteChildren: AuthenticatedChangesRouteChildren = {
 
 const AuthenticatedChangesRouteWithChildren =
   AuthenticatedChangesRoute._addFileChildren(AuthenticatedChangesRouteChildren)
+
+interface AuthenticatedContinuityRouteChildren {
+  AuthenticatedContinuityScenarioIdRoute: typeof AuthenticatedContinuityScenarioIdRoute
+  AuthenticatedContinuityIndexRoute: typeof AuthenticatedContinuityIndexRoute
+}
+
+const AuthenticatedContinuityRouteChildren: AuthenticatedContinuityRouteChildren =
+  {
+    AuthenticatedContinuityScenarioIdRoute:
+      AuthenticatedContinuityScenarioIdRoute,
+    AuthenticatedContinuityIndexRoute: AuthenticatedContinuityIndexRoute,
+  }
+
+const AuthenticatedContinuityRouteWithChildren =
+  AuthenticatedContinuityRoute._addFileChildren(
+    AuthenticatedContinuityRouteChildren,
+  )
 
 interface AuthenticatedIncidentsRouteChildren {
   AuthenticatedIncidentsIncidentIdRoute: typeof AuthenticatedIncidentsIncidentIdRoute
@@ -917,7 +1010,9 @@ const AuthenticatedVendorsRouteWithChildren =
 interface AuthenticatedRouteChildren {
   AuthenticatedAccessRoute: typeof AuthenticatedAccessRoute
   AuthenticatedChangesRoute: typeof AuthenticatedChangesRouteWithChildren
+  AuthenticatedContinuityRoute: typeof AuthenticatedContinuityRouteWithChildren
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
+  AuthenticatedDrPlanRoute: typeof AuthenticatedDrPlanRoute
   AuthenticatedIncidentsRoute: typeof AuthenticatedIncidentsRouteWithChildren
   AuthenticatedPeopleRoute: typeof AuthenticatedPeopleRouteWithChildren
   AuthenticatedPoliciesRoute: typeof AuthenticatedPoliciesRouteWithChildren
@@ -933,7 +1028,9 @@ interface AuthenticatedRouteChildren {
 const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedAccessRoute: AuthenticatedAccessRoute,
   AuthenticatedChangesRoute: AuthenticatedChangesRouteWithChildren,
+  AuthenticatedContinuityRoute: AuthenticatedContinuityRouteWithChildren,
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
+  AuthenticatedDrPlanRoute: AuthenticatedDrPlanRoute,
   AuthenticatedIncidentsRoute: AuthenticatedIncidentsRouteWithChildren,
   AuthenticatedPeopleRoute: AuthenticatedPeopleRouteWithChildren,
   AuthenticatedPoliciesRoute: AuthenticatedPoliciesRouteWithChildren,
