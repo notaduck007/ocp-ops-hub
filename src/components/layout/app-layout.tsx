@@ -26,6 +26,7 @@ type NavItem = {
   label: string;
   icon: typeof LayoutDashboard;
   adminOnly?: boolean;
+  badge?: "live-count";
 };
 
 type NavGroup = { label: string | null; items: NavItem[] };
@@ -33,7 +34,10 @@ type NavGroup = { label: string | null; items: NavItem[] };
 const NAV_GROUPS: NavGroup[] = [
   {
     label: null,
-    items: [{ to: "/dashboard", label: "Dashboard", icon: LayoutDashboard }],
+    items: [
+      { to: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
+      { to: "/inbox", label: "Inbox", icon: Inbox, badge: "live-count" },
+    ],
   },
   {
     label: "Inventory",
