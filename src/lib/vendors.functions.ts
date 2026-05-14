@@ -86,7 +86,7 @@ export const listVendors = createServerFn({ method: "POST" })
     const counts = await loadSystemCounts(supabase, (rows ?? []).map((r: any) => r.id));
     return (rows ?? []).map((r: any) => ({
       ...r,
-      internal_owner: r.internal_owner_id ? owners.get(r.internal_owner_id) ?? null : null,
+      internal_owner: r.internal_owner_id ? (owners.get(r.internal_owner_id) as any) ?? null : null,
       linked_systems_count: counts.get(r.id) ?? 0,
     }));
   });
