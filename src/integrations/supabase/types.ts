@@ -83,6 +83,126 @@ export type Database = {
           },
         ]
       }
+      access_review_campaigns: {
+        Row: {
+          archived_at: string | null
+          completed_at: string | null
+          created_at: string
+          created_by: string | null
+          due_at: string
+          id: string
+          name: string
+          notes: string | null
+          owner_id: string
+          scope_system_ids: string[]
+          started_at: string
+          updated_at: string
+          updated_by: string | null
+        }
+        Insert: {
+          archived_at?: string | null
+          completed_at?: string | null
+          created_at?: string
+          created_by?: string | null
+          due_at: string
+          id?: string
+          name: string
+          notes?: string | null
+          owner_id: string
+          scope_system_ids?: string[]
+          started_at?: string
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Update: {
+          archived_at?: string | null
+          completed_at?: string | null
+          created_at?: string
+          created_by?: string | null
+          due_at?: string
+          id?: string
+          name?: string
+          notes?: string | null
+          owner_id?: string
+          scope_system_ids?: string[]
+          started_at?: string
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "access_review_campaigns_owner_id_fkey"
+            columns: ["owner_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      access_review_items: {
+        Row: {
+          campaign_id: string
+          created_at: string
+          created_by: string | null
+          decided_at: string | null
+          decision: string | null
+          grant_id: string
+          id: string
+          notes: string | null
+          reviewer_id: string | null
+          updated_at: string
+          updated_by: string | null
+        }
+        Insert: {
+          campaign_id: string
+          created_at?: string
+          created_by?: string | null
+          decided_at?: string | null
+          decision?: string | null
+          grant_id: string
+          id?: string
+          notes?: string | null
+          reviewer_id?: string | null
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Update: {
+          campaign_id?: string
+          created_at?: string
+          created_by?: string | null
+          decided_at?: string | null
+          decision?: string | null
+          grant_id?: string
+          id?: string
+          notes?: string | null
+          reviewer_id?: string | null
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "access_review_items_campaign_id_fkey"
+            columns: ["campaign_id"]
+            isOneToOne: false
+            referencedRelation: "access_review_campaigns"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "access_review_items_grant_id_fkey"
+            columns: ["grant_id"]
+            isOneToOne: false
+            referencedRelation: "access_grants"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "access_review_items_reviewer_id_fkey"
+            columns: ["reviewer_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       audit_log: {
         Row: {
           action: string
@@ -394,6 +514,41 @@ export type Database = {
           },
         ]
       }
+      notifications: {
+        Row: {
+          created_at: string
+          id: string
+          kind: string
+          payload: Json
+          read_at: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          kind: string
+          payload?: Json
+          read_at?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          kind?: string
+          payload?: Json
+          read_at?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "notifications_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       people: {
         Row: {
           archived_at: string | null
@@ -581,6 +736,65 @@ export type Database = {
             columns: ["policy_id"]
             isOneToOne: false
             referencedRelation: "policies"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      recurring_tasks: {
+        Row: {
+          archived_at: string | null
+          cadence_days: number
+          created_at: string
+          created_by: string | null
+          id: string
+          kind: string
+          last_completed_at: string | null
+          last_reminder_sent_at: string | null
+          next_due_at: string
+          owner_id: string
+          target_id: string
+          target_type: string
+          updated_at: string
+          updated_by: string | null
+        }
+        Insert: {
+          archived_at?: string | null
+          cadence_days: number
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          kind: string
+          last_completed_at?: string | null
+          last_reminder_sent_at?: string | null
+          next_due_at: string
+          owner_id: string
+          target_id: string
+          target_type: string
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Update: {
+          archived_at?: string | null
+          cadence_days?: number
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          kind?: string
+          last_completed_at?: string | null
+          last_reminder_sent_at?: string | null
+          next_due_at?: string
+          owner_id?: string
+          target_id?: string
+          target_type?: string
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "recurring_tasks_owner_id_fkey"
+            columns: ["owner_id"]
+            isOneToOne: false
+            referencedRelation: "users"
             referencedColumns: ["id"]
           },
         ]

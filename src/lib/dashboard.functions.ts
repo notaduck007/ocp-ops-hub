@@ -31,7 +31,7 @@ export const getOverdueReviews = createServerFn({ method: "GET" })
       .limit(500);
     if (error) throw new Error(error.message);
     const rows = (data ?? []) as unknown as Array<{
-      kind: "sla" | "access_grant" | "risk";
+      kind: string;
       id: string;
       label: string;
       due_at: string | null;

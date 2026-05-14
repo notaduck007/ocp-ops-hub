@@ -376,7 +376,7 @@ function FeedRow({
   item,
 }: {
   item: {
-    kind: "sla" | "access_grant" | "risk";
+    kind: string;
     id: string;
     label: string;
     due_at: string | null;
