@@ -31,7 +31,7 @@ import { PersonStatusBadge, PersonTypeBadge, RoleLevelBadge } from "@/components
 import { PersonForm } from "@/components/people/person-form";
 import { AccessGrantForm } from "@/components/access/access-grant-form";
 import { PageShell, PageHeader } from "@/components/layout/page-shell";
-import { PageHeaderSkeleton, DetailFormSkeleton } TMPMARK;
+import { PageHeaderSkeleton, DetailFormSkeleton, TableSkeleton } from "@/components/layout/skeletons";
 import { useCurrentRole } from "@/hooks/use-auth";
 import {
   archivePerson,
