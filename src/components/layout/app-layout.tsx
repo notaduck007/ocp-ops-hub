@@ -5,7 +5,7 @@ import { NotificationBell } from "@/components/notifications/notification-bell";
 import { CommandPalette } from "@/components/command-palette";
 
 import { cn } from "@/lib/utils";
-import { Input } from "@/components/ui/input";
+
 import { useAuth, useCurrentRole } from "@/hooks/use-auth";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
