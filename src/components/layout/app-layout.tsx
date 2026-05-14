@@ -112,7 +112,7 @@ function Sidebar({ collapsed, onToggle }: { collapsed: boolean; onToggle: () => 
   return (
     <aside className={cn("hidden shrink-0 flex-col border-r bg-card md:flex", collapsed ? "w-14" : "w-60")}>
       <div className="flex h-14 items-center justify-between gap-2 border-b px-3">
-        {!collapsed && <span className="text-sm font-semibold tracking-tight">OCP IT Hub</span>}
+        <Logo size="sm" withWordmark={!collapsed} />
         <Button variant="ghost" size="icon" className="h-8 w-8" onClick={onToggle} aria-label="Toggle sidebar">
           {collapsed ? <PanelLeftOpen className="h-4 w-4" /> : <PanelLeftClose className="h-4 w-4" />}
         </Button>
