@@ -6,14 +6,7 @@ import { useServerFn } from "@tanstack/react-start";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
+import { AuditEntry } from "@/components/audit/audit-entry";
 import {
   KindBadge,
   LikelihoodBadge,
@@ -104,7 +97,7 @@ function RiskDetailPage() {
           <TabsTrigger value="overview">Overview</TabsTrigger>
           <TabsTrigger value="links">Linked records</TabsTrigger>
           <TabsTrigger value="files">Files</TabsTrigger>
-          {canEdit && <TabsTrigger value="activity">Activity</TabsTrigger>}
+          <TabsTrigger value="activity">Activity</TabsTrigger>
           {canEdit && <TabsTrigger value="acceptance">Acceptance</TabsTrigger>}
         </TabsList>
 
@@ -161,11 +154,9 @@ function RiskDetailPage() {
           <EvidenceFilesTab kind="risk_review" linkedEntityType="risk" linkedEntityId={riskId} />
         </TabsContent>
 
-        {canEdit && (
-          <TabsContent value="activity" className="mt-4">
-            <AuditTable entries={auditEntries} />
-          </TabsContent>
-        )}
+        <TabsContent value="activity" className="mt-4">
+          <AuditTable entries={auditEntries} />
+        </TabsContent>
 
         {canEdit && (
           <TabsContent value="acceptance" className="mt-4 space-y-4">
