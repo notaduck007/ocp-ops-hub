@@ -1,22 +1,29 @@
 import { Link } from "@tanstack/react-router";
+import { CheckCircle2 } from "lucide-react";
 
 import type { AttentionItem } from "@/lib/dashboard.functions";
+import { EmptyState } from "@/components/states/empty-state";
 import { AttentionRow } from "./attention-row";
 
 export function AttentionList({
   items,
-  emptyMessage = "All current. Nice.",
+  emptyMessage,
+  emptyDescription = "No overdue reviews. Nice work.",
   maxRows,
 }: {
   items: AttentionItem[];
   emptyMessage?: string;
+  emptyDescription?: string;
   maxRows?: number;
 }) {
   if (items.length === 0) {
     return (
-      <div className="p-6 text-center text-sm text-muted-foreground">
-        {emptyMessage}
-      </div>
+      <EmptyState
+        icon={CheckCircle2}
+        title={emptyMessage ?? "All current"}
+        description={emptyDescription}
+        variant="card"
+      />
     );
   }
   const visible = maxRows ? items.slice(0, maxRows) : items;
