@@ -1,7 +1,7 @@
-import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
-import { ArrowLeft, Archive, ArchiveRestore } from "lucide-react";
+import { Archive, ArchiveRestore } from "lucide-react";
 import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
@@ -17,6 +17,7 @@ import {
 } from "@/components/ui/table";
 import { CategoryBadge, CriticalityBadge } from "@/components/systems/badges";
 import { SystemForm } from "@/components/systems/system-form";
+import { PageShell, PageHeader } from "@/components/layout/page-shell";
 import { useCurrentRole } from "@/hooks/use-auth";
 import {
   archiveSystem,
