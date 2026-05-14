@@ -2,6 +2,10 @@ import { EvidenceFilesTab } from "@/components/evidence/files-tab";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
+import { Link2Off, ScrollText, ShieldAlert } from "lucide-react";
+
+import { EmptyState } from "@/components/states/empty-state";
+import { ErrorState } from "@/components/states/error-state";
 
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -39,7 +43,7 @@ function RiskDetailPage() {
   const get = useServerFn(getRisk);
   const audit = useServerFn(listRiskAudit);
 
-  const { data: risk, isLoading } = useQuery({
+  const { data: risk, isLoading, isError, error, refetch } = useQuery({
     queryKey: ["risk", riskId],
     queryFn: () => get({ data: { id: riskId } }),
   });
@@ -54,14 +58,29 @@ function RiskDetailPage() {
   const exitEdit = () => navigate({ to: ".", search: { edit: undefined } });
 
   if (isLoading) return (<PageShell><PageHeaderSkeleton /><DetailFormSkeleton /></PageShell>);
+  if (isError) {
+    return (
+      <PageShell>
+        <ErrorState
+          title="Couldn't load this risk"
+          message={(error as Error)?.message}
+          onRetry={() => refetch()}
+          variant="card"
+        />
+      </PageShell>
+    );
+  }
   if (!risk) {
     return (
-      <div className="space-y-3">
-        <p className="text-sm text-muted-foreground">Risk not found.</p>
-        <Button variant="outline" onClick={() => navigate({ to: "/risks" })}>
-          Back to list
-        </Button>
-      </div>
+      <PageShell>
+        <EmptyState
+          icon={ShieldAlert}
+          title="Risk not found"
+          description="It may have been deleted."
+          action={{ label: "Back to risks", to: "/risks" }}
+          variant="card"
+        />
+      </PageShell>
     );
   }
 
