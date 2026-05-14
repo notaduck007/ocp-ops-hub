@@ -17,6 +17,7 @@ import { Route as AuthenticatedVendorsRouteImport } from './routes/_authenticate
 import { Route as AuthenticatedSystemsRouteImport } from './routes/_authenticated.systems'
 import { Route as AuthenticatedSlasRouteImport } from './routes/_authenticated.slas'
 import { Route as AuthenticatedRisksRouteImport } from './routes/_authenticated.risks'
+import { Route as AuthenticatedPoliciesRouteImport } from './routes/_authenticated.policies'
 import { Route as AuthenticatedPeopleRouteImport } from './routes/_authenticated.people'
 import { Route as AuthenticatedIncidentsRouteImport } from './routes/_authenticated.incidents'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated.dashboard'
@@ -26,6 +27,7 @@ import { Route as AuthenticatedVendorsIndexRouteImport } from './routes/_authent
 import { Route as AuthenticatedSystemsIndexRouteImport } from './routes/_authenticated.systems.index'
 import { Route as AuthenticatedSlasIndexRouteImport } from './routes/_authenticated.slas.index'
 import { Route as AuthenticatedRisksIndexRouteImport } from './routes/_authenticated.risks.index'
+import { Route as AuthenticatedPoliciesIndexRouteImport } from './routes/_authenticated.policies.index'
 import { Route as AuthenticatedPeopleIndexRouteImport } from './routes/_authenticated.people.index'
 import { Route as AuthenticatedIncidentsIndexRouteImport } from './routes/_authenticated.incidents.index'
 import { Route as AuthenticatedChangesIndexRouteImport } from './routes/_authenticated.changes.index'
@@ -33,6 +35,7 @@ import { Route as AuthenticatedVendorsVendorIdRouteImport } from './routes/_auth
 import { Route as AuthenticatedSystemsSystemIdRouteImport } from './routes/_authenticated.systems.$systemId'
 import { Route as AuthenticatedSlasSlaIdRouteImport } from './routes/_authenticated.slas.$slaId'
 import { Route as AuthenticatedRisksRiskIdRouteImport } from './routes/_authenticated.risks.$riskId'
+import { Route as AuthenticatedPoliciesPolicyIdRouteImport } from './routes/_authenticated.policies.$policyId'
 import { Route as AuthenticatedPeoplePersonIdRouteImport } from './routes/_authenticated.people.$personId'
 import { Route as AuthenticatedIncidentsIncidentIdRouteImport } from './routes/_authenticated.incidents.$incidentId'
 import { Route as AuthenticatedChangesChangeIdRouteImport } from './routes/_authenticated.changes.$changeId'
@@ -75,6 +78,11 @@ const AuthenticatedSlasRoute = AuthenticatedSlasRouteImport.update({
 const AuthenticatedRisksRoute = AuthenticatedRisksRouteImport.update({
   id: '/risks',
   path: '/risks',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
+const AuthenticatedPoliciesRoute = AuthenticatedPoliciesRouteImport.update({
+  id: '/policies',
+  path: '/policies',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
 const AuthenticatedPeopleRoute = AuthenticatedPeopleRouteImport.update({
@@ -124,6 +132,12 @@ const AuthenticatedRisksIndexRoute = AuthenticatedRisksIndexRouteImport.update({
   path: '/',
   getParentRoute: () => AuthenticatedRisksRoute,
 } as any)
+const AuthenticatedPoliciesIndexRoute =
+  AuthenticatedPoliciesIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => AuthenticatedPoliciesRoute,
+  } as any)
 const AuthenticatedPeopleIndexRoute =
   AuthenticatedPeopleIndexRouteImport.update({
     id: '/',
@@ -165,6 +179,12 @@ const AuthenticatedRisksRiskIdRoute =
     path: '/$riskId',
     getParentRoute: () => AuthenticatedRisksRoute,
   } as any)
+const AuthenticatedPoliciesPolicyIdRoute =
+  AuthenticatedPoliciesPolicyIdRouteImport.update({
+    id: '/$policyId',
+    path: '/$policyId',
+    getParentRoute: () => AuthenticatedPoliciesRoute,
+  } as any)
 const AuthenticatedPeoplePersonIdRoute =
   AuthenticatedPeoplePersonIdRouteImport.update({
     id: '/$personId',
@@ -197,6 +217,7 @@ export interface FileRoutesByFullPath {
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/incidents': typeof AuthenticatedIncidentsRouteWithChildren
   '/people': typeof AuthenticatedPeopleRouteWithChildren
+  '/policies': typeof AuthenticatedPoliciesRouteWithChildren
   '/risks': typeof AuthenticatedRisksRouteWithChildren
   '/slas': typeof AuthenticatedSlasRouteWithChildren
   '/systems': typeof AuthenticatedSystemsRouteWithChildren
@@ -206,6 +227,7 @@ export interface FileRoutesByFullPath {
   '/changes/$changeId': typeof AuthenticatedChangesChangeIdRoute
   '/incidents/$incidentId': typeof AuthenticatedIncidentsIncidentIdRoute
   '/people/$personId': typeof AuthenticatedPeoplePersonIdRoute
+  '/policies/$policyId': typeof AuthenticatedPoliciesPolicyIdRoute
   '/risks/$riskId': typeof AuthenticatedRisksRiskIdRoute
   '/slas/$slaId': typeof AuthenticatedSlasSlaIdRoute
   '/systems/$systemId': typeof AuthenticatedSystemsSystemIdRoute
@@ -213,6 +235,7 @@ export interface FileRoutesByFullPath {
   '/changes/': typeof AuthenticatedChangesIndexRoute
   '/incidents/': typeof AuthenticatedIncidentsIndexRoute
   '/people/': typeof AuthenticatedPeopleIndexRoute
+  '/policies/': typeof AuthenticatedPoliciesIndexRoute
   '/risks/': typeof AuthenticatedRisksIndexRoute
   '/slas/': typeof AuthenticatedSlasIndexRoute
   '/systems/': typeof AuthenticatedSystemsIndexRoute
@@ -228,6 +251,7 @@ export interface FileRoutesByTo {
   '/changes/$changeId': typeof AuthenticatedChangesChangeIdRoute
   '/incidents/$incidentId': typeof AuthenticatedIncidentsIncidentIdRoute
   '/people/$personId': typeof AuthenticatedPeoplePersonIdRoute
+  '/policies/$policyId': typeof AuthenticatedPoliciesPolicyIdRoute
   '/risks/$riskId': typeof AuthenticatedRisksRiskIdRoute
   '/slas/$slaId': typeof AuthenticatedSlasSlaIdRoute
   '/systems/$systemId': typeof AuthenticatedSystemsSystemIdRoute
@@ -235,6 +259,7 @@ export interface FileRoutesByTo {
   '/changes': typeof AuthenticatedChangesIndexRoute
   '/incidents': typeof AuthenticatedIncidentsIndexRoute
   '/people': typeof AuthenticatedPeopleIndexRoute
+  '/policies': typeof AuthenticatedPoliciesIndexRoute
   '/risks': typeof AuthenticatedRisksIndexRoute
   '/slas': typeof AuthenticatedSlasIndexRoute
   '/systems': typeof AuthenticatedSystemsIndexRoute
@@ -250,6 +275,7 @@ export interface FileRoutesById {
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
   '/_authenticated/incidents': typeof AuthenticatedIncidentsRouteWithChildren
   '/_authenticated/people': typeof AuthenticatedPeopleRouteWithChildren
+  '/_authenticated/policies': typeof AuthenticatedPoliciesRouteWithChildren
   '/_authenticated/risks': typeof AuthenticatedRisksRouteWithChildren
   '/_authenticated/slas': typeof AuthenticatedSlasRouteWithChildren
   '/_authenticated/systems': typeof AuthenticatedSystemsRouteWithChildren
@@ -259,6 +285,7 @@ export interface FileRoutesById {
   '/_authenticated/changes/$changeId': typeof AuthenticatedChangesChangeIdRoute
   '/_authenticated/incidents/$incidentId': typeof AuthenticatedIncidentsIncidentIdRoute
   '/_authenticated/people/$personId': typeof AuthenticatedPeoplePersonIdRoute
+  '/_authenticated/policies/$policyId': typeof AuthenticatedPoliciesPolicyIdRoute
   '/_authenticated/risks/$riskId': typeof AuthenticatedRisksRiskIdRoute
   '/_authenticated/slas/$slaId': typeof AuthenticatedSlasSlaIdRoute
   '/_authenticated/systems/$systemId': typeof AuthenticatedSystemsSystemIdRoute
@@ -266,6 +293,7 @@ export interface FileRoutesById {
   '/_authenticated/changes/': typeof AuthenticatedChangesIndexRoute
   '/_authenticated/incidents/': typeof AuthenticatedIncidentsIndexRoute
   '/_authenticated/people/': typeof AuthenticatedPeopleIndexRoute
+  '/_authenticated/policies/': typeof AuthenticatedPoliciesIndexRoute
   '/_authenticated/risks/': typeof AuthenticatedRisksIndexRoute
   '/_authenticated/slas/': typeof AuthenticatedSlasIndexRoute
   '/_authenticated/systems/': typeof AuthenticatedSystemsIndexRoute
@@ -281,6 +309,7 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/incidents'
     | '/people'
+    | '/policies'
     | '/risks'
     | '/slas'
     | '/systems'
@@ -290,6 +319,7 @@ export interface FileRouteTypes {
     | '/changes/$changeId'
     | '/incidents/$incidentId'
     | '/people/$personId'
+    | '/policies/$policyId'
     | '/risks/$riskId'
     | '/slas/$slaId'
     | '/systems/$systemId'
@@ -297,6 +327,7 @@ export interface FileRouteTypes {
     | '/changes/'
     | '/incidents/'
     | '/people/'
+    | '/policies/'
     | '/risks/'
     | '/slas/'
     | '/systems/'
@@ -312,6 +343,7 @@ export interface FileRouteTypes {
     | '/changes/$changeId'
     | '/incidents/$incidentId'
     | '/people/$personId'
+    | '/policies/$policyId'
     | '/risks/$riskId'
     | '/slas/$slaId'
     | '/systems/$systemId'
@@ -319,6 +351,7 @@ export interface FileRouteTypes {
     | '/changes'
     | '/incidents'
     | '/people'
+    | '/policies'
     | '/risks'
     | '/slas'
     | '/systems'
@@ -333,6 +366,7 @@ export interface FileRouteTypes {
     | '/_authenticated/dashboard'
     | '/_authenticated/incidents'
     | '/_authenticated/people'
+    | '/_authenticated/policies'
     | '/_authenticated/risks'
     | '/_authenticated/slas'
     | '/_authenticated/systems'
@@ -342,6 +376,7 @@ export interface FileRouteTypes {
     | '/_authenticated/changes/$changeId'
     | '/_authenticated/incidents/$incidentId'
     | '/_authenticated/people/$personId'
+    | '/_authenticated/policies/$policyId'
     | '/_authenticated/risks/$riskId'
     | '/_authenticated/slas/$slaId'
     | '/_authenticated/systems/$systemId'
@@ -349,6 +384,7 @@ export interface FileRouteTypes {
     | '/_authenticated/changes/'
     | '/_authenticated/incidents/'
     | '/_authenticated/people/'
+    | '/_authenticated/policies/'
     | '/_authenticated/risks/'
     | '/_authenticated/slas/'
     | '/_authenticated/systems/'
@@ -420,6 +456,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedRisksRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
+    '/_authenticated/policies': {
+      id: '/_authenticated/policies'
+      path: '/policies'
+      fullPath: '/policies'
+      preLoaderRoute: typeof AuthenticatedPoliciesRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
     '/_authenticated/people': {
       id: '/_authenticated/people'
       path: '/people'
@@ -483,6 +526,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedRisksIndexRouteImport
       parentRoute: typeof AuthenticatedRisksRoute
     }
+    '/_authenticated/policies/': {
+      id: '/_authenticated/policies/'
+      path: '/'
+      fullPath: '/policies/'
+      preLoaderRoute: typeof AuthenticatedPoliciesIndexRouteImport
+      parentRoute: typeof AuthenticatedPoliciesRoute
+    }
     '/_authenticated/people/': {
       id: '/_authenticated/people/'
       path: '/'
@@ -531,6 +581,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/risks/$riskId'
       preLoaderRoute: typeof AuthenticatedRisksRiskIdRouteImport
       parentRoute: typeof AuthenticatedRisksRoute
+    }
+    '/_authenticated/policies/$policyId': {
+      id: '/_authenticated/policies/$policyId'
+      path: '/$policyId'
+      fullPath: '/policies/$policyId'
+      preLoaderRoute: typeof AuthenticatedPoliciesPolicyIdRouteImport
+      parentRoute: typeof AuthenticatedPoliciesRoute
     }
     '/_authenticated/people/$personId': {
       id: '/_authenticated/people/$personId'
@@ -606,6 +663,21 @@ const AuthenticatedPeopleRouteChildren: AuthenticatedPeopleRouteChildren = {
 const AuthenticatedPeopleRouteWithChildren =
   AuthenticatedPeopleRoute._addFileChildren(AuthenticatedPeopleRouteChildren)
 
+interface AuthenticatedPoliciesRouteChildren {
+  AuthenticatedPoliciesPolicyIdRoute: typeof AuthenticatedPoliciesPolicyIdRoute
+  AuthenticatedPoliciesIndexRoute: typeof AuthenticatedPoliciesIndexRoute
+}
+
+const AuthenticatedPoliciesRouteChildren: AuthenticatedPoliciesRouteChildren = {
+  AuthenticatedPoliciesPolicyIdRoute: AuthenticatedPoliciesPolicyIdRoute,
+  AuthenticatedPoliciesIndexRoute: AuthenticatedPoliciesIndexRoute,
+}
+
+const AuthenticatedPoliciesRouteWithChildren =
+  AuthenticatedPoliciesRoute._addFileChildren(
+    AuthenticatedPoliciesRouteChildren,
+  )
+
 interface AuthenticatedRisksRouteChildren {
   AuthenticatedRisksRiskIdRoute: typeof AuthenticatedRisksRiskIdRoute
   AuthenticatedRisksIndexRoute: typeof AuthenticatedRisksIndexRoute
@@ -664,6 +736,7 @@ interface AuthenticatedRouteChildren {
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
   AuthenticatedIncidentsRoute: typeof AuthenticatedIncidentsRouteWithChildren
   AuthenticatedPeopleRoute: typeof AuthenticatedPeopleRouteWithChildren
+  AuthenticatedPoliciesRoute: typeof AuthenticatedPoliciesRouteWithChildren
   AuthenticatedRisksRoute: typeof AuthenticatedRisksRouteWithChildren
   AuthenticatedSlasRoute: typeof AuthenticatedSlasRouteWithChildren
   AuthenticatedSystemsRoute: typeof AuthenticatedSystemsRouteWithChildren
@@ -677,6 +750,7 @@ const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
   AuthenticatedIncidentsRoute: AuthenticatedIncidentsRouteWithChildren,
   AuthenticatedPeopleRoute: AuthenticatedPeopleRouteWithChildren,
+  AuthenticatedPoliciesRoute: AuthenticatedPoliciesRouteWithChildren,
   AuthenticatedRisksRoute: AuthenticatedRisksRouteWithChildren,
   AuthenticatedSlasRoute: AuthenticatedSlasRouteWithChildren,
   AuthenticatedSystemsRoute: AuthenticatedSystemsRouteWithChildren,
@@ -697,3 +771,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
