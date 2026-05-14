@@ -17,8 +17,11 @@ import {
 } from "@/components/ui/table";
 import { CategoryBadge, CriticalityBadge } from "@/components/systems/badges";
 import { SystemForm } from "@/components/systems/system-form";
+import { SystemSummary } from "@/components/systems/system-summary";
 import { PageShell, PageHeader } from "@/components/layout/page-shell";
 import { PageHeaderSkeleton, DetailFormSkeleton } from "@/components/layout/skeletons";
+import { EditToggle } from "@/components/layout/edit-toggle";
+import { detailSearchValidator } from "@/lib/detail-search";
 import { useCurrentRole } from "@/hooks/use-auth";
 import {
   archiveSystem,
@@ -27,16 +30,19 @@ import {
 } from "@/lib/systems.functions";
 
 export const Route = createFileRoute("/_authenticated/systems/$systemId")({
+  validateSearch: detailSearchValidator,
   component: SystemDetailPage,
 });
 
 function SystemDetailPage() {
   const { systemId } = Route.useParams();
+  const { edit } = Route.useSearch();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const { data: role } = useCurrentRole();
   const canEdit = role === "admin" || role === "editor";
   const isAdmin = role === "admin";
+  const editing = !!edit && canEdit;
 
   const get = useServerFn(getSystem);
   const audit = useServerFn(listSystemAudit);
@@ -63,6 +69,9 @@ function SystemDetailPage() {
     },
     onError: (err: any) => toast.error(String(err?.message ?? err)),
   });
+
+  const enterEdit = () => navigate({ to: ".", search: { edit: true } });
+  const exitEdit = () => navigate({ to: ".", search: { edit: undefined } });
 
   if (isLoading) {
     return (<PageShell><PageHeaderSkeleton /><DetailFormSkeleton /></PageShell>);
@@ -93,25 +102,35 @@ function SystemDetailPage() {
           </>
         }
         actions={
-          isAdmin && (
-            <Button
-              variant="outline"
-              onClick={() => archiveMut.mutate(!archived)}
-              disabled={archiveMut.isPending}
-            >
-              {archived ? (
-                <>
-                  <ArchiveRestore className="mr-2 h-4 w-4" />
-                  Unarchive
-                </>
-              ) : (
-                <>
-                  <Archive className="mr-2 h-4 w-4" />
-                  Archive
-                </>
-              )}
-            </Button>
-          )
+          <div className="flex items-center gap-2">
+            {canEdit && (
+              <EditToggle
+                editing={editing}
+                onEdit={enterEdit}
+                onCancel={exitEdit}
+              />
+            )}
+            {isAdmin && (
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => archiveMut.mutate(!archived)}
+                disabled={archiveMut.isPending}
+              >
+                {archived ? (
+                  <>
+                    <ArchiveRestore className="mr-2 h-4 w-4" />
+                    Unarchive
+                  </>
+                ) : (
+                  <>
+                    <Archive className="mr-2 h-4 w-4" />
+                    Archive
+                  </>
+                )}
+              </Button>
+            )}
+          </div>
         }
       />
 
@@ -121,11 +140,16 @@ function SystemDetailPage() {
           {canEdit && <TabsTrigger value="activity">Activity</TabsTrigger>}
         </TabsList>
         <TabsContent value="overview" className="mt-4 max-w-2xl">
-          <SystemForm
-            mode="edit"
-            system={system}
-            readOnly={!canEdit}
-          />
+          {editing ? (
+            <SystemForm
+              mode="edit"
+              system={system}
+              readOnly={false}
+              onSaved={() => exitEdit()}
+            />
+          ) : (
+            <SystemSummary system={system} />
+          )}
         </TabsContent>
         {canEdit && (
           <TabsContent value="activity" className="mt-4">

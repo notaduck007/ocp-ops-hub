@@ -22,21 +22,27 @@ import {
   StatusBadge,
 } from "@/components/risks/badges";
 import { RiskForm } from "@/components/risks/risk-form";
+import { RiskSummary } from "@/components/risks/risk-summary";
 import { PageShell, PageHeader } from "@/components/layout/page-shell";
 import { PageHeaderSkeleton, DetailFormSkeleton } from "@/components/layout/skeletons";
+import { EditToggle } from "@/components/layout/edit-toggle";
 import { RecordLink } from "@/components/record-link";
+import { detailSearchValidator } from "@/lib/detail-search";
 import { useCurrentRole } from "@/hooks/use-auth";
 import { getRisk, listRiskAudit } from "@/lib/risks.functions";
 
 export const Route = createFileRoute("/_authenticated/risks/$riskId")({
+  validateSearch: detailSearchValidator,
   component: RiskDetailPage,
 });
 
 function RiskDetailPage() {
   const { riskId } = Route.useParams();
+  const { edit } = Route.useSearch();
   const navigate = useNavigate();
   const { data: role } = useCurrentRole();
   const canEdit = role === "admin" || role === "editor";
+  const editing = !!edit && canEdit;
 
   const get = useServerFn(getRisk);
   const audit = useServerFn(listRiskAudit);
@@ -51,6 +57,9 @@ function RiskDetailPage() {
     queryFn: () => audit({ data: { riskId } }),
     enabled: canEdit,
   });
+
+  const enterEdit = () => navigate({ to: ".", search: { edit: true } });
+  const exitEdit = () => navigate({ to: ".", search: { edit: undefined } });
 
   if (isLoading) return (<PageShell><PageHeaderSkeleton /><DetailFormSkeleton /></PageShell>);
   if (!risk) {
@@ -83,6 +92,11 @@ function RiskDetailPage() {
             {risk.archived_at && <Badge variant="outline">Archived</Badge>}
           </>
         }
+        actions={
+          canEdit && (
+            <EditToggle editing={editing} onEdit={enterEdit} onCancel={exitEdit} />
+          )
+        }
       />
 
       <Tabs defaultValue="overview">
@@ -95,7 +109,11 @@ function RiskDetailPage() {
         </TabsList>
 
         <TabsContent value="overview" className="mt-4 max-w-2xl">
-          <RiskForm mode="edit" risk={risk} readOnly={!canEdit} />
+          {editing ? (
+            <RiskForm mode="edit" risk={risk} readOnly={false} onSaved={() => exitEdit()} />
+          ) : (
+            <RiskSummary risk={risk} />
+          )}
         </TabsContent>
 
         <TabsContent value="links" className="mt-4 max-w-2xl">
