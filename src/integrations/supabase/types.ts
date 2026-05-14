@@ -675,11 +675,102 @@ export type Database = {
       }
     }
     Views: {
+      v_dr_readiness: {
+        Row: {
+          critical_systems: number | null
+          readiness_pct: number | null
+          tested_last_12mo: number | null
+        }
+        Relationships: []
+      }
+      v_incidents_this_quarter: {
+        Row: {
+          count: number | null
+          id: string | null
+          severity: string | null
+        }
+        Relationships: []
+      }
       v_mfa_coverage: {
         Row: {
           covered_count: number | null
           eligible_count: number | null
           mfa_coverage_pct: number | null
+        }
+        Relationships: []
+      }
+      v_open_critical_risks: {
+        Row: {
+          id: string | null
+          likelihood: number | null
+          owner_id: string | null
+          score: number | null
+          severity: number | null
+          status: Database["public"]["Enums"]["risk_status"] | null
+          system_id: string | null
+          title: string | null
+          vendor_id: string | null
+        }
+        Insert: {
+          id?: string | null
+          likelihood?: number | null
+          owner_id?: string | null
+          score?: number | null
+          severity?: number | null
+          status?: Database["public"]["Enums"]["risk_status"] | null
+          system_id?: string | null
+          title?: string | null
+          vendor_id?: string | null
+        }
+        Update: {
+          id?: string | null
+          likelihood?: number | null
+          owner_id?: string | null
+          score?: number | null
+          severity?: number | null
+          status?: Database["public"]["Enums"]["risk_status"] | null
+          system_id?: string | null
+          title?: string | null
+          vendor_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "risks_owner_id_fkey"
+            columns: ["owner_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "risks_system_id_fkey"
+            columns: ["system_id"]
+            isOneToOne: false
+            referencedRelation: "systems"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "risks_vendor_id_fkey"
+            columns: ["vendor_id"]
+            isOneToOne: false
+            referencedRelation: "v_vendor_health"
+            referencedColumns: ["vendor_id"]
+          },
+          {
+            foreignKeyName: "risks_vendor_id_fkey"
+            columns: ["vendor_id"]
+            isOneToOne: false
+            referencedRelation: "vendors"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      v_overdue_reviews: {
+        Row: {
+          due_at: string | null
+          id: string | null
+          kind: string | null
+          label: string | null
+          owner_id: string | null
         }
         Relationships: []
       }
