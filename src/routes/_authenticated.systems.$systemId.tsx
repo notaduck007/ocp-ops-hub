@@ -181,6 +181,6 @@ function SystemDetailPage() {
           </TabsContent>
         )}
       </Tabs>
-    </div>
+    </PageShell>
   );
 }
