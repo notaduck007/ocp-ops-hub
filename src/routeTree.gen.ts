@@ -19,6 +19,7 @@ import { Route as AuthenticatedSlasRouteImport } from './routes/_authenticated.s
 import { Route as AuthenticatedRunbooksRouteImport } from './routes/_authenticated.runbooks'
 import { Route as AuthenticatedRisksRouteImport } from './routes/_authenticated.risks'
 import { Route as AuthenticatedReviewsRouteImport } from './routes/_authenticated.reviews'
+import { Route as AuthenticatedReportsRouteImport } from './routes/_authenticated.reports'
 import { Route as AuthenticatedPoliciesRouteImport } from './routes/_authenticated.policies'
 import { Route as AuthenticatedPeopleRouteImport } from './routes/_authenticated.people'
 import { Route as AuthenticatedIncidentsRouteImport } from './routes/_authenticated.incidents'
@@ -33,6 +34,7 @@ import { Route as AuthenticatedSlasIndexRouteImport } from './routes/_authentica
 import { Route as AuthenticatedRunbooksIndexRouteImport } from './routes/_authenticated.runbooks.index'
 import { Route as AuthenticatedRisksIndexRouteImport } from './routes/_authenticated.risks.index'
 import { Route as AuthenticatedReviewsIndexRouteImport } from './routes/_authenticated.reviews.index'
+import { Route as AuthenticatedReportsIndexRouteImport } from './routes/_authenticated.reports.index'
 import { Route as AuthenticatedPoliciesIndexRouteImport } from './routes/_authenticated.policies.index'
 import { Route as AuthenticatedPeopleIndexRouteImport } from './routes/_authenticated.people.index'
 import { Route as AuthenticatedIncidentsIndexRouteImport } from './routes/_authenticated.incidents.index'
@@ -45,6 +47,7 @@ import { Route as AuthenticatedRunbooksRunbookIdRouteImport } from './routes/_au
 import { Route as AuthenticatedRisksRiskIdRouteImport } from './routes/_authenticated.risks.$riskId'
 import { Route as AuthenticatedReviewsNewRouteImport } from './routes/_authenticated.reviews.new'
 import { Route as AuthenticatedReviewsCampaignIdRouteImport } from './routes/_authenticated.reviews.$campaignId'
+import { Route as AuthenticatedReportsReportIdRouteImport } from './routes/_authenticated.reports.$reportId'
 import { Route as AuthenticatedPoliciesPolicyIdRouteImport } from './routes/_authenticated.policies.$policyId'
 import { Route as AuthenticatedPeoplePersonIdRouteImport } from './routes/_authenticated.people.$personId'
 import { Route as AuthenticatedIncidentsIncidentIdRouteImport } from './routes/_authenticated.incidents.$incidentId'
@@ -101,6 +104,11 @@ const AuthenticatedRisksRoute = AuthenticatedRisksRouteImport.update({
 const AuthenticatedReviewsRoute = AuthenticatedReviewsRouteImport.update({
   id: '/reviews',
   path: '/reviews',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
+const AuthenticatedReportsRoute = AuthenticatedReportsRouteImport.update({
+  id: '/reports',
+  path: '/reports',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
 const AuthenticatedPoliciesRoute = AuthenticatedPoliciesRouteImport.update({
@@ -177,6 +185,12 @@ const AuthenticatedReviewsIndexRoute =
     path: '/',
     getParentRoute: () => AuthenticatedReviewsRoute,
   } as any)
+const AuthenticatedReportsIndexRoute =
+  AuthenticatedReportsIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => AuthenticatedReportsRoute,
+  } as any)
 const AuthenticatedPoliciesIndexRoute =
   AuthenticatedPoliciesIndexRouteImport.update({
     id: '/',
@@ -247,6 +261,12 @@ const AuthenticatedReviewsCampaignIdRoute =
     path: '/$campaignId',
     getParentRoute: () => AuthenticatedReviewsRoute,
   } as any)
+const AuthenticatedReportsReportIdRoute =
+  AuthenticatedReportsReportIdRouteImport.update({
+    id: '/$reportId',
+    path: '/$reportId',
+    getParentRoute: () => AuthenticatedReportsRoute,
+  } as any)
 const AuthenticatedPoliciesPolicyIdRoute =
   AuthenticatedPoliciesPolicyIdRouteImport.update({
     id: '/$policyId',
@@ -305,6 +325,7 @@ export interface FileRoutesByFullPath {
   '/incidents': typeof AuthenticatedIncidentsRouteWithChildren
   '/people': typeof AuthenticatedPeopleRouteWithChildren
   '/policies': typeof AuthenticatedPoliciesRouteWithChildren
+  '/reports': typeof AuthenticatedReportsRouteWithChildren
   '/reviews': typeof AuthenticatedReviewsRouteWithChildren
   '/risks': typeof AuthenticatedRisksRouteWithChildren
   '/runbooks': typeof AuthenticatedRunbooksRouteWithChildren
@@ -319,6 +340,7 @@ export interface FileRoutesByFullPath {
   '/incidents/$incidentId': typeof AuthenticatedIncidentsIncidentIdRoute
   '/people/$personId': typeof AuthenticatedPeoplePersonIdRoute
   '/policies/$policyId': typeof AuthenticatedPoliciesPolicyIdRoute
+  '/reports/$reportId': typeof AuthenticatedReportsReportIdRoute
   '/reviews/$campaignId': typeof AuthenticatedReviewsCampaignIdRoute
   '/reviews/new': typeof AuthenticatedReviewsNewRoute
   '/risks/$riskId': typeof AuthenticatedRisksRiskIdRoute
@@ -331,6 +353,7 @@ export interface FileRoutesByFullPath {
   '/incidents/': typeof AuthenticatedIncidentsIndexRoute
   '/people/': typeof AuthenticatedPeopleIndexRoute
   '/policies/': typeof AuthenticatedPoliciesIndexRoute
+  '/reports/': typeof AuthenticatedReportsIndexRoute
   '/reviews/': typeof AuthenticatedReviewsIndexRoute
   '/risks/': typeof AuthenticatedRisksIndexRoute
   '/runbooks/': typeof AuthenticatedRunbooksIndexRoute
@@ -353,6 +376,7 @@ export interface FileRoutesByTo {
   '/incidents/$incidentId': typeof AuthenticatedIncidentsIncidentIdRoute
   '/people/$personId': typeof AuthenticatedPeoplePersonIdRoute
   '/policies/$policyId': typeof AuthenticatedPoliciesPolicyIdRoute
+  '/reports/$reportId': typeof AuthenticatedReportsReportIdRoute
   '/reviews/$campaignId': typeof AuthenticatedReviewsCampaignIdRoute
   '/reviews/new': typeof AuthenticatedReviewsNewRoute
   '/risks/$riskId': typeof AuthenticatedRisksRiskIdRoute
@@ -365,6 +389,7 @@ export interface FileRoutesByTo {
   '/incidents': typeof AuthenticatedIncidentsIndexRoute
   '/people': typeof AuthenticatedPeopleIndexRoute
   '/policies': typeof AuthenticatedPoliciesIndexRoute
+  '/reports': typeof AuthenticatedReportsIndexRoute
   '/reviews': typeof AuthenticatedReviewsIndexRoute
   '/risks': typeof AuthenticatedRisksIndexRoute
   '/runbooks': typeof AuthenticatedRunbooksIndexRoute
@@ -386,6 +411,7 @@ export interface FileRoutesById {
   '/_authenticated/incidents': typeof AuthenticatedIncidentsRouteWithChildren
   '/_authenticated/people': typeof AuthenticatedPeopleRouteWithChildren
   '/_authenticated/policies': typeof AuthenticatedPoliciesRouteWithChildren
+  '/_authenticated/reports': typeof AuthenticatedReportsRouteWithChildren
   '/_authenticated/reviews': typeof AuthenticatedReviewsRouteWithChildren
   '/_authenticated/risks': typeof AuthenticatedRisksRouteWithChildren
   '/_authenticated/runbooks': typeof AuthenticatedRunbooksRouteWithChildren
@@ -400,6 +426,7 @@ export interface FileRoutesById {
   '/_authenticated/incidents/$incidentId': typeof AuthenticatedIncidentsIncidentIdRoute
   '/_authenticated/people/$personId': typeof AuthenticatedPeoplePersonIdRoute
   '/_authenticated/policies/$policyId': typeof AuthenticatedPoliciesPolicyIdRoute
+  '/_authenticated/reports/$reportId': typeof AuthenticatedReportsReportIdRoute
   '/_authenticated/reviews/$campaignId': typeof AuthenticatedReviewsCampaignIdRoute
   '/_authenticated/reviews/new': typeof AuthenticatedReviewsNewRoute
   '/_authenticated/risks/$riskId': typeof AuthenticatedRisksRiskIdRoute
@@ -412,6 +439,7 @@ export interface FileRoutesById {
   '/_authenticated/incidents/': typeof AuthenticatedIncidentsIndexRoute
   '/_authenticated/people/': typeof AuthenticatedPeopleIndexRoute
   '/_authenticated/policies/': typeof AuthenticatedPoliciesIndexRoute
+  '/_authenticated/reports/': typeof AuthenticatedReportsIndexRoute
   '/_authenticated/reviews/': typeof AuthenticatedReviewsIndexRoute
   '/_authenticated/risks/': typeof AuthenticatedRisksIndexRoute
   '/_authenticated/runbooks/': typeof AuthenticatedRunbooksIndexRoute
@@ -433,6 +461,7 @@ export interface FileRouteTypes {
     | '/incidents'
     | '/people'
     | '/policies'
+    | '/reports'
     | '/reviews'
     | '/risks'
     | '/runbooks'
@@ -447,6 +476,7 @@ export interface FileRouteTypes {
     | '/incidents/$incidentId'
     | '/people/$personId'
     | '/policies/$policyId'
+    | '/reports/$reportId'
     | '/reviews/$campaignId'
     | '/reviews/new'
     | '/risks/$riskId'
@@ -459,6 +489,7 @@ export interface FileRouteTypes {
     | '/incidents/'
     | '/people/'
     | '/policies/'
+    | '/reports/'
     | '/reviews/'
     | '/risks/'
     | '/runbooks/'
@@ -481,6 +512,7 @@ export interface FileRouteTypes {
     | '/incidents/$incidentId'
     | '/people/$personId'
     | '/policies/$policyId'
+    | '/reports/$reportId'
     | '/reviews/$campaignId'
     | '/reviews/new'
     | '/risks/$riskId'
@@ -493,6 +525,7 @@ export interface FileRouteTypes {
     | '/incidents'
     | '/people'
     | '/policies'
+    | '/reports'
     | '/reviews'
     | '/risks'
     | '/runbooks'
@@ -513,6 +546,7 @@ export interface FileRouteTypes {
     | '/_authenticated/incidents'
     | '/_authenticated/people'
     | '/_authenticated/policies'
+    | '/_authenticated/reports'
     | '/_authenticated/reviews'
     | '/_authenticated/risks'
     | '/_authenticated/runbooks'
@@ -527,6 +561,7 @@ export interface FileRouteTypes {
     | '/_authenticated/incidents/$incidentId'
     | '/_authenticated/people/$personId'
     | '/_authenticated/policies/$policyId'
+    | '/_authenticated/reports/$reportId'
     | '/_authenticated/reviews/$campaignId'
     | '/_authenticated/reviews/new'
     | '/_authenticated/risks/$riskId'
@@ -539,6 +574,7 @@ export interface FileRouteTypes {
     | '/_authenticated/incidents/'
     | '/_authenticated/people/'
     | '/_authenticated/policies/'
+    | '/_authenticated/reports/'
     | '/_authenticated/reviews/'
     | '/_authenticated/risks/'
     | '/_authenticated/runbooks/'
@@ -626,6 +662,13 @@ declare module '@tanstack/react-router' {
       path: '/reviews'
       fullPath: '/reviews'
       preLoaderRoute: typeof AuthenticatedReviewsRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/reports': {
+      id: '/_authenticated/reports'
+      path: '/reports'
+      fullPath: '/reports'
+      preLoaderRoute: typeof AuthenticatedReportsRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
     '/_authenticated/policies': {
@@ -726,6 +769,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedReviewsIndexRouteImport
       parentRoute: typeof AuthenticatedReviewsRoute
     }
+    '/_authenticated/reports/': {
+      id: '/_authenticated/reports/'
+      path: '/'
+      fullPath: '/reports/'
+      preLoaderRoute: typeof AuthenticatedReportsIndexRouteImport
+      parentRoute: typeof AuthenticatedReportsRoute
+    }
     '/_authenticated/policies/': {
       id: '/_authenticated/policies/'
       path: '/'
@@ -809,6 +859,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/reviews/$campaignId'
       preLoaderRoute: typeof AuthenticatedReviewsCampaignIdRouteImport
       parentRoute: typeof AuthenticatedReviewsRoute
+    }
+    '/_authenticated/reports/$reportId': {
+      id: '/_authenticated/reports/$reportId'
+      path: '/$reportId'
+      fullPath: '/reports/$reportId'
+      preLoaderRoute: typeof AuthenticatedReportsReportIdRouteImport
+      parentRoute: typeof AuthenticatedReportsRoute
     }
     '/_authenticated/policies/$policyId': {
       id: '/_authenticated/policies/$policyId'
@@ -944,6 +1001,19 @@ const AuthenticatedPoliciesRouteWithChildren =
     AuthenticatedPoliciesRouteChildren,
   )
 
+interface AuthenticatedReportsRouteChildren {
+  AuthenticatedReportsReportIdRoute: typeof AuthenticatedReportsReportIdRoute
+  AuthenticatedReportsIndexRoute: typeof AuthenticatedReportsIndexRoute
+}
+
+const AuthenticatedReportsRouteChildren: AuthenticatedReportsRouteChildren = {
+  AuthenticatedReportsReportIdRoute: AuthenticatedReportsReportIdRoute,
+  AuthenticatedReportsIndexRoute: AuthenticatedReportsIndexRoute,
+}
+
+const AuthenticatedReportsRouteWithChildren =
+  AuthenticatedReportsRoute._addFileChildren(AuthenticatedReportsRouteChildren)
+
 interface AuthenticatedReviewsRouteChildren {
   AuthenticatedReviewsCampaignIdRoute: typeof AuthenticatedReviewsCampaignIdRoute
   AuthenticatedReviewsNewRoute: typeof AuthenticatedReviewsNewRoute
@@ -1035,6 +1105,7 @@ interface AuthenticatedRouteChildren {
   AuthenticatedIncidentsRoute: typeof AuthenticatedIncidentsRouteWithChildren
   AuthenticatedPeopleRoute: typeof AuthenticatedPeopleRouteWithChildren
   AuthenticatedPoliciesRoute: typeof AuthenticatedPoliciesRouteWithChildren
+  AuthenticatedReportsRoute: typeof AuthenticatedReportsRouteWithChildren
   AuthenticatedReviewsRoute: typeof AuthenticatedReviewsRouteWithChildren
   AuthenticatedRisksRoute: typeof AuthenticatedRisksRouteWithChildren
   AuthenticatedRunbooksRoute: typeof AuthenticatedRunbooksRouteWithChildren
@@ -1054,6 +1125,7 @@ const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedIncidentsRoute: AuthenticatedIncidentsRouteWithChildren,
   AuthenticatedPeopleRoute: AuthenticatedPeopleRouteWithChildren,
   AuthenticatedPoliciesRoute: AuthenticatedPoliciesRouteWithChildren,
+  AuthenticatedReportsRoute: AuthenticatedReportsRouteWithChildren,
   AuthenticatedReviewsRoute: AuthenticatedReviewsRouteWithChildren,
   AuthenticatedRisksRoute: AuthenticatedRisksRouteWithChildren,
   AuthenticatedRunbooksRoute: AuthenticatedRunbooksRouteWithChildren,

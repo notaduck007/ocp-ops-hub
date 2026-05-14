@@ -1,7 +1,8 @@
-import { type ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import { Link, useRouterState } from "@tanstack/react-router";
-import { LayoutDashboard, Users, Search, Server, UserCircle, KeyRound, Building2, FileCheck2, ShieldAlert, AlertOctagon, GitPullRequestArrow, BookText, ClipboardCheck, BookOpenCheck, LifeBuoy, FileText, ScrollText } from "lucide-react";
+import { LayoutDashboard, Users, Search, Server, UserCircle, KeyRound, Building2, FileCheck2, ShieldAlert, AlertOctagon, GitPullRequestArrow, BookText, ClipboardCheck, BookOpenCheck, LifeBuoy, FileText, ScrollText, BarChart3, PanelLeftClose, PanelLeftOpen } from "lucide-react";
 import { NotificationBell } from "@/components/notifications/notification-bell";
+import { CommandPalette } from "@/components/command-palette";
 
 import { cn } from "@/lib/utils";
 import { Input } from "@/components/ui/input";
@@ -67,6 +68,10 @@ const NAV_GROUPS: NavGroup[] = [
     ],
   },
   {
+    label: "Insights",
+    items: [{ to: "/reports", label: "Reports", icon: BarChart3 }],
+  },
+  {
     label: "Admin",
     items: [
       { to: "/admin/users", label: "Users", icon: Users, adminOnly: true },
@@ -75,14 +80,35 @@ const NAV_GROUPS: NavGroup[] = [
   },
 ];
 
-function Sidebar() {
+const SIDEBAR_KEY = "ocp.sidebar.collapsed";
+
+function useSidebarCollapsed(): [boolean, (v: boolean) => void] {
+  const [collapsed, setCollapsed] = useState(false);
+  useEffect(() => {
+    try {
+      setCollapsed(localStorage.getItem(SIDEBAR_KEY) === "1");
+    } catch {}
+  }, []);
+  const update = (v: boolean) => {
+    setCollapsed(v);
+    try {
+      localStorage.setItem(SIDEBAR_KEY, v ? "1" : "0");
+    } catch {}
+  };
+  return [collapsed, update];
+}
+
+function Sidebar({ collapsed, onToggle }: { collapsed: boolean; onToggle: () => void }) {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   const { data: role } = useCurrentRole();
 
   return (
-    <aside className="hidden w-60 shrink-0 flex-col border-r bg-card md:flex">
-      <div className="flex h-14 items-center border-b px-4">
-        <span className="text-sm font-semibold tracking-tight">OCP IT Hub</span>
+    <aside className={cn("hidden shrink-0 flex-col border-r bg-card md:flex", collapsed ? "w-14" : "w-60")}>
+      <div className="flex h-14 items-center justify-between gap-2 border-b px-3">
+        {!collapsed && <span className="text-sm font-semibold tracking-tight">OCP IT Hub</span>}
+        <Button variant="ghost" size="icon" className="h-8 w-8" onClick={onToggle} aria-label="Toggle sidebar">
+          {collapsed ? <PanelLeftOpen className="h-4 w-4" /> : <PanelLeftClose className="h-4 w-4" />}
+        </Button>
       </div>
       <nav className="flex-1 space-y-4 p-2">
         {NAV_GROUPS.map((group, gi) => {
@@ -90,7 +116,7 @@ function Sidebar() {
           if (items.length === 0) return null;
           return (
             <div key={gi} className="space-y-1">
-              {group.label && (
+              {group.label && !collapsed && (
                 <div className="px-3 pb-1 text-xs font-medium uppercase tracking-wide text-muted-foreground/70">
                   {group.label}
                 </div>
@@ -102,15 +128,17 @@ function Sidebar() {
                   <Link
                     key={item.to}
                     to={item.to}
+                    title={collapsed ? item.label : undefined}
                     className={cn(
                       "flex items-center gap-2 rounded-md px-3 py-2 text-sm transition-colors",
+                      collapsed && "justify-center px-2",
                       active
                         ? "bg-accent text-accent-foreground font-medium"
                         : "text-muted-foreground hover:bg-accent/50 hover:text-foreground",
                     )}
                   >
                     <Icon className="h-4 w-4" />
-                    {item.label}
+                    {!collapsed && item.label}
                   </Link>
                 );
               })}
@@ -202,13 +230,15 @@ function TopBar() {
 }
 
 export function AppLayout({ children }: { children: ReactNode }) {
+  const [collapsed, setCollapsed] = useSidebarCollapsed();
   return (
     <div className="flex min-h-screen w-full bg-muted/20">
-      <Sidebar />
+      <Sidebar collapsed={collapsed} onToggle={() => setCollapsed(!collapsed)} />
       <div className="flex min-w-0 flex-1 flex-col">
         <TopBar />
-        <main className="flex-1 overflow-auto p-6">{children}</main>
+        <main className="flex-1 overflow-auto p-4 md:p-6">{children}</main>
       </div>
+      <CommandPalette />
     </div>
   );
 }
