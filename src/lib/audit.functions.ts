@@ -34,7 +34,23 @@ export const listAudit = createServerFn({ method: "POST" })
       start + data.pageSize - 1,
     );
     if (error) throw new Error(error.message);
-    return { rows: rows ?? [], total: count ?? 0 };
+
+    const actorIds = Array.from(
+      new Set((rows ?? []).map((r) => r.actor_id).filter(Boolean) as string[]),
+    );
+    let actorMap = new Map<string, { id: string; email: string; full_name: string | null }>();
+    if (actorIds.length > 0) {
+      const { data: users } = await supabase
+        .from("users")
+        .select("id,email,full_name")
+        .in("id", actorIds);
+      actorMap = new Map((users ?? []).map((u) => [u.id, u]));
+    }
+    const enriched = (rows ?? []).map((r) => ({
+      ...r,
+      actor: r.actor_id ? actorMap.get(r.actor_id) ?? null : null,
+    }));
+    return { rows: enriched, total: count ?? 0 };
   });
 
 export const listAuditFilters = createServerFn({ method: "GET" })
