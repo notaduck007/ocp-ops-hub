@@ -65,7 +65,7 @@ function SlaDetailPage() {
     queryKey: ["breaches", { slaId }], queryFn: () => lBreaches({ data: { slaId } }),
   });
   const { data: auditRows = [] } = useQuery({
-    queryKey: ["sla-audit", slaId], queryFn: () => audit({ data: { slaId } }), enabled: canEdit,
+    queryKey: ["sla-audit", slaId], queryFn: () => audit({ data: { slaId } }),
   });
 
   const breachMut = useMutation({
