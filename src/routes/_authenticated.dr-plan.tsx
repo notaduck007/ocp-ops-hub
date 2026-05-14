@@ -55,7 +55,7 @@ function DrPlanPage() {
           <div className="text-xs uppercase tracking-wide text-muted-foreground">
             Disaster Recovery Plan
           </div>
-          <h1 className="text-3xl font-semibold tracking-tight">OCP — DR Plan</h1>
+          <h1 className="text-2xl font-semibold tracking-tight">OCP — DR Plan</h1>
           <p className="text-sm text-muted-foreground">
             Generated {format(new Date(data.generated_at), "PPP p")}
           </p>
