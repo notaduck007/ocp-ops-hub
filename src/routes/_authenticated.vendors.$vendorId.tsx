@@ -265,6 +265,6 @@ function VendorDetailPage() {
           </div>
         </TabsContent>
       </Tabs>
-    </div>
+    </PageShell>
   );
 }
