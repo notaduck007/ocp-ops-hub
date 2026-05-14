@@ -17,6 +17,7 @@ import { Route as AuthenticatedVendorsRouteImport } from './routes/_authenticate
 import { Route as AuthenticatedSystemsRouteImport } from './routes/_authenticated.systems'
 import { Route as AuthenticatedSlasRouteImport } from './routes/_authenticated.slas'
 import { Route as AuthenticatedRisksRouteImport } from './routes/_authenticated.risks'
+import { Route as AuthenticatedReviewsRouteImport } from './routes/_authenticated.reviews'
 import { Route as AuthenticatedPoliciesRouteImport } from './routes/_authenticated.policies'
 import { Route as AuthenticatedPeopleRouteImport } from './routes/_authenticated.people'
 import { Route as AuthenticatedIncidentsRouteImport } from './routes/_authenticated.incidents'
@@ -27,6 +28,7 @@ import { Route as AuthenticatedVendorsIndexRouteImport } from './routes/_authent
 import { Route as AuthenticatedSystemsIndexRouteImport } from './routes/_authenticated.systems.index'
 import { Route as AuthenticatedSlasIndexRouteImport } from './routes/_authenticated.slas.index'
 import { Route as AuthenticatedRisksIndexRouteImport } from './routes/_authenticated.risks.index'
+import { Route as AuthenticatedReviewsIndexRouteImport } from './routes/_authenticated.reviews.index'
 import { Route as AuthenticatedPoliciesIndexRouteImport } from './routes/_authenticated.policies.index'
 import { Route as AuthenticatedPeopleIndexRouteImport } from './routes/_authenticated.people.index'
 import { Route as AuthenticatedIncidentsIndexRouteImport } from './routes/_authenticated.incidents.index'
@@ -35,11 +37,14 @@ import { Route as AuthenticatedVendorsVendorIdRouteImport } from './routes/_auth
 import { Route as AuthenticatedSystemsSystemIdRouteImport } from './routes/_authenticated.systems.$systemId'
 import { Route as AuthenticatedSlasSlaIdRouteImport } from './routes/_authenticated.slas.$slaId'
 import { Route as AuthenticatedRisksRiskIdRouteImport } from './routes/_authenticated.risks.$riskId'
+import { Route as AuthenticatedReviewsNewRouteImport } from './routes/_authenticated.reviews.new'
+import { Route as AuthenticatedReviewsCampaignIdRouteImport } from './routes/_authenticated.reviews.$campaignId'
 import { Route as AuthenticatedPoliciesPolicyIdRouteImport } from './routes/_authenticated.policies.$policyId'
 import { Route as AuthenticatedPeoplePersonIdRouteImport } from './routes/_authenticated.people.$personId'
 import { Route as AuthenticatedIncidentsIncidentIdRouteImport } from './routes/_authenticated.incidents.$incidentId'
 import { Route as AuthenticatedChangesChangeIdRouteImport } from './routes/_authenticated.changes.$changeId'
 import { Route as AuthenticatedAdminUsersRouteImport } from './routes/_authenticated.admin.users'
+import { Route as ApiPublicHooksCadenceTickRouteImport } from './routes/api/public/hooks/cadence-tick'
 
 const LoginRoute = LoginRouteImport.update({
   id: '/login',
@@ -78,6 +83,11 @@ const AuthenticatedSlasRoute = AuthenticatedSlasRouteImport.update({
 const AuthenticatedRisksRoute = AuthenticatedRisksRouteImport.update({
   id: '/risks',
   path: '/risks',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
+const AuthenticatedReviewsRoute = AuthenticatedReviewsRouteImport.update({
+  id: '/reviews',
+  path: '/reviews',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
 const AuthenticatedPoliciesRoute = AuthenticatedPoliciesRouteImport.update({
@@ -132,6 +142,12 @@ const AuthenticatedRisksIndexRoute = AuthenticatedRisksIndexRouteImport.update({
   path: '/',
   getParentRoute: () => AuthenticatedRisksRoute,
 } as any)
+const AuthenticatedReviewsIndexRoute =
+  AuthenticatedReviewsIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => AuthenticatedReviewsRoute,
+  } as any)
 const AuthenticatedPoliciesIndexRoute =
   AuthenticatedPoliciesIndexRouteImport.update({
     id: '/',
@@ -179,6 +195,17 @@ const AuthenticatedRisksRiskIdRoute =
     path: '/$riskId',
     getParentRoute: () => AuthenticatedRisksRoute,
   } as any)
+const AuthenticatedReviewsNewRoute = AuthenticatedReviewsNewRouteImport.update({
+  id: '/new',
+  path: '/new',
+  getParentRoute: () => AuthenticatedReviewsRoute,
+} as any)
+const AuthenticatedReviewsCampaignIdRoute =
+  AuthenticatedReviewsCampaignIdRouteImport.update({
+    id: '/$campaignId',
+    path: '/$campaignId',
+    getParentRoute: () => AuthenticatedReviewsRoute,
+  } as any)
 const AuthenticatedPoliciesPolicyIdRoute =
   AuthenticatedPoliciesPolicyIdRouteImport.update({
     id: '/$policyId',
@@ -208,6 +235,12 @@ const AuthenticatedAdminUsersRoute = AuthenticatedAdminUsersRouteImport.update({
   path: '/admin/users',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
+const ApiPublicHooksCadenceTickRoute =
+  ApiPublicHooksCadenceTickRouteImport.update({
+    id: '/api/public/hooks/cadence-tick',
+    path: '/api/public/hooks/cadence-tick',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -218,6 +251,7 @@ export interface FileRoutesByFullPath {
   '/incidents': typeof AuthenticatedIncidentsRouteWithChildren
   '/people': typeof AuthenticatedPeopleRouteWithChildren
   '/policies': typeof AuthenticatedPoliciesRouteWithChildren
+  '/reviews': typeof AuthenticatedReviewsRouteWithChildren
   '/risks': typeof AuthenticatedRisksRouteWithChildren
   '/slas': typeof AuthenticatedSlasRouteWithChildren
   '/systems': typeof AuthenticatedSystemsRouteWithChildren
@@ -228,6 +262,8 @@ export interface FileRoutesByFullPath {
   '/incidents/$incidentId': typeof AuthenticatedIncidentsIncidentIdRoute
   '/people/$personId': typeof AuthenticatedPeoplePersonIdRoute
   '/policies/$policyId': typeof AuthenticatedPoliciesPolicyIdRoute
+  '/reviews/$campaignId': typeof AuthenticatedReviewsCampaignIdRoute
+  '/reviews/new': typeof AuthenticatedReviewsNewRoute
   '/risks/$riskId': typeof AuthenticatedRisksRiskIdRoute
   '/slas/$slaId': typeof AuthenticatedSlasSlaIdRoute
   '/systems/$systemId': typeof AuthenticatedSystemsSystemIdRoute
@@ -236,10 +272,12 @@ export interface FileRoutesByFullPath {
   '/incidents/': typeof AuthenticatedIncidentsIndexRoute
   '/people/': typeof AuthenticatedPeopleIndexRoute
   '/policies/': typeof AuthenticatedPoliciesIndexRoute
+  '/reviews/': typeof AuthenticatedReviewsIndexRoute
   '/risks/': typeof AuthenticatedRisksIndexRoute
   '/slas/': typeof AuthenticatedSlasIndexRoute
   '/systems/': typeof AuthenticatedSystemsIndexRoute
   '/vendors/': typeof AuthenticatedVendorsIndexRoute
+  '/api/public/hooks/cadence-tick': typeof ApiPublicHooksCadenceTickRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -252,6 +290,8 @@ export interface FileRoutesByTo {
   '/incidents/$incidentId': typeof AuthenticatedIncidentsIncidentIdRoute
   '/people/$personId': typeof AuthenticatedPeoplePersonIdRoute
   '/policies/$policyId': typeof AuthenticatedPoliciesPolicyIdRoute
+  '/reviews/$campaignId': typeof AuthenticatedReviewsCampaignIdRoute
+  '/reviews/new': typeof AuthenticatedReviewsNewRoute
   '/risks/$riskId': typeof AuthenticatedRisksRiskIdRoute
   '/slas/$slaId': typeof AuthenticatedSlasSlaIdRoute
   '/systems/$systemId': typeof AuthenticatedSystemsSystemIdRoute
@@ -260,10 +300,12 @@ export interface FileRoutesByTo {
   '/incidents': typeof AuthenticatedIncidentsIndexRoute
   '/people': typeof AuthenticatedPeopleIndexRoute
   '/policies': typeof AuthenticatedPoliciesIndexRoute
+  '/reviews': typeof AuthenticatedReviewsIndexRoute
   '/risks': typeof AuthenticatedRisksIndexRoute
   '/slas': typeof AuthenticatedSlasIndexRoute
   '/systems': typeof AuthenticatedSystemsIndexRoute
   '/vendors': typeof AuthenticatedVendorsIndexRoute
+  '/api/public/hooks/cadence-tick': typeof ApiPublicHooksCadenceTickRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -276,6 +318,7 @@ export interface FileRoutesById {
   '/_authenticated/incidents': typeof AuthenticatedIncidentsRouteWithChildren
   '/_authenticated/people': typeof AuthenticatedPeopleRouteWithChildren
   '/_authenticated/policies': typeof AuthenticatedPoliciesRouteWithChildren
+  '/_authenticated/reviews': typeof AuthenticatedReviewsRouteWithChildren
   '/_authenticated/risks': typeof AuthenticatedRisksRouteWithChildren
   '/_authenticated/slas': typeof AuthenticatedSlasRouteWithChildren
   '/_authenticated/systems': typeof AuthenticatedSystemsRouteWithChildren
@@ -286,6 +329,8 @@ export interface FileRoutesById {
   '/_authenticated/incidents/$incidentId': typeof AuthenticatedIncidentsIncidentIdRoute
   '/_authenticated/people/$personId': typeof AuthenticatedPeoplePersonIdRoute
   '/_authenticated/policies/$policyId': typeof AuthenticatedPoliciesPolicyIdRoute
+  '/_authenticated/reviews/$campaignId': typeof AuthenticatedReviewsCampaignIdRoute
+  '/_authenticated/reviews/new': typeof AuthenticatedReviewsNewRoute
   '/_authenticated/risks/$riskId': typeof AuthenticatedRisksRiskIdRoute
   '/_authenticated/slas/$slaId': typeof AuthenticatedSlasSlaIdRoute
   '/_authenticated/systems/$systemId': typeof AuthenticatedSystemsSystemIdRoute
@@ -294,10 +339,12 @@ export interface FileRoutesById {
   '/_authenticated/incidents/': typeof AuthenticatedIncidentsIndexRoute
   '/_authenticated/people/': typeof AuthenticatedPeopleIndexRoute
   '/_authenticated/policies/': typeof AuthenticatedPoliciesIndexRoute
+  '/_authenticated/reviews/': typeof AuthenticatedReviewsIndexRoute
   '/_authenticated/risks/': typeof AuthenticatedRisksIndexRoute
   '/_authenticated/slas/': typeof AuthenticatedSlasIndexRoute
   '/_authenticated/systems/': typeof AuthenticatedSystemsIndexRoute
   '/_authenticated/vendors/': typeof AuthenticatedVendorsIndexRoute
+  '/api/public/hooks/cadence-tick': typeof ApiPublicHooksCadenceTickRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -310,6 +357,7 @@ export interface FileRouteTypes {
     | '/incidents'
     | '/people'
     | '/policies'
+    | '/reviews'
     | '/risks'
     | '/slas'
     | '/systems'
@@ -320,6 +368,8 @@ export interface FileRouteTypes {
     | '/incidents/$incidentId'
     | '/people/$personId'
     | '/policies/$policyId'
+    | '/reviews/$campaignId'
+    | '/reviews/new'
     | '/risks/$riskId'
     | '/slas/$slaId'
     | '/systems/$systemId'
@@ -328,10 +378,12 @@ export interface FileRouteTypes {
     | '/incidents/'
     | '/people/'
     | '/policies/'
+    | '/reviews/'
     | '/risks/'
     | '/slas/'
     | '/systems/'
     | '/vendors/'
+    | '/api/public/hooks/cadence-tick'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -344,6 +396,8 @@ export interface FileRouteTypes {
     | '/incidents/$incidentId'
     | '/people/$personId'
     | '/policies/$policyId'
+    | '/reviews/$campaignId'
+    | '/reviews/new'
     | '/risks/$riskId'
     | '/slas/$slaId'
     | '/systems/$systemId'
@@ -352,10 +406,12 @@ export interface FileRouteTypes {
     | '/incidents'
     | '/people'
     | '/policies'
+    | '/reviews'
     | '/risks'
     | '/slas'
     | '/systems'
     | '/vendors'
+    | '/api/public/hooks/cadence-tick'
   id:
     | '__root__'
     | '/'
@@ -367,6 +423,7 @@ export interface FileRouteTypes {
     | '/_authenticated/incidents'
     | '/_authenticated/people'
     | '/_authenticated/policies'
+    | '/_authenticated/reviews'
     | '/_authenticated/risks'
     | '/_authenticated/slas'
     | '/_authenticated/systems'
@@ -377,6 +434,8 @@ export interface FileRouteTypes {
     | '/_authenticated/incidents/$incidentId'
     | '/_authenticated/people/$personId'
     | '/_authenticated/policies/$policyId'
+    | '/_authenticated/reviews/$campaignId'
+    | '/_authenticated/reviews/new'
     | '/_authenticated/risks/$riskId'
     | '/_authenticated/slas/$slaId'
     | '/_authenticated/systems/$systemId'
@@ -385,10 +444,12 @@ export interface FileRouteTypes {
     | '/_authenticated/incidents/'
     | '/_authenticated/people/'
     | '/_authenticated/policies/'
+    | '/_authenticated/reviews/'
     | '/_authenticated/risks/'
     | '/_authenticated/slas/'
     | '/_authenticated/systems/'
     | '/_authenticated/vendors/'
+    | '/api/public/hooks/cadence-tick'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -396,6 +457,7 @@ export interface RootRouteChildren {
   AuthenticatedRoute: typeof AuthenticatedRouteWithChildren
   LoginRoute: typeof LoginRoute
   AuthCallbackRoute: typeof AuthCallbackRoute
+  ApiPublicHooksCadenceTickRoute: typeof ApiPublicHooksCadenceTickRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -454,6 +516,13 @@ declare module '@tanstack/react-router' {
       path: '/risks'
       fullPath: '/risks'
       preLoaderRoute: typeof AuthenticatedRisksRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/reviews': {
+      id: '/_authenticated/reviews'
+      path: '/reviews'
+      fullPath: '/reviews'
+      preLoaderRoute: typeof AuthenticatedReviewsRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
     '/_authenticated/policies': {
@@ -526,6 +595,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedRisksIndexRouteImport
       parentRoute: typeof AuthenticatedRisksRoute
     }
+    '/_authenticated/reviews/': {
+      id: '/_authenticated/reviews/'
+      path: '/'
+      fullPath: '/reviews/'
+      preLoaderRoute: typeof AuthenticatedReviewsIndexRouteImport
+      parentRoute: typeof AuthenticatedReviewsRoute
+    }
     '/_authenticated/policies/': {
       id: '/_authenticated/policies/'
       path: '/'
@@ -582,6 +658,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedRisksRiskIdRouteImport
       parentRoute: typeof AuthenticatedRisksRoute
     }
+    '/_authenticated/reviews/new': {
+      id: '/_authenticated/reviews/new'
+      path: '/new'
+      fullPath: '/reviews/new'
+      preLoaderRoute: typeof AuthenticatedReviewsNewRouteImport
+      parentRoute: typeof AuthenticatedReviewsRoute
+    }
+    '/_authenticated/reviews/$campaignId': {
+      id: '/_authenticated/reviews/$campaignId'
+      path: '/$campaignId'
+      fullPath: '/reviews/$campaignId'
+      preLoaderRoute: typeof AuthenticatedReviewsCampaignIdRouteImport
+      parentRoute: typeof AuthenticatedReviewsRoute
+    }
     '/_authenticated/policies/$policyId': {
       id: '/_authenticated/policies/$policyId'
       path: '/$policyId'
@@ -616,6 +706,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/admin/users'
       preLoaderRoute: typeof AuthenticatedAdminUsersRouteImport
       parentRoute: typeof AuthenticatedRoute
+    }
+    '/api/public/hooks/cadence-tick': {
+      id: '/api/public/hooks/cadence-tick'
+      path: '/api/public/hooks/cadence-tick'
+      fullPath: '/api/public/hooks/cadence-tick'
+      preLoaderRoute: typeof ApiPublicHooksCadenceTickRouteImport
+      parentRoute: typeof rootRouteImport
     }
   }
 }
@@ -678,6 +775,21 @@ const AuthenticatedPoliciesRouteWithChildren =
     AuthenticatedPoliciesRouteChildren,
   )
 
+interface AuthenticatedReviewsRouteChildren {
+  AuthenticatedReviewsCampaignIdRoute: typeof AuthenticatedReviewsCampaignIdRoute
+  AuthenticatedReviewsNewRoute: typeof AuthenticatedReviewsNewRoute
+  AuthenticatedReviewsIndexRoute: typeof AuthenticatedReviewsIndexRoute
+}
+
+const AuthenticatedReviewsRouteChildren: AuthenticatedReviewsRouteChildren = {
+  AuthenticatedReviewsCampaignIdRoute: AuthenticatedReviewsCampaignIdRoute,
+  AuthenticatedReviewsNewRoute: AuthenticatedReviewsNewRoute,
+  AuthenticatedReviewsIndexRoute: AuthenticatedReviewsIndexRoute,
+}
+
+const AuthenticatedReviewsRouteWithChildren =
+  AuthenticatedReviewsRoute._addFileChildren(AuthenticatedReviewsRouteChildren)
+
 interface AuthenticatedRisksRouteChildren {
   AuthenticatedRisksRiskIdRoute: typeof AuthenticatedRisksRiskIdRoute
   AuthenticatedRisksIndexRoute: typeof AuthenticatedRisksIndexRoute
@@ -737,6 +849,7 @@ interface AuthenticatedRouteChildren {
   AuthenticatedIncidentsRoute: typeof AuthenticatedIncidentsRouteWithChildren
   AuthenticatedPeopleRoute: typeof AuthenticatedPeopleRouteWithChildren
   AuthenticatedPoliciesRoute: typeof AuthenticatedPoliciesRouteWithChildren
+  AuthenticatedReviewsRoute: typeof AuthenticatedReviewsRouteWithChildren
   AuthenticatedRisksRoute: typeof AuthenticatedRisksRouteWithChildren
   AuthenticatedSlasRoute: typeof AuthenticatedSlasRouteWithChildren
   AuthenticatedSystemsRoute: typeof AuthenticatedSystemsRouteWithChildren
@@ -751,6 +864,7 @@ const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedIncidentsRoute: AuthenticatedIncidentsRouteWithChildren,
   AuthenticatedPeopleRoute: AuthenticatedPeopleRouteWithChildren,
   AuthenticatedPoliciesRoute: AuthenticatedPoliciesRouteWithChildren,
+  AuthenticatedReviewsRoute: AuthenticatedReviewsRouteWithChildren,
   AuthenticatedRisksRoute: AuthenticatedRisksRouteWithChildren,
   AuthenticatedSlasRoute: AuthenticatedSlasRouteWithChildren,
   AuthenticatedSystemsRoute: AuthenticatedSystemsRouteWithChildren,
@@ -767,6 +881,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthenticatedRoute: AuthenticatedRouteWithChildren,
   LoginRoute: LoginRoute,
   AuthCallbackRoute: AuthCallbackRoute,
+  ApiPublicHooksCadenceTickRoute: ApiPublicHooksCadenceTickRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
