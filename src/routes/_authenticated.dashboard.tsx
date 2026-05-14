@@ -151,7 +151,7 @@ function DashboardPage() {
               </div>
               <div className="mt-2 h-2 overflow-hidden rounded bg-muted">
                 <div
-                  className="h-full bg-emerald-500"
+                  className={`h-full ${INTENT_FILL_CLASSES.success}`}
                   style={{ width: `${mfa.data.mfa_coverage_pct}%` }}
                 />
               </div>
