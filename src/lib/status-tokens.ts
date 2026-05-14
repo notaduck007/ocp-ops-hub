@@ -17,6 +17,26 @@ export const STATUS_CLASSES: Record<StatusIntent, string> = {
   muted: "bg-muted text-muted-foreground ring-1 ring-border",
 };
 
+export const INTENT_ICON_CLASSES: Record<StatusIntent, string> = {
+  neutral: "text-slate-600",
+  info: "text-sky-600",
+  success: "text-emerald-600",
+  warning: "text-amber-600",
+  danger: "text-red-600",
+  critical: "text-rose-700",
+  muted: "text-muted-foreground",
+};
+
+export const INTENT_FILL_CLASSES: Record<StatusIntent, string> = {
+  neutral: "bg-slate-500",
+  info: "bg-sky-500",
+  success: "bg-emerald-500",
+  warning: "bg-amber-500",
+  danger: "bg-red-600",
+  critical: "bg-rose-700",
+  muted: "bg-muted-foreground",
+};
+
 export const STATUS_LABELS: Record<StatusIntent, string> = {
   neutral: "Neutral",
   info: "Info",
