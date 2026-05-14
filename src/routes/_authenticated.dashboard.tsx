@@ -224,7 +224,7 @@ function DashboardPage() {
 
         {/* Incidents this quarter */}
         <Tile
-          icon={<Activity className="h-4 w-4 text-sky-600" />}
+          icon={<Activity className={`h-4 w-4 ${INTENT_ICON_CLASSES.info}`} />}
           title="Incidents this quarter"
         >
           {incidents.data == null ? (
