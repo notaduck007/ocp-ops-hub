@@ -7,6 +7,9 @@ import { toast } from "sonner";
 
 import { PageShell, PageHeader } from "@/components/layout/page-shell";
 import { PageHeaderSkeleton, DetailFormSkeleton } from "@/components/layout/skeletons";
+import { EditToggle } from "@/components/layout/edit-toggle";
+import { VendorSummary } from "@/components/vendors/vendor-summary";
+import { detailSearchValidator } from "@/lib/detail-search";
 
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
