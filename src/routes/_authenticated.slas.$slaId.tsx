@@ -200,32 +200,17 @@ function SlaDetailPage() {
           <EvidenceFilesTab kind="sla_review" linkedEntityType="sla" linkedEntityId={slaId} />
         </TabsContent>
 
-        {canEdit && (
-          <TabsContent value="activity" className="mt-4">
-            <div className="rounded-md border bg-card">
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Action</TableHead>
-                    <TableHead>Actor</TableHead>
-                    <TableHead>When</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {auditRows.length === 0 ? (
-                    <TableRow><TableCell colSpan={3} className="text-center text-sm text-muted-foreground">No activity yet.</TableCell></TableRow>
-                  ) : auditRows.map((e: any) => (
-                    <TableRow key={e.id}>
-                      <TableCell><Badge variant="secondary">{e.action}</Badge></TableCell>
-                      <TableCell className="text-sm">{e.actor?.full_name || e.actor?.email || "—"}</TableCell>
-                      <TableCell className="text-sm text-muted-foreground">{new Date(e.created_at).toLocaleString()}</TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </div>
-          </TabsContent>
-        )}
+        <TabsContent value="activity" className="mt-4">
+          <div className="space-y-3">
+            {auditRows.length === 0 ? (
+              <div className="rounded-md border bg-card p-4 text-sm text-muted-foreground">
+                No activity yet.
+              </div>
+            ) : (
+              auditRows.map((e: any) => <AuditEntry key={e.id} entry={e} />)
+            )}
+          </div>
+        </TabsContent>
       </Tabs>
     </PageShell>
   );
