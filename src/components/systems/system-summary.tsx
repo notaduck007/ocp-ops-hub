@@ -46,15 +46,6 @@ export function SystemSummary({ system }: { system: SystemRow }) {
             />
           ) : null}
         </SummaryField>
-        <SummaryField label="Vendor">
-          {system.vendor ? (
-            <RecordLink
-              kind="vendor"
-              id={system.vendor.id}
-              label={system.vendor.name}
-            />
-          ) : null}
-        </SummaryField>
         <SummaryField label="MFA required">
           <Badge variant={system.mfa_required ? "default" : "outline"}>
             {system.mfa_required ? "Yes" : "No"}
