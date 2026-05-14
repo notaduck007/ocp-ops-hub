@@ -209,7 +209,7 @@ function UserMenu() {
           )}
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="w-56">
+      <DropdownMenuContent align="end" className="w-64">
         <DropdownMenuLabel className="flex flex-col gap-1">
           <span className="text-sm font-medium">{user.email}</span>
           {role && (
@@ -219,6 +219,16 @@ function UserMenu() {
           )}
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
+        <div className="px-2 py-1.5 text-xs text-muted-foreground">
+          <div className="font-medium uppercase tracking-wide text-muted-foreground/70">
+            Capabilities
+          </div>
+          <p className="mt-1 leading-snug">{capabilitiesFor(role)}</p>
+        </div>
+        <DropdownMenuSeparator />
+        <DropdownMenuItem onClick={requestElevatedAccess}>
+          Request elevated access
+        </DropdownMenuItem>
         <DropdownMenuItem onClick={() => supabase.auth.signOut()}>Sign out</DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
