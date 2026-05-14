@@ -116,6 +116,157 @@ export type Database = {
         }
         Relationships: []
       }
+      incident_comms: {
+        Row: {
+          audience: Database["public"]["Enums"]["comms_audience"]
+          channel: string | null
+          created_at: string
+          created_by: string | null
+          id: string
+          incident_id: string
+          sent_at: string
+          summary: string
+          updated_at: string
+          updated_by: string | null
+        }
+        Insert: {
+          audience: Database["public"]["Enums"]["comms_audience"]
+          channel?: string | null
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          incident_id: string
+          sent_at?: string
+          summary: string
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Update: {
+          audience?: Database["public"]["Enums"]["comms_audience"]
+          channel?: string | null
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          incident_id?: string
+          sent_at?: string
+          summary?: string
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "incident_comms_incident_id_fkey"
+            columns: ["incident_id"]
+            isOneToOne: false
+            referencedRelation: "incidents"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      incident_systems: {
+        Row: {
+          incident_id: string
+          system_id: string
+        }
+        Insert: {
+          incident_id: string
+          system_id: string
+        }
+        Update: {
+          incident_id?: string
+          system_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "incident_systems_incident_id_fkey"
+            columns: ["incident_id"]
+            isOneToOne: false
+            referencedRelation: "incidents"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "incident_systems_system_id_fkey"
+            columns: ["system_id"]
+            isOneToOne: false
+            referencedRelation: "systems"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      incidents: {
+        Row: {
+          archived_at: string | null
+          closed_at: string | null
+          contained_at: string | null
+          created_at: string
+          created_by: string | null
+          declared_at: string
+          declared_by: string
+          id: string
+          impact_summary: string | null
+          next_test_due_at: string | null
+          post_mortem_completed_at: string | null
+          post_mortem_md: string | null
+          resolved_at: string | null
+          root_cause: string | null
+          severity: number
+          status: Database["public"]["Enums"]["incident_status"]
+          title: string
+          updated_at: string
+          updated_by: string | null
+        }
+        Insert: {
+          archived_at?: string | null
+          closed_at?: string | null
+          contained_at?: string | null
+          created_at?: string
+          created_by?: string | null
+          declared_at?: string
+          declared_by: string
+          id?: string
+          impact_summary?: string | null
+          next_test_due_at?: string | null
+          post_mortem_completed_at?: string | null
+          post_mortem_md?: string | null
+          resolved_at?: string | null
+          root_cause?: string | null
+          severity: number
+          status?: Database["public"]["Enums"]["incident_status"]
+          title: string
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Update: {
+          archived_at?: string | null
+          closed_at?: string | null
+          contained_at?: string | null
+          created_at?: string
+          created_by?: string | null
+          declared_at?: string
+          declared_by?: string
+          id?: string
+          impact_summary?: string | null
+          next_test_due_at?: string | null
+          post_mortem_completed_at?: string | null
+          post_mortem_md?: string | null
+          resolved_at?: string | null
+          root_cause?: string | null
+          severity?: number
+          status?: Database["public"]["Enums"]["incident_status"]
+          title?: string
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "incidents_declared_by_fkey"
+            columns: ["declared_by"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       people: {
         Row: {
           archived_at: string | null
@@ -686,8 +837,7 @@ export type Database = {
       v_incidents_this_quarter: {
         Row: {
           count: number | null
-          id: string | null
-          severity: string | null
+          severity: number | null
         }
         Relationships: []
       }
@@ -868,6 +1018,13 @@ export type Database = {
       access_role_level: "read" | "write" | "admin" | "owner"
       app_role: "admin" | "editor" | "viewer"
       breach_status: "open" | "remediated" | "escalated" | "closed_no_action"
+      comms_audience:
+        | "internal_it"
+        | "leadership"
+        | "staff_all"
+        | "member"
+        | "vendor"
+        | "board"
       criticality: "low" | "medium" | "high" | "critical"
       data_class:
         | "none"
@@ -876,6 +1033,12 @@ export type Database = {
         | "financial"
         | "unpublished_spec"
         | "public"
+      incident_status:
+        | "declared"
+        | "contained"
+        | "resolved"
+        | "post_mortem"
+        | "closed"
       person_status: "active" | "inactive" | "offboarded"
       person_type: "staff" | "contractor" | "vendor_user" | "service_account"
       risk_kind: "risk" | "exception"
@@ -1027,6 +1190,14 @@ export const Constants = {
       access_role_level: ["read", "write", "admin", "owner"],
       app_role: ["admin", "editor", "viewer"],
       breach_status: ["open", "remediated", "escalated", "closed_no_action"],
+      comms_audience: [
+        "internal_it",
+        "leadership",
+        "staff_all",
+        "member",
+        "vendor",
+        "board",
+      ],
       criticality: ["low", "medium", "high", "critical"],
       data_class: [
         "none",
@@ -1035,6 +1206,13 @@ export const Constants = {
         "financial",
         "unpublished_spec",
         "public",
+      ],
+      incident_status: [
+        "declared",
+        "contained",
+        "resolved",
+        "post_mortem",
+        "closed",
       ],
       person_status: ["active", "inactive", "offboarded"],
       person_type: ["staff", "contractor", "vendor_user", "service_account"],

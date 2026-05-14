@@ -18,6 +18,7 @@ import { Route as AuthenticatedSystemsRouteImport } from './routes/_authenticate
 import { Route as AuthenticatedSlasRouteImport } from './routes/_authenticated.slas'
 import { Route as AuthenticatedRisksRouteImport } from './routes/_authenticated.risks'
 import { Route as AuthenticatedPeopleRouteImport } from './routes/_authenticated.people'
+import { Route as AuthenticatedIncidentsRouteImport } from './routes/_authenticated.incidents'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated.dashboard'
 import { Route as AuthenticatedAccessRouteImport } from './routes/_authenticated.access'
 import { Route as AuthenticatedVendorsIndexRouteImport } from './routes/_authenticated.vendors.index'
@@ -25,11 +26,13 @@ import { Route as AuthenticatedSystemsIndexRouteImport } from './routes/_authent
 import { Route as AuthenticatedSlasIndexRouteImport } from './routes/_authenticated.slas.index'
 import { Route as AuthenticatedRisksIndexRouteImport } from './routes/_authenticated.risks.index'
 import { Route as AuthenticatedPeopleIndexRouteImport } from './routes/_authenticated.people.index'
+import { Route as AuthenticatedIncidentsIndexRouteImport } from './routes/_authenticated.incidents.index'
 import { Route as AuthenticatedVendorsVendorIdRouteImport } from './routes/_authenticated.vendors.$vendorId'
 import { Route as AuthenticatedSystemsSystemIdRouteImport } from './routes/_authenticated.systems.$systemId'
 import { Route as AuthenticatedSlasSlaIdRouteImport } from './routes/_authenticated.slas.$slaId'
 import { Route as AuthenticatedRisksRiskIdRouteImport } from './routes/_authenticated.risks.$riskId'
 import { Route as AuthenticatedPeoplePersonIdRouteImport } from './routes/_authenticated.people.$personId'
+import { Route as AuthenticatedIncidentsIncidentIdRouteImport } from './routes/_authenticated.incidents.$incidentId'
 import { Route as AuthenticatedAdminUsersRouteImport } from './routes/_authenticated.admin.users'
 
 const LoginRoute = LoginRouteImport.update({
@@ -76,6 +79,11 @@ const AuthenticatedPeopleRoute = AuthenticatedPeopleRouteImport.update({
   path: '/people',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
+const AuthenticatedIncidentsRoute = AuthenticatedIncidentsRouteImport.update({
+  id: '/incidents',
+  path: '/incidents',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
 const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
@@ -114,6 +122,12 @@ const AuthenticatedPeopleIndexRoute =
     path: '/',
     getParentRoute: () => AuthenticatedPeopleRoute,
   } as any)
+const AuthenticatedIncidentsIndexRoute =
+  AuthenticatedIncidentsIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => AuthenticatedIncidentsRoute,
+  } as any)
 const AuthenticatedVendorsVendorIdRoute =
   AuthenticatedVendorsVendorIdRouteImport.update({
     id: '/$vendorId',
@@ -143,6 +157,12 @@ const AuthenticatedPeoplePersonIdRoute =
     path: '/$personId',
     getParentRoute: () => AuthenticatedPeopleRoute,
   } as any)
+const AuthenticatedIncidentsIncidentIdRoute =
+  AuthenticatedIncidentsIncidentIdRouteImport.update({
+    id: '/$incidentId',
+    path: '/$incidentId',
+    getParentRoute: () => AuthenticatedIncidentsRoute,
+  } as any)
 const AuthenticatedAdminUsersRoute = AuthenticatedAdminUsersRouteImport.update({
   id: '/admin/users',
   path: '/admin/users',
@@ -154,6 +174,7 @@ export interface FileRoutesByFullPath {
   '/login': typeof LoginRoute
   '/access': typeof AuthenticatedAccessRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
+  '/incidents': typeof AuthenticatedIncidentsRouteWithChildren
   '/people': typeof AuthenticatedPeopleRouteWithChildren
   '/risks': typeof AuthenticatedRisksRouteWithChildren
   '/slas': typeof AuthenticatedSlasRouteWithChildren
@@ -161,11 +182,13 @@ export interface FileRoutesByFullPath {
   '/vendors': typeof AuthenticatedVendorsRouteWithChildren
   '/auth/callback': typeof AuthCallbackRoute
   '/admin/users': typeof AuthenticatedAdminUsersRoute
+  '/incidents/$incidentId': typeof AuthenticatedIncidentsIncidentIdRoute
   '/people/$personId': typeof AuthenticatedPeoplePersonIdRoute
   '/risks/$riskId': typeof AuthenticatedRisksRiskIdRoute
   '/slas/$slaId': typeof AuthenticatedSlasSlaIdRoute
   '/systems/$systemId': typeof AuthenticatedSystemsSystemIdRoute
   '/vendors/$vendorId': typeof AuthenticatedVendorsVendorIdRoute
+  '/incidents/': typeof AuthenticatedIncidentsIndexRoute
   '/people/': typeof AuthenticatedPeopleIndexRoute
   '/risks/': typeof AuthenticatedRisksIndexRoute
   '/slas/': typeof AuthenticatedSlasIndexRoute
@@ -179,11 +202,13 @@ export interface FileRoutesByTo {
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/auth/callback': typeof AuthCallbackRoute
   '/admin/users': typeof AuthenticatedAdminUsersRoute
+  '/incidents/$incidentId': typeof AuthenticatedIncidentsIncidentIdRoute
   '/people/$personId': typeof AuthenticatedPeoplePersonIdRoute
   '/risks/$riskId': typeof AuthenticatedRisksRiskIdRoute
   '/slas/$slaId': typeof AuthenticatedSlasSlaIdRoute
   '/systems/$systemId': typeof AuthenticatedSystemsSystemIdRoute
   '/vendors/$vendorId': typeof AuthenticatedVendorsVendorIdRoute
+  '/incidents': typeof AuthenticatedIncidentsIndexRoute
   '/people': typeof AuthenticatedPeopleIndexRoute
   '/risks': typeof AuthenticatedRisksIndexRoute
   '/slas': typeof AuthenticatedSlasIndexRoute
@@ -197,6 +222,7 @@ export interface FileRoutesById {
   '/login': typeof LoginRoute
   '/_authenticated/access': typeof AuthenticatedAccessRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
+  '/_authenticated/incidents': typeof AuthenticatedIncidentsRouteWithChildren
   '/_authenticated/people': typeof AuthenticatedPeopleRouteWithChildren
   '/_authenticated/risks': typeof AuthenticatedRisksRouteWithChildren
   '/_authenticated/slas': typeof AuthenticatedSlasRouteWithChildren
@@ -204,11 +230,13 @@ export interface FileRoutesById {
   '/_authenticated/vendors': typeof AuthenticatedVendorsRouteWithChildren
   '/auth/callback': typeof AuthCallbackRoute
   '/_authenticated/admin/users': typeof AuthenticatedAdminUsersRoute
+  '/_authenticated/incidents/$incidentId': typeof AuthenticatedIncidentsIncidentIdRoute
   '/_authenticated/people/$personId': typeof AuthenticatedPeoplePersonIdRoute
   '/_authenticated/risks/$riskId': typeof AuthenticatedRisksRiskIdRoute
   '/_authenticated/slas/$slaId': typeof AuthenticatedSlasSlaIdRoute
   '/_authenticated/systems/$systemId': typeof AuthenticatedSystemsSystemIdRoute
   '/_authenticated/vendors/$vendorId': typeof AuthenticatedVendorsVendorIdRoute
+  '/_authenticated/incidents/': typeof AuthenticatedIncidentsIndexRoute
   '/_authenticated/people/': typeof AuthenticatedPeopleIndexRoute
   '/_authenticated/risks/': typeof AuthenticatedRisksIndexRoute
   '/_authenticated/slas/': typeof AuthenticatedSlasIndexRoute
@@ -222,6 +250,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/access'
     | '/dashboard'
+    | '/incidents'
     | '/people'
     | '/risks'
     | '/slas'
@@ -229,11 +258,13 @@ export interface FileRouteTypes {
     | '/vendors'
     | '/auth/callback'
     | '/admin/users'
+    | '/incidents/$incidentId'
     | '/people/$personId'
     | '/risks/$riskId'
     | '/slas/$slaId'
     | '/systems/$systemId'
     | '/vendors/$vendorId'
+    | '/incidents/'
     | '/people/'
     | '/risks/'
     | '/slas/'
@@ -247,11 +278,13 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/auth/callback'
     | '/admin/users'
+    | '/incidents/$incidentId'
     | '/people/$personId'
     | '/risks/$riskId'
     | '/slas/$slaId'
     | '/systems/$systemId'
     | '/vendors/$vendorId'
+    | '/incidents'
     | '/people'
     | '/risks'
     | '/slas'
@@ -264,6 +297,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/_authenticated/access'
     | '/_authenticated/dashboard'
+    | '/_authenticated/incidents'
     | '/_authenticated/people'
     | '/_authenticated/risks'
     | '/_authenticated/slas'
@@ -271,11 +305,13 @@ export interface FileRouteTypes {
     | '/_authenticated/vendors'
     | '/auth/callback'
     | '/_authenticated/admin/users'
+    | '/_authenticated/incidents/$incidentId'
     | '/_authenticated/people/$personId'
     | '/_authenticated/risks/$riskId'
     | '/_authenticated/slas/$slaId'
     | '/_authenticated/systems/$systemId'
     | '/_authenticated/vendors/$vendorId'
+    | '/_authenticated/incidents/'
     | '/_authenticated/people/'
     | '/_authenticated/risks/'
     | '/_authenticated/slas/'
@@ -355,6 +391,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedPeopleRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
+    '/_authenticated/incidents': {
+      id: '/_authenticated/incidents'
+      path: '/incidents'
+      fullPath: '/incidents'
+      preLoaderRoute: typeof AuthenticatedIncidentsRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
     '/_authenticated/dashboard': {
       id: '/_authenticated/dashboard'
       path: '/dashboard'
@@ -404,6 +447,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedPeopleIndexRouteImport
       parentRoute: typeof AuthenticatedPeopleRoute
     }
+    '/_authenticated/incidents/': {
+      id: '/_authenticated/incidents/'
+      path: '/'
+      fullPath: '/incidents/'
+      preLoaderRoute: typeof AuthenticatedIncidentsIndexRouteImport
+      parentRoute: typeof AuthenticatedIncidentsRoute
+    }
     '/_authenticated/vendors/$vendorId': {
       id: '/_authenticated/vendors/$vendorId'
       path: '/$vendorId'
@@ -439,6 +489,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedPeoplePersonIdRouteImport
       parentRoute: typeof AuthenticatedPeopleRoute
     }
+    '/_authenticated/incidents/$incidentId': {
+      id: '/_authenticated/incidents/$incidentId'
+      path: '/$incidentId'
+      fullPath: '/incidents/$incidentId'
+      preLoaderRoute: typeof AuthenticatedIncidentsIncidentIdRouteImport
+      parentRoute: typeof AuthenticatedIncidentsRoute
+    }
     '/_authenticated/admin/users': {
       id: '/_authenticated/admin/users'
       path: '/admin/users'
@@ -448,6 +505,23 @@ declare module '@tanstack/react-router' {
     }
   }
 }
+
+interface AuthenticatedIncidentsRouteChildren {
+  AuthenticatedIncidentsIncidentIdRoute: typeof AuthenticatedIncidentsIncidentIdRoute
+  AuthenticatedIncidentsIndexRoute: typeof AuthenticatedIncidentsIndexRoute
+}
+
+const AuthenticatedIncidentsRouteChildren: AuthenticatedIncidentsRouteChildren =
+  {
+    AuthenticatedIncidentsIncidentIdRoute:
+      AuthenticatedIncidentsIncidentIdRoute,
+    AuthenticatedIncidentsIndexRoute: AuthenticatedIncidentsIndexRoute,
+  }
+
+const AuthenticatedIncidentsRouteWithChildren =
+  AuthenticatedIncidentsRoute._addFileChildren(
+    AuthenticatedIncidentsRouteChildren,
+  )
 
 interface AuthenticatedPeopleRouteChildren {
   AuthenticatedPeoplePersonIdRoute: typeof AuthenticatedPeoplePersonIdRoute
@@ -517,6 +591,7 @@ const AuthenticatedVendorsRouteWithChildren =
 interface AuthenticatedRouteChildren {
   AuthenticatedAccessRoute: typeof AuthenticatedAccessRoute
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
+  AuthenticatedIncidentsRoute: typeof AuthenticatedIncidentsRouteWithChildren
   AuthenticatedPeopleRoute: typeof AuthenticatedPeopleRouteWithChildren
   AuthenticatedRisksRoute: typeof AuthenticatedRisksRouteWithChildren
   AuthenticatedSlasRoute: typeof AuthenticatedSlasRouteWithChildren
@@ -528,6 +603,7 @@ interface AuthenticatedRouteChildren {
 const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedAccessRoute: AuthenticatedAccessRoute,
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
+  AuthenticatedIncidentsRoute: AuthenticatedIncidentsRouteWithChildren,
   AuthenticatedPeopleRoute: AuthenticatedPeopleRouteWithChildren,
   AuthenticatedRisksRoute: AuthenticatedRisksRouteWithChildren,
   AuthenticatedSlasRoute: AuthenticatedSlasRouteWithChildren,
