@@ -570,7 +570,7 @@ function ExecutionTab({
               </Button>
             </div>
 
-            {isAdmin && (
+            <AdminOnly mode="disable" disabledTooltip="Admin only — roll back a change">
               <div className="space-y-2 rounded-md border p-3">
                 <Label>Roll back (admin only)</Label>
                 <Textarea
@@ -596,7 +596,7 @@ function ExecutionTab({
                   </Button>
                 </div>
               </div>
-            )}
+            </AdminOnly>
           </>
         ) : (
           <p className="text-xs text-muted-foreground">

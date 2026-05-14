@@ -127,11 +127,11 @@ function VendorDetailPage() {
             {canEdit && (
               <EditToggle editing={editing} onEdit={enterEdit} onCancel={exitEdit} />
             )}
-            {isAdmin && (
+            <AdminOnly mode="disable" disabledTooltip="Admin only — archive a vendor">
               <Button variant="outline" onClick={() => archiveMut.mutate(!archived)} disabled={archiveMut.isPending}>
                 {archived ? <><ArchiveRestore className="mr-2 h-4 w-4" />Unarchive</> : <><Archive className="mr-2 h-4 w-4" />Archive</>}
               </Button>
-            )}
+            </AdminOnly>
           </div>
         }
       />

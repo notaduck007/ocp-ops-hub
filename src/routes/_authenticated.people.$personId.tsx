@@ -121,7 +121,7 @@ function PersonDetailPage() {
             {canEdit && (
               <EditToggle editing={editing} onEdit={enterEdit} onCancel={exitEdit} />
             )}
-            {isAdmin && (
+            <AdminOnly mode="disable" disabledTooltip="Admin only — archive a person">
               <Button
                 variant="outline"
                 onClick={() => archiveMut.mutate(!archived)}
@@ -139,7 +139,7 @@ function PersonDetailPage() {
                   </>
                 )}
               </Button>
-            )}
+            </AdminOnly>
           </div>
         }
       />
