@@ -3,6 +3,7 @@ import { z } from "zod";
 
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import type { Database, Json } from "@/integrations/supabase/types";
+import { attachActors } from "@/lib/load-actors";
 
 type SlaTargetType = Database["public"]["Enums"]["sla_target_type"];
 type BreachStatus = Database["public"]["Enums"]["breach_status"];

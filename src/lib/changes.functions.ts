@@ -3,6 +3,7 @@ import { z } from "zod";
 
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import type { Database, Json } from "@/integrations/supabase/types";
+import { attachActors } from "@/lib/load-actors";
 
 type UserLite = { id: string; full_name: string | null; email: string };
 type SystemLite = { id: string; name: string };
@@ -184,7 +185,8 @@ export const getChange = createServerFn({ method: "POST" })
     if (error) throw new Error(error.message);
     if (!row) return null;
     const decorated = await decorate(supabase, [row]);
-    return decorated[0] ?? null;
+    const first = decorated[0];
+    return first ? ((await attachActors(supabase, first)) as any) : null;
   });
 
 export const proposeChange = createServerFn({ method: "POST" })

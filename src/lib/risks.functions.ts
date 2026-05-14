@@ -125,7 +125,8 @@ export const getRisk = createServerFn({ method: "POST" })
     if (error) throw new Error(error.message);
     if (!row) return null;
     const decorated = await decorate(supabase, [row]);
-    return decorated[0] ?? null;
+    const first = decorated[0];
+    return first ? ((await attachActors(supabase, first)) as any) : null;
   });
 
 async function isAdmin(supabase: any): Promise<boolean> {
