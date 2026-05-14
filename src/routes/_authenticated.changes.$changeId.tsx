@@ -1,6 +1,6 @@
 import { EvidenceFilesTab } from "@/components/evidence/files-tab";
 import { useState } from "react";
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { format, formatDistanceToNow } from "date-fns";
@@ -30,7 +30,10 @@ import {
 import { SystemMultiCombobox } from "@/components/incidents/system-multi-combobox";
 import { PageShell, PageHeader } from "@/components/layout/page-shell";
 import { PageHeaderSkeleton, DetailFormSkeleton } from "@/components/layout/skeletons";
+import { EditToggle } from "@/components/layout/edit-toggle";
+import { ChangeSummary } from "@/components/changes/change-summary";
 import { RecordLink } from "@/components/record-link";
+import { detailSearchValidator } from "@/lib/detail-search";
 import {
   getChange,
   listChangeAudit,
@@ -44,6 +47,7 @@ import { useCurrentRole } from "@/hooks/use-auth";
 export const Route = createFileRoute(
   "/_authenticated/changes/$changeId",
 )({
+  validateSearch: detailSearchValidator,
   component: ChangeDetailPage,
 });
 
