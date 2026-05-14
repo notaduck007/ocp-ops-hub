@@ -69,7 +69,7 @@ function AdminUsersPage() {
   if (!isAdmin) {
     return (
       <div className="rounded-lg border bg-card p-6">
-        <h1 className="text-xl font-semibold">Forbidden</h1>
+        <h1 className="text-2xl font-semibold tracking-tight">Forbidden</h1>
         <p className="mt-2 text-sm text-muted-foreground">
           You need the <code>admin</code> role to view this page.
         </p>
@@ -80,7 +80,7 @@ function AdminUsersPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-semibold tracking-tight">Users</h1>
+        <h1 className="text-2xl font-semibold tracking-tight">Users</h1>
         <p className="text-sm text-muted-foreground">
           Manage role assignments for OCP IT Hub.
         </p>

@@ -68,7 +68,7 @@ function ReportPage() {
 
       <article className="mx-auto max-w-4xl space-y-6 rounded-md border bg-card p-8 print:border-0 print:p-0">
         <header className="border-b pb-4">
-          <h1 className="text-2xl font-bold">{title}</h1>
+          <h1 className="text-2xl font-semibold tracking-tight">{title}</h1>
           <p className="text-sm text-muted-foreground">
             Generated {new Date().toLocaleString()}
             {reportId === "governance" && ` · Range ${from} → ${to}`}
@@ -87,7 +87,7 @@ function ReportPage() {
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <section className="space-y-2">
-      <h2 className="text-lg font-semibold">{title}</h2>
+      <h2 className="text-base font-semibold">{title}</h2>
       {children}
     </section>
   );

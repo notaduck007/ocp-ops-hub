@@ -55,7 +55,7 @@ function DrPlanPage() {
           <div className="text-xs uppercase tracking-wide text-muted-foreground">
             Disaster Recovery Plan
           </div>
-          <h1 className="text-3xl font-semibold tracking-tight">OCP — DR Plan</h1>
+          <h1 className="text-2xl font-semibold tracking-tight">OCP — DR Plan</h1>
           <p className="text-sm text-muted-foreground">
             Generated {format(new Date(data.generated_at), "PPP p")}
           </p>
@@ -66,7 +66,7 @@ function DrPlanPage() {
       </div>
 
       <section>
-        <h2 className="mb-3 text-xl font-semibold">1. RTO / RPO matrix</h2>
+        <h2 className="mb-3 text-base font-semibold">1. RTO / RPO matrix</h2>
         <div className="rounded-lg border bg-card">
           <Table>
             <TableHeader>
@@ -96,7 +96,7 @@ function DrPlanPage() {
       </section>
 
       <section className="dr-page-break">
-        <h2 className="mb-3 text-xl font-semibold">2. Restore runbooks</h2>
+        <h2 className="mb-3 text-base font-semibold">2. Restore runbooks</h2>
         {data.restore_runbooks.length === 0 ? (
           <p className="text-sm text-muted-foreground">No restore runbooks for critical systems.</p>
         ) : (
@@ -104,7 +104,7 @@ function DrPlanPage() {
             {data.restore_runbooks.map((rb) => (
               <div key={rb.id} className="rounded-lg border bg-card p-5">
                 <div className="mb-2">
-                  <h3 className="text-lg font-semibold">{rb.title}</h3>
+                  <h3 className="text-base font-semibold">{rb.title}</h3>
                   <p className="text-sm text-muted-foreground">
                     {rb.system_name} · Owner {rb.owner_name ?? "—"}
                     {rb.last_tested_at && <> · Last tested {format(new Date(rb.last_tested_at), "PP")}</>}
@@ -120,14 +120,14 @@ function DrPlanPage() {
       </section>
 
       <section className="dr-page-break">
-        <h2 className="mb-3 text-xl font-semibold">3. Roles & escalation</h2>
+        <h2 className="mb-3 text-base font-semibold">3. Roles & escalation</h2>
         {data.continuity_scenarios.length === 0 ? (
           <p className="text-sm text-muted-foreground">No continuity scenarios defined.</p>
         ) : (
           <div className="space-y-4">
             {data.continuity_scenarios.map((c) => (
               <div key={c.id} className="rounded-lg border bg-card p-5">
-                <h3 className="text-lg font-semibold">{c.name}</h3>
+                <h3 className="text-base font-semibold">{c.name}</h3>
                 <p className="text-sm text-muted-foreground">
                   Decision authority: {c.decision_authority_name ?? "—"}
                 </p>
@@ -149,7 +149,7 @@ function DrPlanPage() {
       </section>
 
       <section className="dr-page-break">
-        <h2 className="mb-3 text-xl font-semibold">4. Recent test results (last 12 months)</h2>
+        <h2 className="mb-3 text-base font-semibold">4. Recent test results (last 12 months)</h2>
         <div className="rounded-lg border bg-card">
           <Table>
             <TableHeader>

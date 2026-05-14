@@ -95,7 +95,7 @@ function DashboardPage() {
     <div className="space-y-6">
       <div className="flex items-start justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-semibold tracking-tight">
+          <h1 className="text-2xl font-semibold tracking-tight">
             Welcome, {name}
           </h1>
           <div className="mt-2 flex items-center gap-2">

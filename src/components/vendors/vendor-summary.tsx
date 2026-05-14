@@ -40,7 +40,7 @@ export function VendorSummary({ vendor }: { vendor: VendorRow }) {
                 className="inline-flex items-center gap-1 hover:underline"
               >
                 {vendor.website}
-                <ExternalLink className="h-3 w-3" />
+                <ExternalLink className="h-4 w-4" />
               </a>
             ) : null}
           </SummaryField>
@@ -99,7 +99,7 @@ export function VendorSummary({ vendor }: { vendor: VendorRow }) {
                 className="inline-flex items-center gap-1 hover:underline"
               >
                 {vendor.contract_url}
-                <ExternalLink className="h-3 w-3" />
+                <ExternalLink className="h-4 w-4" />
               </a>
             ) : null}
           </SummaryField>

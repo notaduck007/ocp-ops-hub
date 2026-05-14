@@ -46,7 +46,7 @@ function ReportsIndex() {
                 <CardHeader className="flex flex-row items-start justify-between gap-3">
                   <div className="flex items-start gap-3">
                     <div className="rounded-md bg-primary/10 p-2 text-primary">
-                      <Icon className="h-5 w-5" />
+                      <Icon className="h-4 w-4" />
                     </div>
                     <div>
                       <CardTitle className="text-base">{r.title}</CardTitle>

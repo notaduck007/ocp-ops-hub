@@ -154,7 +154,7 @@ function CampaignWorkspace() {
             ) : (
               <>
                 <div>
-                  <div className="text-lg font-semibold">{selected.grant?.person?.full_name}</div>
+                  <div className="text-base font-semibold">{selected.grant?.person?.full_name}</div>
                   <div className="text-sm text-muted-foreground">
                     {selected.grant?.system?.name} · role <strong>{selected.grant?.role_level}</strong>
                     {selected.grant?.is_admin && " · admin"}
