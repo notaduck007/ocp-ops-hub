@@ -1,6 +1,6 @@
 import { EvidenceFilesTab } from "@/components/evidence/files-tab";
-import { useState } from "react";
-import { createFileRoute } from "@tanstack/react-router";
+import { useEffect, useState } from "react";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { Plus } from "lucide-react";
@@ -23,8 +23,11 @@ import {
 } from "@/components/ui/table";
 import { ScenarioBadge, DrResultBadge } from "@/components/runbooks/badges";
 import { LogTestDialog } from "@/components/runbooks/log-test-dialog";
+import { RunbookSummary } from "@/components/runbooks/runbook-summary";
 import { PageShell, PageHeader } from "@/components/layout/page-shell";
 import { PageHeaderSkeleton, DetailFormSkeleton } from "@/components/layout/skeletons";
+import { EditToggle } from "@/components/layout/edit-toggle";
+import { detailSearchValidator } from "@/lib/detail-search";
 import {
   getRunbook,
   listDrTests,
@@ -34,6 +37,7 @@ import {
 import { useCurrentRole } from "@/hooks/use-auth";
 
 export const Route = createFileRoute("/_authenticated/runbooks/$runbookId")({
+  validateSearch: detailSearchValidator,
   component: RunbookDetail,
 });
 
