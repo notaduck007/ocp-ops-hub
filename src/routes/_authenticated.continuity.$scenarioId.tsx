@@ -111,6 +111,6 @@ function ContinuityDetail() {
       </Card>
 
       <ContinuityScenarioDialog open={editing} onOpenChange={setEditing} initial={s} />
-    </div>
+    </PageShell>
   );
 }
