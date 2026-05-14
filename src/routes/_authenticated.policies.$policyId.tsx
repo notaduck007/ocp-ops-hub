@@ -1,6 +1,6 @@
 import { EvidenceFilesTab } from "@/components/evidence/files-tab";
 import { useMemo, useState } from "react";
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { Check } from "lucide-react";
@@ -14,8 +14,11 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { PolicyStatusBadge } from "@/components/policies/badges";
+import { PolicySummary } from "@/components/policies/policy-summary";
 import { PageShell, PageHeader } from "@/components/layout/page-shell";
 import { PageHeaderSkeleton, DetailFormSkeleton } from "@/components/layout/skeletons";
+import { EditToggle } from "@/components/layout/edit-toggle";
+import { detailSearchValidator } from "@/lib/detail-search";
 import { useCurrentRole } from "@/hooks/use-auth";
 import {
   approveVersion,
@@ -26,6 +29,7 @@ import {
 } from "@/lib/policies.functions";
 
 export const Route = createFileRoute("/_authenticated/policies/$policyId")({
+  validateSearch: detailSearchValidator,
   component: PolicyDetailPage,
 });
 
