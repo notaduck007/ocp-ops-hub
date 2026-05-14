@@ -1,9 +1,7 @@
-import { Fragment, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { createFileRoute, redirect } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
-import { format } from "date-fns";
-import { ChevronDown, ChevronRight } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -17,6 +15,7 @@ import {
 import { useCurrentRole } from "@/hooks/use-auth";
 import { listAudit, listAuditFilters } from "@/lib/audit.functions";
 import { Skeleton } from "@/components/ui/skeleton";
+import { AuditEntry } from "@/components/audit/audit-entry";
 
 export const Route = createFileRoute("/_authenticated/admin/audit")({
   component: AuditPage,
