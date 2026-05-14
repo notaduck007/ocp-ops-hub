@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 
 import { Skeleton } from "@/components/ui/skeleton";
+import { INTENT_ICON_CLASSES, INTENT_FILL_CLASSES } from "@/lib/status-tokens";
 import { FeedRowSkeleton } from "@/components/layout/skeletons";
 import { AttentionList } from "@/components/inbox/attention-list";
 
