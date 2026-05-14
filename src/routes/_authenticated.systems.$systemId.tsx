@@ -128,7 +128,7 @@ function SystemDetailPage() {
                   </>
                 )}
               </Button>
-            )}
+            </AdminOnly>
           </div>
         }
       />
