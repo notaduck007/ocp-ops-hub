@@ -165,7 +165,7 @@ function DashboardPage() {
 
         {/* Open Critical Risks */}
         <Tile
-          icon={<AlertTriangle className="h-4 w-4 text-red-600" />}
+          icon={<AlertTriangle className={`h-4 w-4 ${INTENT_ICON_CLASSES.danger}`} />}
           title="Open critical risks"
         >
           {risks.data == null ? (
