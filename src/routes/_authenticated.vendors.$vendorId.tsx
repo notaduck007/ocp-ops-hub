@@ -6,6 +6,7 @@ import { Archive, ArchiveRestore, Plus } from "lucide-react";
 import { toast } from "sonner";
 
 import { PageShell, PageHeader } from "@/components/layout/page-shell";
+import { PageHeaderSkeleton, DetailFormSkeleton } from "@/components/layout/skeletons";
 
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -89,7 +90,7 @@ function VendorDetailPage() {
     onError: (e: any) => toast.error(String(e?.message ?? e)),
   });
 
-  if (isLoading) return <div className="text-sm text-muted-foreground">Loading…</div>;
+  if (isLoading) return (<PageShell><PageHeaderSkeleton /><DetailFormSkeleton /></PageShell>);
   if (!vendor) {
     return (
       <div className="space-y-3">

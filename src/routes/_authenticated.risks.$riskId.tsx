@@ -23,6 +23,7 @@ import {
 } from "@/components/risks/badges";
 import { RiskForm } from "@/components/risks/risk-form";
 import { PageShell, PageHeader } from "@/components/layout/page-shell";
+import { PageHeaderSkeleton, DetailFormSkeleton } from "@/components/layout/skeletons";
 import { RecordLink } from "@/components/record-link";
 import { useCurrentRole } from "@/hooks/use-auth";
 import { getRisk, listRiskAudit } from "@/lib/risks.functions";
@@ -51,7 +52,7 @@ function RiskDetailPage() {
     enabled: canEdit,
   });
 
-  if (isLoading) return <div className="text-sm text-muted-foreground">Loading…</div>;
+  if (isLoading) return (<PageShell><PageHeaderSkeleton /><DetailFormSkeleton /></PageShell>);
   if (!risk) {
     return (
       <div className="space-y-3">

@@ -14,6 +14,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { TableSkeleton } from "@/components/layout/skeletons";
 import { ScenarioBadge } from "@/components/runbooks/badges";
 import { NewRunbookDialog } from "@/components/runbooks/new-runbook-dialog";
 import { listRunbooks } from "@/lib/runbooks.functions";
@@ -67,7 +68,7 @@ function RunbooksList() {
           </TableHeader>
           <TableBody>
             {isLoading ? (
-              <TableRow><TableCell colSpan={6} className="text-muted-foreground">Loading…</TableCell></TableRow>
+              <TableSkeleton rows={8} cols={6} />
             ) : rows.length === 0 ? (
               <TableRow><TableCell colSpan={6} className="text-muted-foreground">No runbooks.</TableCell></TableRow>
             ) : (

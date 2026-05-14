@@ -22,6 +22,7 @@ import { SlaForm } from "@/components/slas/sla-form";
 import { BreachForm } from "@/components/slas/breach-form";
 import { BreachStatusBadge } from "@/components/vendors/badges";
 import { PageShell, PageHeader } from "@/components/layout/page-shell";
+import { PageHeaderSkeleton, DetailFormSkeleton } from "@/components/layout/skeletons";
 import { RecordLink } from "@/components/record-link";
 import { useCurrentRole } from "@/hooks/use-auth";
 import {
@@ -67,7 +68,7 @@ function SlaDetailPage() {
     onError: (e: any) => toast.error(String(e?.message ?? e)),
   });
 
-  if (isLoading) return <div className="text-sm text-muted-foreground">Loading…</div>;
+  if (isLoading) return (<PageShell><PageHeaderSkeleton /><DetailFormSkeleton /></PageShell>);
   if (!sla) {
     return (
       <div className="space-y-3">

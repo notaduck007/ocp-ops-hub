@@ -14,6 +14,9 @@ import {
   ClipboardCheck,
 } from "lucide-react";
 
+import { Skeleton } from "@/components/ui/skeleton";
+import { FeedRowSkeleton } from "@/components/layout/skeletons";
+
 import { useAuth, useCurrentRole } from "@/hooks/use-auth";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -298,7 +301,11 @@ function DashboardPage() {
         </div>
         <div className="divide-y">
           {overdue.data == null ? (
-            <div className="p-5 text-sm text-muted-foreground">Loading…</div>
+            <>
+              <FeedRowSkeleton />
+              <FeedRowSkeleton />
+              <FeedRowSkeleton />
+            </>
           ) : overdue.data.items.length === 0 ? (
             <div className="p-5 text-sm text-muted-foreground">
               All current. Nice.
@@ -338,7 +345,12 @@ function Tile({
 }
 
 function Loading() {
-  return <div className="text-sm text-muted-foreground">Loading…</div>;
+  return (
+    <div className="space-y-2">
+      <Skeleton className="h-9 w-20" />
+      <Skeleton className="h-3 w-32" />
+    </div>
+  );
 }
 
 function EmptyMsg({ children }: { children: React.ReactNode }) {

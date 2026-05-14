@@ -5,6 +5,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { Check } from "lucide-react";
 import { PageShell, PageHeader } from "@/components/layout/page-shell";
+import { PageHeaderSkeleton, DetailFormSkeleton } from "@/components/layout/skeletons";
 import { format } from "date-fns";
 import { toast } from "sonner";
 
@@ -76,7 +77,7 @@ function CampaignWorkspace() {
     onError: (e: any) => toast.error(e?.message ?? "Cannot complete"),
   });
 
-  if (!campaign) return <div className="text-muted-foreground">Loading…</div>;
+  if (!campaign) return (<PageShell><PageHeaderSkeleton /><DetailFormSkeleton /></PageShell>);
   const pct = campaign.total_items
     ? Math.round((campaign.decided_items / campaign.total_items) * 100)
     : 0;

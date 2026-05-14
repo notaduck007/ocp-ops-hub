@@ -15,6 +15,7 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { PolicyStatusBadge } from "@/components/policies/badges";
 import { PageShell, PageHeader } from "@/components/layout/page-shell";
+import { PageHeaderSkeleton, DetailFormSkeleton } from "@/components/layout/skeletons";
 import { useCurrentRole } from "@/hooks/use-auth";
 import {
   approveVersion,
@@ -101,7 +102,7 @@ function PolicyDetailPage() {
     onError: (e: any) => toast.error(e?.message ?? "Failed"),
   });
 
-  if (isLoading) return <div className="text-muted-foreground">Loading…</div>;
+  if (isLoading) return (<PageShell><PageHeaderSkeleton /><DetailFormSkeleton /></PageShell>);
   if (!policy) return <div>Policy not found.</div>;
 
   return (

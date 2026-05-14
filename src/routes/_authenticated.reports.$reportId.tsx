@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { PageShell, PageHeader } from "@/components/layout/page-shell";
+import { PageHeaderSkeleton, DetailFormSkeleton } from "@/components/layout/skeletons";
 import {
   getDrReadinessReport,
   getGovernanceReport,
@@ -98,7 +99,7 @@ function GovernanceBody({ from, to }: { from: string; to: string }) {
     queryKey: ["report-gov", from, to],
     queryFn: () => fn({ data: { from: `${from}T00:00:00Z`, to: `${to}T23:59:59Z` } }),
   });
-  if (isLoading || !data) return <p className="text-sm text-muted-foreground">Loading…</p>;
+  if (isLoading || !data) return <DetailFormSkeleton rows={3} />;
   return (
     <div className="space-y-6">
       <Section title={`Risks (accepted/closed): ${data.risks.length}`}>
@@ -148,7 +149,7 @@ function GovernanceBody({ from, to }: { from: string; to: string }) {
 function MfaBody() {
   const fn = useServerFn(getMfaCoverageReport);
   const { data, isLoading } = useQuery({ queryKey: ["report-mfa"], queryFn: () => fn() });
-  if (isLoading || !data) return <p className="text-sm text-muted-foreground">Loading…</p>;
+  if (isLoading || !data) return <DetailFormSkeleton rows={3} />;
   return (
     <table className="w-full text-sm">
       <thead className="border-b text-left">
@@ -180,7 +181,7 @@ function MfaBody() {
 function VendorSlaBody() {
   const fn = useServerFn(getVendorSlaReport);
   const { data, isLoading } = useQuery({ queryKey: ["report-vendor-sla"], queryFn: () => fn() });
-  if (isLoading || !data) return <p className="text-sm text-muted-foreground">Loading…</p>;
+  if (isLoading || !data) return <DetailFormSkeleton rows={3} />;
   return (
     <div className="space-y-6">
       <Section title={`Open SLA breaches: ${data.open_breaches.length}`}>
@@ -215,7 +216,7 @@ function VendorSlaBody() {
 function DrBody() {
   const fn = useServerFn(getDrReadinessReport);
   const { data, isLoading } = useQuery({ queryKey: ["report-dr"], queryFn: () => fn() });
-  if (isLoading || !data) return <p className="text-sm text-muted-foreground">Loading…</p>;
+  if (isLoading || !data) return <DetailFormSkeleton rows={3} />;
   return (
     <div className="space-y-6">
       {data.systems.map((s: any) => (

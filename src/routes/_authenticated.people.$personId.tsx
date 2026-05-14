@@ -31,6 +31,7 @@ import { PersonStatusBadge, PersonTypeBadge, RoleLevelBadge } from "@/components
 import { PersonForm } from "@/components/people/person-form";
 import { AccessGrantForm } from "@/components/access/access-grant-form";
 import { PageShell, PageHeader } from "@/components/layout/page-shell";
+import { PageHeaderSkeleton, DetailFormSkeleton, TableSkeleton } from "@/components/layout/skeletons";
 import { useCurrentRole } from "@/hooks/use-auth";
 import {
   archivePerson,
@@ -79,7 +80,7 @@ function PersonDetailPage() {
     onError: (err: any) => toast.error(String(err?.message ?? err)),
   });
 
-  if (isLoading) return <div className="text-sm text-muted-foreground">Loading…</div>;
+  if (isLoading) return (<PageShell><PageHeaderSkeleton /><DetailFormSkeleton /></PageShell>);
   if (!person) {
     return (
       <div className="space-y-3">
@@ -269,11 +270,7 @@ function AccessTab({ personId, canEdit }: { personId: string; canEdit: boolean }
           </TableHeader>
           <TableBody>
             {isLoading ? (
-              <TableRow>
-                <TableCell colSpan={6} className="text-center text-sm text-muted-foreground">
-                  Loading…
-                </TableCell>
-              </TableRow>
+              <TableSkeleton rows={8} cols={6} />
             ) : grants.length === 0 ? (
               <TableRow>
                 <TableCell colSpan={6} className="text-center text-sm text-muted-foreground">

@@ -20,6 +20,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { TableSkeleton } from "@/components/layout/skeletons";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
@@ -197,11 +198,7 @@ function RisksListPage() {
           </TableHeader>
           <TableBody>
             {isLoading ? (
-              <TableRow>
-                <TableCell colSpan={8} className="text-center text-sm text-muted-foreground">
-                  Loading…
-                </TableCell>
-              </TableRow>
+              <TableSkeleton rows={8} cols={8} />
             ) : rows.length === 0 ? (
               <TableRow>
                 <TableCell colSpan={8} className="text-center text-sm text-muted-foreground">

@@ -24,6 +24,7 @@ import {
 import { ScenarioBadge, DrResultBadge } from "@/components/runbooks/badges";
 import { LogTestDialog } from "@/components/runbooks/log-test-dialog";
 import { PageShell, PageHeader } from "@/components/layout/page-shell";
+import { PageHeaderSkeleton, DetailFormSkeleton } from "@/components/layout/skeletons";
 import {
   getRunbook,
   listDrTests,
@@ -74,7 +75,7 @@ function RunbookDetail() {
     onError: (e: any) => toast.error(e?.message ?? "Failed"),
   });
 
-  if (isLoading) return <div className="text-muted-foreground">Loading…</div>;
+  if (isLoading) return (<PageShell><PageHeaderSkeleton /><DetailFormSkeleton /></PageShell>);
   if (!rb) return <div>Runbook not found.</div>;
 
   return (

@@ -22,6 +22,8 @@ import {
 } from "@/components/ui/select";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import type { Database } from "@/integrations/supabase/types";
+import { Skeleton } from "@/components/ui/skeleton";
+import { TableSkeleton } from "@/components/layout/skeletons";
 
 type AppRole = Database["public"]["Enums"]["app_role"];
 
@@ -54,7 +56,7 @@ function AdminUsersPage() {
   });
 
   if (roleLoading) {
-    return <p className="text-sm text-muted-foreground">Loading…</p>;
+    return <Skeleton className="h-4 w-24" />;
   }
 
   if (!isAdmin) {
@@ -87,13 +89,7 @@ function AdminUsersPage() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {usersQuery.isLoading && (
-              <TableRow>
-                <TableCell colSpan={3} className="text-center text-sm text-muted-foreground">
-                  Loading…
-                </TableCell>
-              </TableRow>
-            )}
+            {usersQuery.isLoading && <TableSkeleton rows={6} cols={3} />}
             {usersQuery.data?.map((u) => (
               <TableRow key={u.id}>
                 <TableCell>

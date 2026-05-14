@@ -3,6 +3,7 @@ import { createFileRoute, Outlet, useNavigate } from "@tanstack/react-router";
 
 import { supabase } from "@/integrations/supabase/client";
 import { AppLayout } from "@/components/layout/app-layout";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export const Route = createFileRoute("/_authenticated")({
   component: AuthenticatedLayout,
@@ -38,8 +39,8 @@ function AuthenticatedLayout() {
 
   if (!checked) {
     return (
-      <div className="flex min-h-screen items-center justify-center text-sm text-muted-foreground">
-        Loading…
+      <div className="flex min-h-screen items-center justify-center">
+        <Skeleton className="h-8 w-40" />
       </div>
     );
   }

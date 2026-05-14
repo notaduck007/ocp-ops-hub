@@ -16,6 +16,7 @@ import {
 } from "@/components/ui/table";
 import { DrResultBadge } from "@/components/runbooks/badges";
 import { getDrPlan } from "@/lib/dr-plan.functions";
+import { DetailFormSkeleton } from "@/components/layout/skeletons";
 
 export const Route = createFileRoute("/_authenticated/dr-plan")({
   component: DrPlanPage,
@@ -36,7 +37,7 @@ function DrPlanPage() {
     queryFn: () => fn(),
   });
 
-  if (isLoading || !data) return <div className="text-muted-foreground">Loading…</div>;
+  if (isLoading || !data) return <DetailFormSkeleton rows={5} />;
 
   return (
     <div className="space-y-8 print:space-y-6">

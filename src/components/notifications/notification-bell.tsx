@@ -11,6 +11,7 @@ import {
   markAllNotificationsRead,
   markNotificationRead,
 } from "@/lib/notifications.functions";
+import { ListItemSkeleton } from "@/components/layout/skeletons";
 
 export function NotificationBell() {
   const qc = useQueryClient();
@@ -18,7 +19,7 @@ export function NotificationBell() {
   const markOne = useServerFn(markNotificationRead);
   const markAll = useServerFn(markAllNotificationsRead);
 
-  const { data: items = [] } = useQuery({
+  const { data: items = [], isLoading } = useQuery({
     queryKey: ["notifications"],
     queryFn: () => list(),
     refetchInterval: 60_000,
@@ -56,7 +57,14 @@ export function NotificationBell() {
           )}
         </div>
         <div className="max-h-96 overflow-y-auto">
-          {items.length === 0 ? (
+          {isLoading ? (
+            <>
+              <ListItemSkeleton />
+              <ListItemSkeleton />
+              <ListItemSkeleton />
+              <ListItemSkeleton />
+            </>
+          ) : items.length === 0 ? (
             <div className="p-6 text-center text-sm text-muted-foreground">All caught up.</div>
           ) : items.map((n: any) => (
             <button

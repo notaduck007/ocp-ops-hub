@@ -5,6 +5,7 @@ import { useServerFn } from "@tanstack/react-start";
 import { Edit } from "lucide-react";
 
 import { PageShell, PageHeader } from "@/components/layout/page-shell";
+import { PageHeaderSkeleton, DetailFormSkeleton } from "@/components/layout/skeletons";
 import ReactMarkdown from "react-markdown";
 
 import { Button } from "@/components/ui/button";
@@ -30,7 +31,7 @@ function ContinuityDetail() {
     queryFn: () => get({ data: { id: scenarioId } }),
   });
 
-  if (isLoading) return <div className="text-muted-foreground">Loading…</div>;
+  if (isLoading) return (<PageShell><PageHeaderSkeleton /><DetailFormSkeleton /></PageShell>);
   if (!s) return <div>Scenario not found.</div>;
 
   return (

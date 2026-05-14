@@ -29,6 +29,7 @@ import {
 } from "@/components/changes/badges";
 import { SystemMultiCombobox } from "@/components/incidents/system-multi-combobox";
 import { PageShell, PageHeader } from "@/components/layout/page-shell";
+import { PageHeaderSkeleton, DetailFormSkeleton } from "@/components/layout/skeletons";
 import { RecordLink } from "@/components/record-link";
 import {
   getChange,
@@ -117,7 +118,7 @@ function ChangeDetailPage() {
   });
 
   if (!change) {
-    return <div className="text-sm text-muted-foreground">Loading…</div>;
+    return (<PageShell><PageHeaderSkeleton /><DetailFormSkeleton /></PageShell>);
   }
 
   return (
