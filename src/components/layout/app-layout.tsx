@@ -54,16 +54,9 @@ const NAV_GROUPS: NavGroup[] = [
       { to: "/systems", label: "Systems", icon: Server },
       { to: "/people", label: "People", icon: UserCircle },
       { to: "/access", label: "Access", icon: KeyRound },
+      { to: "/reviews", label: "Access Reviews", icon: ClipboardCheck },
       { to: "/vendors", label: "Vendors", icon: Building2 },
       { to: "/slas", label: "SLAs", icon: FileCheck2 },
-    ],
-  },
-  {
-    label: "Governance",
-    items: [
-      { to: "/risks", label: "Risks", icon: ShieldAlert },
-      { to: "/policies", label: "Policies", icon: BookText },
-      { to: "/reviews", label: "Access Reviews", icon: ClipboardCheck },
     ],
   },
   {
@@ -71,6 +64,13 @@ const NAV_GROUPS: NavGroup[] = [
     items: [
       { to: "/incidents", label: "Incidents", icon: AlertOctagon },
       { to: "/changes", label: "Changes", icon: GitPullRequestArrow },
+    ],
+  },
+  {
+    label: "Governance",
+    items: [
+      { to: "/risks", label: "Risks", icon: ShieldAlert },
+      { to: "/policies", label: "Policies", icon: BookText },
     ],
   },
   {
