@@ -1,6 +1,6 @@
 import { EvidenceFilesTab } from "@/components/evidence/files-tab";
 import { useState } from "react";
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { format, formatDistanceToNow } from "date-fns";
@@ -30,7 +30,10 @@ import {
 import { SystemMultiCombobox } from "@/components/incidents/system-multi-combobox";
 import { PageShell, PageHeader } from "@/components/layout/page-shell";
 import { PageHeaderSkeleton, DetailFormSkeleton } from "@/components/layout/skeletons";
+import { EditToggle } from "@/components/layout/edit-toggle";
+import { ChangeSummary } from "@/components/changes/change-summary";
 import { RecordLink } from "@/components/record-link";
+import { detailSearchValidator } from "@/lib/detail-search";
 import {
   getChange,
   listChangeAudit,
@@ -44,11 +47,14 @@ import { useCurrentRole } from "@/hooks/use-auth";
 export const Route = createFileRoute(
   "/_authenticated/changes/$changeId",
 )({
+  validateSearch: detailSearchValidator,
   component: ChangeDetailPage,
 });
 
 function ChangeDetailPage() {
   const { changeId } = Route.useParams();
+  const { edit } = Route.useSearch();
+  const navigate = useNavigate();
   const qc = useQueryClient();
   const { data: role } = useCurrentRole();
   const isAdmin = role === "admin";
@@ -121,6 +127,11 @@ function ChangeDetailPage() {
     return (<PageShell><PageHeaderSkeleton /><DetailFormSkeleton /></PageShell>);
   }
 
+  const overviewEditable = canEdit && (isAdmin || change.status === "proposed");
+  const editing = !!edit && overviewEditable;
+  const enterEdit = () => navigate({ to: ".", search: { edit: true } });
+  const exitEdit = () => navigate({ to: ".", search: { edit: undefined } });
+
   return (
     <PageShell>
       <PageHeader
@@ -149,6 +160,11 @@ function ChangeDetailPage() {
             )}
           </>
         }
+        actions={
+          overviewEditable && (
+            <EditToggle editing={editing} onEdit={enterEdit} onCancel={exitEdit} />
+          )
+        }
       />
 
       <Tabs defaultValue="overview">
@@ -163,13 +179,20 @@ function ChangeDetailPage() {
         </TabsList>
 
         <TabsContent value="overview" className="space-y-4">
-          <OverviewTab
-            change={change}
-            canEdit={canEdit && (isAdmin || change.status === "proposed")}
-            onSave={(patch) => updateMutation.mutate(patch)}
-            onSetSystems={(ids) => systemsMutation.mutate(ids)}
-            incidentSearch={incidentSearch}
-          />
+          {editing ? (
+            <OverviewTab
+              change={change}
+              canEdit={true}
+              onSave={async (patch) => {
+                await updateMutation.mutateAsync(patch);
+                exitEdit();
+              }}
+              onSetSystems={(ids) => systemsMutation.mutate(ids)}
+              incidentSearch={incidentSearch}
+            />
+          ) : (
+            <ChangeSummary change={change} />
+          )}
         </TabsContent>
 
         <TabsContent value="approval" className="space-y-4">
@@ -255,7 +278,7 @@ function OverviewTab({
 }: {
   change: any;
   canEdit: boolean;
-  onSave: (patch: Record<string, unknown>) => void;
+  onSave: (patch: Record<string, unknown>) => void | Promise<void>;
   onSetSystems: (ids: string[]) => void;
   incidentSearch: ReturnType<typeof useServerFn<typeof searchOpenIncidents>>;
 }) {

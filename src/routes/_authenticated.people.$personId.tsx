@@ -29,9 +29,12 @@ import {
 } from "@/components/ui/alert-dialog";
 import { PersonStatusBadge, PersonTypeBadge, RoleLevelBadge } from "@/components/people/badges";
 import { PersonForm } from "@/components/people/person-form";
+import { PersonSummary } from "@/components/people/person-summary";
 import { AccessGrantForm } from "@/components/access/access-grant-form";
 import { PageShell, PageHeader } from "@/components/layout/page-shell";
 import { PageHeaderSkeleton, DetailFormSkeleton, TableSkeleton } from "@/components/layout/skeletons";
+import { EditToggle } from "@/components/layout/edit-toggle";
+import { detailSearchValidator } from "@/lib/detail-search";
 import { useCurrentRole } from "@/hooks/use-auth";
 import {
   archivePerson,
@@ -43,16 +46,22 @@ import {
 } from "@/lib/people.functions";
 
 export const Route = createFileRoute("/_authenticated/people/$personId")({
+  validateSearch: detailSearchValidator,
   component: PersonDetailPage,
 });
 
 function PersonDetailPage() {
   const { personId } = Route.useParams();
+  const { edit } = Route.useSearch();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const { data: role } = useCurrentRole();
   const canEdit = role === "admin" || role === "editor";
   const isAdmin = role === "admin";
+  const editing = !!edit && canEdit;
+
+  const enterEdit = () => navigate({ to: ".", search: { edit: true } });
+  const exitEdit = () => navigate({ to: ".", search: { edit: undefined } });
 
   const get = useServerFn(getPerson);
   const audit = useServerFn(listPersonAudit);
@@ -108,25 +117,30 @@ function PersonDetailPage() {
         }
         meta={person.email ?? undefined}
         actions={
-          isAdmin && (
-            <Button
-              variant="outline"
-              onClick={() => archiveMut.mutate(!archived)}
-              disabled={archiveMut.isPending}
-            >
-              {archived ? (
-                <>
-                  <ArchiveRestore className="mr-2 h-4 w-4" />
-                  Unarchive
-                </>
-              ) : (
-                <>
-                  <Archive className="mr-2 h-4 w-4" />
-                  Archive
-                </>
-              )}
-            </Button>
-          )
+          <div className="flex items-center gap-2">
+            {canEdit && (
+              <EditToggle editing={editing} onEdit={enterEdit} onCancel={exitEdit} />
+            )}
+            {isAdmin && (
+              <Button
+                variant="outline"
+                onClick={() => archiveMut.mutate(!archived)}
+                disabled={archiveMut.isPending}
+              >
+                {archived ? (
+                  <>
+                    <ArchiveRestore className="mr-2 h-4 w-4" />
+                    Unarchive
+                  </>
+                ) : (
+                  <>
+                    <Archive className="mr-2 h-4 w-4" />
+                    Archive
+                  </>
+                )}
+              </Button>
+            )}
+          </div>
         }
       />
 
@@ -138,7 +152,11 @@ function PersonDetailPage() {
         </TabsList>
 
         <TabsContent value="overview" className="mt-4 max-w-2xl">
-          <PersonForm mode="edit" person={person} readOnly={!canEdit} />
+          {editing ? (
+            <PersonForm mode="edit" person={person} readOnly={false} onSaved={() => exitEdit()} />
+          ) : (
+            <PersonSummary person={person} />
+          )}
         </TabsContent>
 
         <TabsContent value="access" className="mt-4">

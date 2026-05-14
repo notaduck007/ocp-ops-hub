@@ -1,6 +1,6 @@
 import { EvidenceFilesTab } from "@/components/evidence/files-tab";
 import { useMemo, useState } from "react";
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { Check } from "lucide-react";
@@ -14,8 +14,11 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { PolicyStatusBadge } from "@/components/policies/badges";
+import { PolicySummary } from "@/components/policies/policy-summary";
 import { PageShell, PageHeader } from "@/components/layout/page-shell";
 import { PageHeaderSkeleton, DetailFormSkeleton } from "@/components/layout/skeletons";
+import { EditToggle } from "@/components/layout/edit-toggle";
+import { detailSearchValidator } from "@/lib/detail-search";
 import { useCurrentRole } from "@/hooks/use-auth";
 import {
   approveVersion,
@@ -26,11 +29,14 @@ import {
 } from "@/lib/policies.functions";
 
 export const Route = createFileRoute("/_authenticated/policies/$policyId")({
+  validateSearch: detailSearchValidator,
   component: PolicyDetailPage,
 });
 
 function PolicyDetailPage() {
   const { policyId } = Route.useParams();
+  const { edit } = Route.useSearch();
+  const navigate = useNavigate();
   const qc = useQueryClient();
   const { data: role } = useCurrentRole();
   const canEdit = role === "admin" || role === "editor";
@@ -61,14 +67,15 @@ function PolicyDetailPage() {
     [versions, policy?.version],
   );
 
-  const [editing, setEditing] = useState(false);
+  const editing = !!edit && canEdit && policy?.status !== "retired";
   const [draftBody, setDraftBody] = useState("");
 
-  const startEdit = () => {
+  const enterEdit = () => {
     const seedDraft = drafts[0];
     setDraftBody(seedDraft?.body_md ?? policy?.body_md ?? "");
-    setEditing(true);
+    navigate({ to: ".", search: { edit: true } });
   };
+  const exitEdit = () => navigate({ to: ".", search: { edit: undefined } });
 
   const saveDraft = useMutation({
     mutationFn: () => draftFn({ data: { policy_id: policyId, body_md: draftBody } }),
@@ -76,7 +83,7 @@ function PolicyDetailPage() {
       toast.success("Draft saved");
       qc.invalidateQueries({ queryKey: ["policy-versions", policyId] });
       qc.invalidateQueries({ queryKey: ["policy", policyId] });
-      setEditing(false);
+      exitEdit();
     },
     onError: (e: any) => toast.error(e?.message ?? "Failed"),
   });
@@ -125,11 +132,21 @@ function PolicyDetailPage() {
           </>
         }
         actions={
-          isAdmin && policy.status !== "retired" && (
-            <Button variant="outline" onClick={() => retire.mutate()}>
-              Retire policy
-            </Button>
-          )
+          <div className="flex items-center gap-2">
+            {canEdit && policy.status !== "retired" && (
+              <EditToggle
+                editing={editing}
+                onEdit={enterEdit}
+                onCancel={exitEdit}
+                editLabel="Edit (creates new draft)"
+              />
+            )}
+            {isAdmin && policy.status !== "retired" && (
+              <Button variant="outline" onClick={() => retire.mutate()}>
+                Retire policy
+              </Button>
+            )}
+          </div>
         }
       />
 
@@ -155,24 +172,11 @@ function PolicyDetailPage() {
                 <Button onClick={() => saveDraft.mutate()} disabled={saveDraft.isPending || !draftBody.trim()}>
                   Save draft
                 </Button>
-                <Button variant="ghost" onClick={() => setEditing(false)}>Cancel</Button>
+                <Button variant="ghost" onClick={exitEdit}>Cancel</Button>
               </div>
             </div>
           ) : (
-            <>
-              {canEdit && policy.status !== "retired" && (
-                <div className="flex justify-end">
-                  <Button variant="outline" onClick={startEdit}>
-                    Edit (creates new draft version)
-                  </Button>
-                </div>
-              )}
-              <Card>
-                <CardContent className="prose prose-sm max-w-none p-6 dark:prose-invert">
-                  <ReactMarkdown>{policy.body_md}</ReactMarkdown>
-                </CardContent>
-              </Card>
-            </>
+            <PolicySummary policy={policy} />
           )}
         </TabsContent>
 

@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { toast } from "sonner";
@@ -8,6 +8,9 @@ import ReactMarkdown from "react-markdown";
 
 import { PageShell, PageHeader } from "@/components/layout/page-shell";
 import { PageHeaderSkeleton, DetailFormSkeleton } from "@/components/layout/skeletons";
+import { EditToggle } from "@/components/layout/edit-toggle";
+import { IncidentSummary } from "@/components/incidents/incident-summary";
+import { detailSearchValidator } from "@/lib/detail-search";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -44,11 +47,14 @@ import {
 export const Route = createFileRoute(
   "/_authenticated/incidents/$incidentId",
 )({
+  validateSearch: detailSearchValidator,
   component: IncidentDetailPage,
 });
 
 function IncidentDetailPage() {
   const { incidentId } = Route.useParams();
+  const { edit } = Route.useSearch();
+  const navigate = useNavigate();
   const qc = useQueryClient();
   const { data: role } = useCurrentRole();
   const isAdmin = role === "admin";
@@ -91,6 +97,10 @@ function IncidentDetailPage() {
     return (<PageShell><PageHeaderSkeleton /><DetailFormSkeleton /></PageShell>);
   }
 
+  const editing = !!edit && canEdit;
+  const enterEdit = () => navigate({ to: ".", search: { edit: true } });
+  const exitEdit = () => navigate({ to: ".", search: { edit: undefined } });
+
   return (
     <PageShell>
       <PageHeader
@@ -111,6 +121,11 @@ function IncidentDetailPage() {
             by {incident.declarer?.full_name ?? incident.declarer?.email ?? "—"}
           </>
         }
+        actions={
+          canEdit && (
+            <EditToggle editing={editing} onEdit={enterEdit} onCancel={exitEdit} />
+          )
+        }
       />
 
       <Tabs defaultValue="overview">
@@ -124,13 +139,20 @@ function IncidentDetailPage() {
         </TabsList>
 
         <TabsContent value="overview" className="space-y-4 pt-4">
-          <OverviewForm
-            incident={incident}
-            canEdit={canEdit}
-            isAdmin={isAdmin}
-            onSave={(patch) => updateMutation.mutate(patch)}
-            saving={updateMutation.isPending}
-          />
+          {editing ? (
+            <OverviewForm
+              incident={incident}
+              canEdit={canEdit}
+              isAdmin={isAdmin}
+              onSave={async (patch) => {
+                await updateMutation.mutateAsync(patch);
+                exitEdit();
+              }}
+              saving={updateMutation.isPending}
+            />
+          ) : (
+            <IncidentSummary incident={incident} />
+          )}
         </TabsContent>
 
         <TabsContent value="timeline" className="pt-4">
@@ -206,7 +228,7 @@ function OverviewForm({
   incident: NonNullable<Awaited<ReturnType<typeof getIncident>>>;
   canEdit: boolean;
   isAdmin: boolean;
-  onSave: (patch: any) => void;
+  onSave: (patch: any) => void | Promise<void>;
   saving: boolean;
 }) {
   const [title, setTitle] = useState(incident.title);

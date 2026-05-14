@@ -7,6 +7,9 @@ import { toast } from "sonner";
 
 import { PageShell, PageHeader } from "@/components/layout/page-shell";
 import { PageHeaderSkeleton, DetailFormSkeleton } from "@/components/layout/skeletons";
+import { EditToggle } from "@/components/layout/edit-toggle";
+import { VendorSummary } from "@/components/vendors/vendor-summary";
+import { detailSearchValidator } from "@/lib/detail-search";
 
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -32,16 +35,22 @@ import {
 } from "@/lib/slas.functions";
 
 export const Route = createFileRoute("/_authenticated/vendors/$vendorId")({
+  validateSearch: detailSearchValidator,
   component: VendorDetailPage,
 });
 
 function VendorDetailPage() {
   const { vendorId } = Route.useParams();
+  const { edit } = Route.useSearch();
   const navigate = useNavigate();
   const qc = useQueryClient();
   const { data: role } = useCurrentRole();
   const canEdit = role === "admin" || role === "editor";
   const isAdmin = role === "admin";
+  const editing = !!edit && canEdit;
+
+  const enterEdit = () => navigate({ to: ".", search: { edit: true } });
+  const exitEdit = () => navigate({ to: ".", search: { edit: undefined } });
 
   const get = useServerFn(getVendor);
   const archive = useServerFn(archiveVendor);
@@ -114,11 +123,16 @@ function VendorDetailPage() {
           </>
         }
         actions={
-          isAdmin && (
-            <Button variant="outline" onClick={() => archiveMut.mutate(!archived)} disabled={archiveMut.isPending}>
-              {archived ? <><ArchiveRestore className="mr-2 h-4 w-4" />Unarchive</> : <><Archive className="mr-2 h-4 w-4" />Archive</>}
-            </Button>
-          )
+          <div className="flex items-center gap-2">
+            {canEdit && (
+              <EditToggle editing={editing} onEdit={enterEdit} onCancel={exitEdit} />
+            )}
+            {isAdmin && (
+              <Button variant="outline" onClick={() => archiveMut.mutate(!archived)} disabled={archiveMut.isPending}>
+                {archived ? <><ArchiveRestore className="mr-2 h-4 w-4" />Unarchive</> : <><Archive className="mr-2 h-4 w-4" />Archive</>}
+              </Button>
+            )}
+          </div>
         }
       />
 
@@ -131,7 +145,11 @@ function VendorDetailPage() {
         </TabsList>
 
         <TabsContent value="overview" className="mt-4 max-w-3xl">
-          <VendorForm mode="edit" vendor={vendor} readOnly={!canEdit} />
+          {editing ? (
+            <VendorForm mode="edit" vendor={vendor} readOnly={false} onSaved={() => exitEdit()} />
+          ) : (
+            <VendorSummary vendor={vendor} />
+          )}
         </TabsContent>
 
         <TabsContent value="systems" className="mt-4">

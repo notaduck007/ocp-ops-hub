@@ -19,27 +19,36 @@ import {
   Table, TableBody, TableCell, TableHead, TableHeader, TableRow,
 } from "@/components/ui/table";
 import { SlaForm } from "@/components/slas/sla-form";
+import { SlaSummary } from "@/components/slas/sla-summary";
 import { BreachForm } from "@/components/slas/breach-form";
 import { BreachStatusBadge } from "@/components/vendors/badges";
 import { PageShell, PageHeader } from "@/components/layout/page-shell";
 import { PageHeaderSkeleton, DetailFormSkeleton } from "@/components/layout/skeletons";
+import { EditToggle } from "@/components/layout/edit-toggle";
 import { RecordLink } from "@/components/record-link";
+import { detailSearchValidator } from "@/lib/detail-search";
 import { useCurrentRole } from "@/hooks/use-auth";
 import {
   BREACH_STATUSES, getSla, listBreaches, listSlaAudit, updateBreach,
 } from "@/lib/slas.functions";
 
 export const Route = createFileRoute("/_authenticated/slas/$slaId")({
+  validateSearch: detailSearchValidator,
   component: SlaDetailPage,
 });
 
 function SlaDetailPage() {
   const { slaId } = Route.useParams();
+  const { edit } = Route.useSearch();
   const navigate = useNavigate();
   const qc = useQueryClient();
   const { data: role } = useCurrentRole();
   const canEdit = role === "admin" || role === "editor";
   const isAdmin = role === "admin";
+  const editing = !!edit && canEdit;
+
+  const enterEdit = () => navigate({ to: ".", search: { edit: true } });
+  const exitEdit = () => navigate({ to: ".", search: { edit: undefined } });
 
   const get = useServerFn(getSla);
   const lBreaches = useServerFn(listBreaches);
@@ -92,6 +101,11 @@ function SlaDetailPage() {
             {sla.system && <span>· {sla.system.name}</span>}
           </span>
         }
+        actions={
+          canEdit && (
+            <EditToggle editing={editing} onEdit={enterEdit} onCancel={exitEdit} />
+          )
+        }
       />
 
       <Tabs defaultValue="overview">
@@ -103,7 +117,11 @@ function SlaDetailPage() {
         </TabsList>
 
         <TabsContent value="overview" className="mt-4 max-w-2xl">
-          <SlaForm mode="edit" sla={sla} readOnly={!canEdit} />
+          {editing ? (
+            <SlaForm mode="edit" sla={sla} readOnly={false} onSaved={() => exitEdit()} />
+          ) : (
+            <SlaSummary sla={sla} />
+          )}
         </TabsContent>
 
         <TabsContent value="breaches" className="mt-4 space-y-3">
