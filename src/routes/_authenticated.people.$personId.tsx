@@ -198,7 +198,7 @@ function PersonDetailPage() {
           </TabsContent>
         )}
       </Tabs>
-    </div>
+    </PageShell>
   );
 }
 
