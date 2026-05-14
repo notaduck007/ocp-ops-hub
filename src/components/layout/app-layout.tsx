@@ -1,6 +1,6 @@
 import { type ReactNode } from "react";
 import { Link, useRouterState } from "@tanstack/react-router";
-import { LayoutDashboard, Users, Search, Server, UserCircle, KeyRound, Building2, FileCheck2, ShieldAlert } from "lucide-react";
+import { LayoutDashboard, Users, Search, Server, UserCircle, KeyRound, Building2, FileCheck2, ShieldAlert, AlertOctagon, GitPullRequestArrow } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import { Input } from "@/components/ui/input";
@@ -45,6 +45,13 @@ const NAV_GROUPS: NavGroup[] = [
   {
     label: "Governance",
     items: [{ to: "/risks", label: "Risks", icon: ShieldAlert }],
+  },
+  {
+    label: "Operations",
+    items: [
+      { to: "/incidents", label: "Incidents", icon: AlertOctagon },
+      { to: "/changes", label: "Changes", icon: GitPullRequestArrow },
+    ],
   },
   {
     label: "Admin",
