@@ -245,8 +245,8 @@ export const updateBreach = createServerFn({ method: "POST" })
       patch.closed_at = new Date().toISOString();
     }
 
-    const { data: next, error } = await supabase
-      .from("sla_breaches").update(patch).eq("id", data.id).select("*").single();
+    const { data: next, error } = await (supabase
+      .from("sla_breaches") as any).update(patch).eq("id", data.id).select("*").single();
     if (error) throw new Error(error.message);
 
     const before: Record<string, Json> = {};
