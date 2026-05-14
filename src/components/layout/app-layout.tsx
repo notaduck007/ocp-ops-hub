@@ -5,6 +5,7 @@ import { useAttentionCount } from "@/hooks/use-attention";
 import { NotificationBell } from "@/components/notifications/notification-bell";
 import { CommandPalette } from "@/components/command-palette";
 import { Logo } from "@/components/brand/logo";
+import { APP_VERSION } from "@/lib/build-info";
 
 import { cn } from "@/lib/utils";
 
@@ -21,6 +22,12 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { supabase } from "@/integrations/supabase/client";
 
 type NavItem = {
@@ -47,16 +54,9 @@ const NAV_GROUPS: NavGroup[] = [
       { to: "/systems", label: "Systems", icon: Server },
       { to: "/people", label: "People", icon: UserCircle },
       { to: "/access", label: "Access", icon: KeyRound },
+      { to: "/reviews", label: "Access Reviews", icon: ClipboardCheck },
       { to: "/vendors", label: "Vendors", icon: Building2 },
       { to: "/slas", label: "SLAs", icon: FileCheck2 },
-    ],
-  },
-  {
-    label: "Governance",
-    items: [
-      { to: "/risks", label: "Risks", icon: ShieldAlert },
-      { to: "/policies", label: "Policies", icon: BookText },
-      { to: "/reviews", label: "Access Reviews", icon: ClipboardCheck },
     ],
   },
   {
@@ -64,6 +64,13 @@ const NAV_GROUPS: NavGroup[] = [
     items: [
       { to: "/incidents", label: "Incidents", icon: AlertOctagon },
       { to: "/changes", label: "Changes", icon: GitPullRequestArrow },
+    ],
+  },
+  {
+    label: "Governance",
+    items: [
+      { to: "/risks", label: "Risks", icon: ShieldAlert },
+      { to: "/policies", label: "Policies", icon: BookText },
     ],
   },
   {
@@ -110,62 +117,111 @@ function Sidebar({ collapsed, onToggle }: { collapsed: boolean; onToggle: () => 
   const isAdmin = useIsAdmin();
   const attentionCount = useAttentionCount();
 
+  const isItemActive = (to: string) =>
+    pathname === to || pathname.startsWith(to + "/");
+
   return (
-    <aside className={cn("hidden shrink-0 flex-col border-r bg-card md:flex", collapsed ? "w-14" : "w-60")}>
-      <div className="flex h-14 items-center justify-between gap-2 border-b px-3">
-        <Logo size="sm" withWordmark={!collapsed} />
-        <Button variant="ghost" size="icon" className="h-8 w-8" onClick={onToggle} aria-label="Toggle sidebar">
-          {collapsed ? <PanelLeftOpen className="h-4 w-4" /> : <PanelLeftClose className="h-4 w-4" />}
-        </Button>
-      </div>
-      <nav className="flex-1 space-y-4 p-2">
-        {NAV_GROUPS.map((group, gi) => {
-          const items = group.items.filter((i) => !i.adminOnly || isAdmin);
-          if (items.length === 0) return null;
-          return (
-            <div key={gi} className="space-y-1">
-              {group.label && !collapsed && (
-                <div className="px-3 pb-1 text-xs font-medium uppercase tracking-wide text-muted-foreground/70">
-                  {group.label}
-                </div>
-              )}
-              {items.map((item) => {
-                const Icon = item.icon;
-                const active = pathname === item.to || pathname.startsWith(item.to + "/");
-                const showBadge = item.badge === "live-count" && attentionCount > 0;
-                return (
-                  <Link
-                    key={item.to}
-                    to={item.to}
-                    title={collapsed ? item.label : undefined}
+    <TooltipProvider delayDuration={150}>
+      <aside className={cn("hidden shrink-0 flex-col border-r bg-card md:flex", collapsed ? "w-14" : "w-60")}>
+        <div className="flex h-14 items-center justify-between gap-2 border-b px-3">
+          <Logo size="sm" withWordmark={!collapsed} />
+          {collapsed ? (
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button variant="ghost" size="icon" className="h-8 w-8" onClick={onToggle} aria-label="Expand sidebar">
+                  <PanelLeftOpen className="h-4 w-4" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent side="right">Expand sidebar</TooltipContent>
+            </Tooltip>
+          ) : (
+            <Button variant="ghost" size="icon" className="h-8 w-8" onClick={onToggle} aria-label="Collapse sidebar">
+              <PanelLeftClose className="h-4 w-4" />
+            </Button>
+          )}
+        </div>
+        <nav className="flex-1 space-y-4 overflow-y-auto p-2">
+          {NAV_GROUPS.map((group, gi) => {
+            const items = group.items.filter((i) => !i.adminOnly || isAdmin);
+            if (items.length === 0) return null;
+            const groupActive = items.some((i) => isItemActive(i.to));
+            return (
+              <div key={gi} className="space-y-1">
+                {group.label && !collapsed && (
+                  <div
                     className={cn(
-                      "flex items-center gap-2 rounded-md px-3 py-2 text-sm transition-colors",
-                      collapsed && "justify-center px-2",
-                      active
-                        ? "bg-accent text-accent-foreground font-medium"
-                        : "text-muted-foreground hover:bg-accent/50 hover:text-foreground",
+                      "px-3 pb-1 text-xs font-medium uppercase tracking-wide transition-colors",
+                      groupActive ? "text-foreground" : "text-muted-foreground/70",
                     )}
                   >
-                    <Icon className="h-4 w-4" />
-                    {!collapsed && <span className="flex-1">{item.label}</span>}
-                    {showBadge && (
-                      <span
-                        className={cn(
-                          "rounded-full bg-red-500/15 px-1.5 py-0.5 text-[10px] font-semibold text-red-700",
-                          collapsed && "absolute",
-                        )}
-                      >
-                        {attentionCount}
-                      </span>
-                    )}
-                  </Link>
-                );
-              })}
+                    {group.label}
+                  </div>
+                )}
+                {items.map((item) => {
+                  const Icon = item.icon;
+                  const active = isItemActive(item.to);
+                  const showBadge = item.badge === "live-count" && attentionCount > 0;
+                  const link = (
+                    <Link
+                      key={item.to}
+                      to={item.to}
+                      className={cn(
+                        "relative flex items-center gap-2 rounded-md px-3 py-2 text-sm transition-colors",
+                        collapsed && "justify-center px-2",
+                        active
+                          ? "border-l-2 border-primary bg-primary/5 text-foreground font-medium"
+                          : "border-l-2 border-transparent text-muted-foreground hover:bg-accent/50 hover:text-foreground",
+                      )}
+                    >
+                      <Icon className="h-4 w-4" />
+                      {!collapsed && <span className="flex-1">{item.label}</span>}
+                      {showBadge && (
+                        <span
+                          className={cn(
+                            "rounded-full bg-red-500/15 px-1.5 py-0.5 text-[10px] font-semibold text-red-700",
+                            collapsed && "absolute right-1 top-1",
+                          )}
+                        >
+                          {attentionCount}
+                        </span>
+                      )}
+                    </Link>
+                  );
+                  if (collapsed) {
+                    return (
+                      <Tooltip key={item.to}>
+                        <TooltipTrigger asChild>{link}</TooltipTrigger>
+                        <TooltipContent side="right">{item.label}</TooltipContent>
+                      </Tooltip>
+                    );
+                  }
+                  return link;
+                })}
+              </div>
+            );
+          })}
+        </nav>
+        <div className="border-t px-3 py-2">
+          {collapsed ? (
+            <div className="flex justify-center">
+              <Badge variant="outline" className="px-1.5 py-0 text-[10px]">
+                {APP_VERSION}
+              </Badge>
             </div>
-          );
-        })}
-      </nav>
-    </aside>
+          ) : (
+            <div className="flex items-center justify-between gap-2 text-xs text-muted-foreground">
+              <span className="inline-flex items-center gap-1">
+                <kbd className="rounded bg-muted px-1.5 py-0.5 text-[10px] font-medium">⌘K</kbd>
+                <span>to search</span>
+              </span>
+              <Badge variant="outline" className="px-1.5 py-0 text-[10px]">
+                {APP_VERSION}
+              </Badge>
+            </div>
+          )}
+        </div>
+      </aside>
+    </TooltipProvider>
   );
 }
 
@@ -280,7 +336,7 @@ function TopBar() {
       >
         <Search className="h-4 w-4" />
         <span className="flex-1 text-left">Search…</span>
-        <kbd className="rounded bg-muted px-1.5 py-0.5 text-[10px] font-medium">⌘K</kbd>
+        <kbd className="hidden rounded bg-muted px-1.5 py-0.5 text-[10px] font-medium lg:inline-flex">⌘K</kbd>
       </button>
       <NotificationBell />
       <UserMenu />
