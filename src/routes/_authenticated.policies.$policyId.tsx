@@ -1,9 +1,9 @@
 import { EvidenceFilesTab } from "@/components/evidence/files-tab";
 import { useMemo, useState } from "react";
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
-import { ArrowLeft, Check } from "lucide-react";
+import { Check } from "lucide-react";
 import { format } from "date-fns";
 import ReactMarkdown from "react-markdown";
 import { toast } from "sonner";
@@ -14,6 +14,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { PolicyStatusBadge } from "@/components/policies/badges";
+import { PageShell, PageHeader } from "@/components/layout/page-shell";
 import { useCurrentRole } from "@/hooks/use-auth";
 import {
   approveVersion,
