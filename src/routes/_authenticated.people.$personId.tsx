@@ -117,25 +117,30 @@ function PersonDetailPage() {
         }
         meta={person.email ?? undefined}
         actions={
-          isAdmin && (
-            <Button
-              variant="outline"
-              onClick={() => archiveMut.mutate(!archived)}
-              disabled={archiveMut.isPending}
-            >
-              {archived ? (
-                <>
-                  <ArchiveRestore className="mr-2 h-4 w-4" />
-                  Unarchive
-                </>
-              ) : (
-                <>
-                  <Archive className="mr-2 h-4 w-4" />
-                  Archive
-                </>
-              )}
-            </Button>
-          )
+          <div className="flex items-center gap-2">
+            {canEdit && (
+              <EditToggle editing={editing} onEdit={enterEdit} onCancel={exitEdit} />
+            )}
+            {isAdmin && (
+              <Button
+                variant="outline"
+                onClick={() => archiveMut.mutate(!archived)}
+                disabled={archiveMut.isPending}
+              >
+                {archived ? (
+                  <>
+                    <ArchiveRestore className="mr-2 h-4 w-4" />
+                    Unarchive
+                  </>
+                ) : (
+                  <>
+                    <Archive className="mr-2 h-4 w-4" />
+                    Archive
+                  </>
+                )}
+              </Button>
+            )}
+          </div>
         }
       />
 
@@ -147,7 +152,11 @@ function PersonDetailPage() {
         </TabsList>
 
         <TabsContent value="overview" className="mt-4 max-w-2xl">
-          <PersonForm mode="edit" person={person} readOnly={!canEdit} />
+          {editing ? (
+            <PersonForm mode="edit" person={person} readOnly={false} onSaved={() => exitEdit()} />
+          ) : (
+            <PersonSummary person={person} />
+          )}
         </TabsContent>
 
         <TabsContent value="access" className="mt-4">
