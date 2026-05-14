@@ -29,9 +29,12 @@ import {
 } from "@/components/ui/alert-dialog";
 import { PersonStatusBadge, PersonTypeBadge, RoleLevelBadge } from "@/components/people/badges";
 import { PersonForm } from "@/components/people/person-form";
+import { PersonSummary } from "@/components/people/person-summary";
 import { AccessGrantForm } from "@/components/access/access-grant-form";
 import { PageShell, PageHeader } from "@/components/layout/page-shell";
 import { PageHeaderSkeleton, DetailFormSkeleton, TableSkeleton } from "@/components/layout/skeletons";
+import { EditToggle } from "@/components/layout/edit-toggle";
+import { detailSearchValidator } from "@/lib/detail-search";
 import { useCurrentRole } from "@/hooks/use-auth";
 import {
   archivePerson,
