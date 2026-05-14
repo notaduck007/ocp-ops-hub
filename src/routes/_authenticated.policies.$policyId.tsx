@@ -35,6 +35,8 @@ export const Route = createFileRoute("/_authenticated/policies/$policyId")({
 
 function PolicyDetailPage() {
   const { policyId } = Route.useParams();
+  const { edit } = Route.useSearch();
+  const navigate = useNavigate();
   const qc = useQueryClient();
   const { data: role } = useCurrentRole();
   const canEdit = role === "admin" || role === "editor";
@@ -65,14 +67,15 @@ function PolicyDetailPage() {
     [versions, policy?.version],
   );
 
-  const [editing, setEditing] = useState(false);
+  const editing = !!edit && canEdit && policy?.status !== "retired";
   const [draftBody, setDraftBody] = useState("");
 
-  const startEdit = () => {
+  const enterEdit = () => {
     const seedDraft = drafts[0];
     setDraftBody(seedDraft?.body_md ?? policy?.body_md ?? "");
-    setEditing(true);
+    navigate({ to: ".", search: { edit: true } });
   };
+  const exitEdit = () => navigate({ to: ".", search: { edit: undefined } });
 
   const saveDraft = useMutation({
     mutationFn: () => draftFn({ data: { policy_id: policyId, body_md: draftBody } }),
@@ -80,7 +83,7 @@ function PolicyDetailPage() {
       toast.success("Draft saved");
       qc.invalidateQueries({ queryKey: ["policy-versions", policyId] });
       qc.invalidateQueries({ queryKey: ["policy", policyId] });
-      setEditing(false);
+      exitEdit();
     },
     onError: (e: any) => toast.error(e?.message ?? "Failed"),
   });
