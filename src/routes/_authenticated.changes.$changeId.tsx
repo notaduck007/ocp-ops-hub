@@ -53,6 +53,8 @@ export const Route = createFileRoute(
 
 function ChangeDetailPage() {
   const { changeId } = Route.useParams();
+  const { edit } = Route.useSearch();
+  const navigate = useNavigate();
   const qc = useQueryClient();
   const { data: role } = useCurrentRole();
   const isAdmin = role === "admin";
