@@ -121,41 +121,34 @@ function ChangeDetailPage() {
   }
 
   return (
-    <div className="space-y-4">
-      <div>
-        <Link
-          to="/changes"
-          className="text-xs text-muted-foreground hover:underline"
-        >
-          ← All changes
-        </Link>
-        <div className="mt-1 flex flex-wrap items-center gap-3">
-          <h1 className="text-2xl font-semibold tracking-tight">
-            {change.title}
-          </h1>
-          <ChangeClassBadge value={change.class} />
-          <ChangeStatusBadge value={change.status} />
-          <span className="text-xs text-muted-foreground">
+    <PageShell>
+      <PageHeader
+        backTo={{ to: "/changes", label: "All changes" }}
+        title={change.title}
+        badges={
+          <>
+            <ChangeClassBadge value={change.class} />
+            <ChangeStatusBadge value={change.status} />
+          </>
+        }
+        meta={
+          <>
             Requested{" "}
-            {formatDistanceToNow(new Date(change.created_at), {
-              addSuffix: true,
-            })}{" "}
+            {formatDistanceToNow(new Date(change.created_at), { addSuffix: true })}{" "}
             by {change.requester?.full_name ?? change.requester?.email ?? "—"}
-          </span>
-        </div>
-        {change.linked_incident && (
-          <p className="mt-1 text-xs text-muted-foreground">
-            Linked to incident:{" "}
-            <Link
-              to="/incidents/$incidentId"
-              params={{ incidentId: change.linked_incident.id }}
-              className="text-foreground hover:underline"
-            >
-              {change.linked_incident.title}
-            </Link>
-          </p>
-        )}
-      </div>
+            {change.linked_incident && (
+              <>
+                {" · Linked to "}
+                <RecordLink
+                  kind="incident"
+                  id={change.linked_incident.id}
+                  label={change.linked_incident.title}
+                />
+              </>
+            )}
+          </>
+        }
+      />
 
       <Tabs defaultValue="overview">
         <TabsList>
