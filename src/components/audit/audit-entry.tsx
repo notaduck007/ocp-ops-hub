@@ -12,8 +12,8 @@ import { AuditDiff } from "./diff-row";
 export interface AuditLogRow {
   id: string;
   action: string;
-  before: Record<string, unknown> | null;
-  after: Record<string, unknown> | null;
+  before: unknown;
+  after: unknown;
   created_at: string;
   actor: { full_name: string | null; email: string } | null;
   entity_type?: string | null;
@@ -55,8 +55,8 @@ export function AuditEntry({ entry, showEntity = false }: AuditEntryProps) {
         </TooltipProvider>
       </div>
       <AuditDiff
-        before={entry.before as Record<string, unknown> | null}
-        after={entry.after as Record<string, unknown> | null}
+        before={(entry.before ?? null) as Record<string, unknown> | null}
+        after={(entry.after ?? null) as Record<string, unknown> | null}
       />
     </div>
   );
