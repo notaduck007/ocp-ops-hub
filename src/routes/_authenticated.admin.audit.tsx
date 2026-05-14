@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { Fragment, useMemo, useState } from "react";
 import { createFileRoute, redirect } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
@@ -146,8 +146,8 @@ function AuditPage() {
               rows.map((r: any) => {
                 const isOpen = expanded.has(r.id);
                 return (
-                  <>
-                    <tr key={r.id} className="hover:bg-muted/30">
+                  <Fragment key={r.id}>
+                    <tr className="hover:bg-muted/30">
                       <td className="px-2 py-2">
                         <button onClick={() => toggle(r.id)} className="text-muted-foreground">
                           {isOpen ? <ChevronDown className="h-4 w-4" /> : <ChevronRight className="h-4 w-4" />}
@@ -159,7 +159,7 @@ function AuditPage() {
                       <td className="px-3 py-2 text-muted-foreground">{r.entity_type}{r.entity_id ? ` · ${r.entity_id.slice(0, 8)}` : ""}</td>
                     </tr>
                     {isOpen && (
-                      <tr key={r.id + "-d"} className="bg-muted/20">
+                      <tr className="bg-muted/20">
                         <td></td>
                         <td colSpan={4} className="px-3 py-3">
                           <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
@@ -179,7 +179,7 @@ function AuditPage() {
                         </td>
                       </tr>
                     )}
-                  </>
+                  </Fragment>
                 );
               })
             )}
