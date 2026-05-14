@@ -201,7 +201,7 @@ function DashboardPage() {
 
         {/* Overdue Reviews */}
         <Tile
-          icon={<Clock className="h-4 w-4 text-amber-600" />}
+          icon={<Clock className={`h-4 w-4 ${INTENT_ICON_CLASSES.warning}`} />}
           title="Overdue reviews"
         >
           {overdue.data == null ? (
