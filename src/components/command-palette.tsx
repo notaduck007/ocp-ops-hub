@@ -2,16 +2,6 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
-import {
-  Server,
-  UserCircle,
-  Building2,
-  ShieldAlert,
-  AlertOctagon,
-  GitPullRequestArrow,
-  BookText,
-  BookOpenCheck,
-} from "lucide-react";
 
 import {
   CommandDialog,
@@ -22,39 +12,11 @@ import {
   CommandList,
 } from "@/components/ui/command";
 import { globalSearch, type SearchHit } from "@/lib/search.functions";
-
-const ICONS: Record<SearchHit["kind"], typeof Server> = {
-  system: Server,
-  person: UserCircle,
-  vendor: Building2,
-  risk: ShieldAlert,
-  incident: AlertOctagon,
-  change: GitPullRequestArrow,
-  policy: BookText,
-  runbook: BookOpenCheck,
-};
-
-const ROUTE: Record<SearchHit["kind"], (id: string) => { to: string; params: any }> = {
-  system: (id) => ({ to: "/systems/$systemId", params: { systemId: id } }),
-  person: (id) => ({ to: "/people/$personId", params: { personId: id } }),
-  vendor: (id) => ({ to: "/vendors/$vendorId", params: { vendorId: id } }),
-  risk: (id) => ({ to: "/risks/$riskId", params: { riskId: id } }),
-  incident: (id) => ({ to: "/incidents/$incidentId", params: { incidentId: id } }),
-  change: (id) => ({ to: "/changes/$changeId", params: { changeId: id } }),
-  policy: (id) => ({ to: "/policies/$policyId", params: { policyId: id } }),
-  runbook: (id) => ({ to: "/runbooks/$runbookId", params: { runbookId: id } }),
-};
-
-const LABELS: Record<SearchHit["kind"], string> = {
-  system: "Systems",
-  person: "People",
-  vendor: "Vendors",
-  risk: "Risks",
-  incident: "Incidents",
-  change: "Changes",
-  policy: "Policies",
-  runbook: "Runbooks",
-};
+import {
+  KIND_ICON as ICONS,
+  KIND_LABEL as LABELS,
+  KIND_ROUTE as ROUTE,
+} from "@/lib/record-kinds";
 
 export function CommandPalette() {
   const [open, setOpen] = useState(false);
