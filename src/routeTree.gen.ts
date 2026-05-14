@@ -23,6 +23,7 @@ import { Route as AuthenticatedReportsRouteImport } from './routes/_authenticate
 import { Route as AuthenticatedPoliciesRouteImport } from './routes/_authenticated.policies'
 import { Route as AuthenticatedPeopleRouteImport } from './routes/_authenticated.people'
 import { Route as AuthenticatedIncidentsRouteImport } from './routes/_authenticated.incidents'
+import { Route as AuthenticatedInboxRouteImport } from './routes/_authenticated.inbox'
 import { Route as AuthenticatedDrPlanRouteImport } from './routes/_authenticated.dr-plan'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated.dashboard'
 import { Route as AuthenticatedContinuityRouteImport } from './routes/_authenticated.continuity'
@@ -124,6 +125,11 @@ const AuthenticatedPeopleRoute = AuthenticatedPeopleRouteImport.update({
 const AuthenticatedIncidentsRoute = AuthenticatedIncidentsRouteImport.update({
   id: '/incidents',
   path: '/incidents',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
+const AuthenticatedInboxRoute = AuthenticatedInboxRouteImport.update({
+  id: '/inbox',
+  path: '/inbox',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
 const AuthenticatedDrPlanRoute = AuthenticatedDrPlanRouteImport.update({
@@ -322,6 +328,7 @@ export interface FileRoutesByFullPath {
   '/continuity': typeof AuthenticatedContinuityRouteWithChildren
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/dr-plan': typeof AuthenticatedDrPlanRoute
+  '/inbox': typeof AuthenticatedInboxRoute
   '/incidents': typeof AuthenticatedIncidentsRouteWithChildren
   '/people': typeof AuthenticatedPeopleRouteWithChildren
   '/policies': typeof AuthenticatedPoliciesRouteWithChildren
@@ -368,6 +375,7 @@ export interface FileRoutesByTo {
   '/access': typeof AuthenticatedAccessRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/dr-plan': typeof AuthenticatedDrPlanRoute
+  '/inbox': typeof AuthenticatedInboxRoute
   '/auth/callback': typeof AuthCallbackRoute
   '/admin/audit': typeof AuthenticatedAdminAuditRoute
   '/admin/users': typeof AuthenticatedAdminUsersRoute
@@ -408,6 +416,7 @@ export interface FileRoutesById {
   '/_authenticated/continuity': typeof AuthenticatedContinuityRouteWithChildren
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
   '/_authenticated/dr-plan': typeof AuthenticatedDrPlanRoute
+  '/_authenticated/inbox': typeof AuthenticatedInboxRoute
   '/_authenticated/incidents': typeof AuthenticatedIncidentsRouteWithChildren
   '/_authenticated/people': typeof AuthenticatedPeopleRouteWithChildren
   '/_authenticated/policies': typeof AuthenticatedPoliciesRouteWithChildren
@@ -458,6 +467,7 @@ export interface FileRouteTypes {
     | '/continuity'
     | '/dashboard'
     | '/dr-plan'
+    | '/inbox'
     | '/incidents'
     | '/people'
     | '/policies'
@@ -504,6 +514,7 @@ export interface FileRouteTypes {
     | '/access'
     | '/dashboard'
     | '/dr-plan'
+    | '/inbox'
     | '/auth/callback'
     | '/admin/audit'
     | '/admin/users'
@@ -543,6 +554,7 @@ export interface FileRouteTypes {
     | '/_authenticated/continuity'
     | '/_authenticated/dashboard'
     | '/_authenticated/dr-plan'
+    | '/_authenticated/inbox'
     | '/_authenticated/incidents'
     | '/_authenticated/people'
     | '/_authenticated/policies'
@@ -690,6 +702,13 @@ declare module '@tanstack/react-router' {
       path: '/incidents'
       fullPath: '/incidents'
       preLoaderRoute: typeof AuthenticatedIncidentsRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/inbox': {
+      id: '/_authenticated/inbox'
+      path: '/inbox'
+      fullPath: '/inbox'
+      preLoaderRoute: typeof AuthenticatedInboxRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
     '/_authenticated/dr-plan': {
@@ -1102,6 +1121,7 @@ interface AuthenticatedRouteChildren {
   AuthenticatedContinuityRoute: typeof AuthenticatedContinuityRouteWithChildren
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
   AuthenticatedDrPlanRoute: typeof AuthenticatedDrPlanRoute
+  AuthenticatedInboxRoute: typeof AuthenticatedInboxRoute
   AuthenticatedIncidentsRoute: typeof AuthenticatedIncidentsRouteWithChildren
   AuthenticatedPeopleRoute: typeof AuthenticatedPeopleRouteWithChildren
   AuthenticatedPoliciesRoute: typeof AuthenticatedPoliciesRouteWithChildren
@@ -1122,6 +1142,7 @@ const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedContinuityRoute: AuthenticatedContinuityRouteWithChildren,
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
   AuthenticatedDrPlanRoute: AuthenticatedDrPlanRoute,
+  AuthenticatedInboxRoute: AuthenticatedInboxRoute,
   AuthenticatedIncidentsRoute: AuthenticatedIncidentsRouteWithChildren,
   AuthenticatedPeopleRoute: AuthenticatedPeopleRouteWithChildren,
   AuthenticatedPoliciesRoute: AuthenticatedPoliciesRouteWithChildren,

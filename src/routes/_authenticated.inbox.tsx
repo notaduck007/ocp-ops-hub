@@ -60,8 +60,9 @@ function InboxPage() {
     });
   }, [query.data, overdueOnly, soonOnly]);
 
-  const setSearch = (patch: Partial<z.infer<typeof inboxSearchSchema>>) => {
-    navigate({ search: (prev) => ({ ...prev, ...patch }) });
+  type InboxSearch = z.infer<typeof inboxSearchSchema>;
+  const setSearch = (patch: Partial<InboxSearch>) => {
+    navigate({ search: (prev: InboxSearch) => ({ ...prev, ...patch }) });
   };
 
   return (
