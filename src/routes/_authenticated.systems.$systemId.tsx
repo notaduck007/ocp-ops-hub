@@ -57,7 +57,6 @@ function SystemDetailPage() {
   const { data: auditEntries = [] } = useQuery({
     queryKey: ["system-audit", systemId],
     queryFn: () => audit({ data: { systemId } }),
-    enabled: canEdit,
   });
 
   const archiveMut = useMutation({
