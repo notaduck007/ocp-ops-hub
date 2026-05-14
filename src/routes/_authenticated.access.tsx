@@ -170,7 +170,7 @@ function AccessListPage() {
       </div>
 
       <div className="rounded-md border bg-card">
-        <Table>
+        <Table className="text-sm [&_td]:py-2 [&_th]:py-2">
           <TableHeader>
             <TableRow>
               {canEdit && (
