@@ -35,6 +35,7 @@ import {
 import { OwnerCombobox } from "@/components/owner-combobox";
 import { CategoryBadge, CriticalityBadge } from "@/components/systems/badges";
 import { SystemForm } from "@/components/systems/system-form";
+import { ExportCsvButton } from "@/components/export-csv-button";
 import { useCurrentRole } from "@/hooks/use-auth";
 import {
   CRITICALITIES,
@@ -184,6 +185,24 @@ function SystemsListPage() {
             Show archived
           </Label>
         </div>
+      </div>
+
+      <div className="flex justify-end">
+        <ExportCsvButton
+          filename="systems"
+          rows={sorted}
+          columns={[
+            { header: "Name", accessor: (r: SystemRow) => r.name },
+            { header: "Category", accessor: (r) => r.category },
+            { header: "Criticality", accessor: (r) => r.criticality },
+            { header: "MFA required", accessor: (r) => (r.mfa_required ? "yes" : "no") },
+            { header: "Business owner", accessor: (r) => r.business_owner?.full_name ?? r.business_owner?.email ?? "" },
+            { header: "Technical owner", accessor: (r) => r.technical_owner?.full_name ?? r.technical_owner?.email ?? "" },
+            { header: "RTO (min)", accessor: (r) => r.rto_minutes ?? "" },
+            { header: "RPO (min)", accessor: (r) => r.rpo_minutes ?? "" },
+            { header: "Updated at", accessor: (r) => r.updated_at },
+          ]}
+        />
       </div>
 
       <div className="rounded-md border bg-card">

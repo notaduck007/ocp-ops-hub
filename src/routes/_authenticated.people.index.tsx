@@ -34,6 +34,7 @@ import {
 } from "@/components/ui/table";
 import { PersonStatusBadge, PersonTypeBadge } from "@/components/people/badges";
 import { PersonForm } from "@/components/people/person-form";
+import { ExportCsvButton } from "@/components/export-csv-button";
 import { useCurrentRole } from "@/hooks/use-auth";
 import {
   PERSON_STATUSES,
@@ -151,6 +152,22 @@ function PeopleListPage() {
             Show archived
           </Label>
         </div>
+      </div>
+
+      <div className="flex justify-end">
+        <ExportCsvButton
+          filename="people"
+          rows={rows}
+          columns={[
+            { header: "Full name", accessor: (r: PersonRow) => r.full_name },
+            { header: "Email", accessor: (r) => r.email ?? "" },
+            { header: "Type", accessor: (r) => r.type },
+            { header: "Status", accessor: (r) => r.status },
+            { header: "Employer", accessor: (r) => r.employer ?? "" },
+            { header: "Last reviewed", accessor: (r) => r.last_access_review_at ?? "" },
+            { header: "Archived", accessor: (r) => (r.archived_at ? "yes" : "") },
+          ]}
+        />
       </div>
 
       <div className="rounded-md border bg-card">
