@@ -1,6 +1,7 @@
 import { useEffect, useState, type ReactNode } from "react";
 import { Link, useRouterState } from "@tanstack/react-router";
-import { LayoutDashboard, Users, Search, Server, UserCircle, KeyRound, Building2, FileCheck2, ShieldAlert, AlertOctagon, GitPullRequestArrow, BookText, ClipboardCheck, BookOpenCheck, LifeBuoy, FileText, ScrollText, BarChart3, PanelLeftClose, PanelLeftOpen } from "lucide-react";
+import { LayoutDashboard, Inbox, Users, Search, Server, UserCircle, KeyRound, Building2, FileCheck2, ShieldAlert, AlertOctagon, GitPullRequestArrow, BookText, ClipboardCheck, BookOpenCheck, LifeBuoy, FileText, ScrollText, BarChart3, PanelLeftClose, PanelLeftOpen } from "lucide-react";
+import { useAttentionCount } from "@/hooks/use-attention";
 import { NotificationBell } from "@/components/notifications/notification-bell";
 import { CommandPalette } from "@/components/command-palette";
 
