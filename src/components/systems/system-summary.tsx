@@ -62,7 +62,7 @@ export function SystemSummary({ system }: { system: SystemRow }) {
               className="inline-flex items-center gap-1 hover:underline"
             >
               {system.url}
-              <ExternalLink className="h-3 w-3" />
+              <ExternalLink className="h-4 w-4" />
             </a>
           ) : null}
         </SummaryField>
