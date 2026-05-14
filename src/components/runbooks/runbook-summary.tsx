@@ -6,6 +6,7 @@ import {
   SummaryField,
   MarkdownBlock,
 } from "@/components/layout/record-summary";
+import { RecordMetaFooter } from "@/components/layout/record-meta-footer";
 import { RecordLink } from "@/components/record-link";
 import { ScenarioBadge } from "@/components/runbooks/badges";
 
