@@ -22,13 +22,17 @@ import {
   StatusBadge,
 } from "@/components/risks/badges";
 import { RiskForm } from "@/components/risks/risk-form";
+import { RiskSummary } from "@/components/risks/risk-summary";
 import { PageShell, PageHeader } from "@/components/layout/page-shell";
 import { PageHeaderSkeleton, DetailFormSkeleton } from "@/components/layout/skeletons";
+import { EditToggle } from "@/components/layout/edit-toggle";
 import { RecordLink } from "@/components/record-link";
+import { detailSearchValidator } from "@/lib/detail-search";
 import { useCurrentRole } from "@/hooks/use-auth";
 import { getRisk, listRiskAudit } from "@/lib/risks.functions";
 
 export const Route = createFileRoute("/_authenticated/risks/$riskId")({
+  validateSearch: detailSearchValidator,
   component: RiskDetailPage,
 });
 
