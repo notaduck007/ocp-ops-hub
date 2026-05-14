@@ -22,6 +22,8 @@ import {
   StatusBadge,
 } from "@/components/risks/badges";
 import { RiskForm } from "@/components/risks/risk-form";
+import { PageShell, PageHeader } from "@/components/layout/page-shell";
+import { RecordLink } from "@/components/record-link";
 import { useCurrentRole } from "@/hooks/use-auth";
 import { getRisk, listRiskAudit } from "@/lib/risks.functions";
 
