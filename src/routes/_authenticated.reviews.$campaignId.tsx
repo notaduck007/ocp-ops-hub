@@ -1,3 +1,4 @@
+import { EvidenceFilesTab } from "@/components/evidence/files-tab";
 import { useState, useMemo } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
