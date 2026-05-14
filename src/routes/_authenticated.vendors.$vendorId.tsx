@@ -123,11 +123,16 @@ function VendorDetailPage() {
           </>
         }
         actions={
-          isAdmin && (
-            <Button variant="outline" onClick={() => archiveMut.mutate(!archived)} disabled={archiveMut.isPending}>
-              {archived ? <><ArchiveRestore className="mr-2 h-4 w-4" />Unarchive</> : <><Archive className="mr-2 h-4 w-4" />Archive</>}
-            </Button>
-          )
+          <div className="flex items-center gap-2">
+            {canEdit && (
+              <EditToggle editing={editing} onEdit={enterEdit} onCancel={exitEdit} />
+            )}
+            {isAdmin && (
+              <Button variant="outline" onClick={() => archiveMut.mutate(!archived)} disabled={archiveMut.isPending}>
+                {archived ? <><ArchiveRestore className="mr-2 h-4 w-4" />Unarchive</> : <><Archive className="mr-2 h-4 w-4" />Archive</>}
+              </Button>
+            )}
+          </div>
         }
       />
 
@@ -140,7 +145,11 @@ function VendorDetailPage() {
         </TabsList>
 
         <TabsContent value="overview" className="mt-4 max-w-3xl">
-          <VendorForm mode="edit" vendor={vendor} readOnly={!canEdit} />
+          {editing ? (
+            <VendorForm mode="edit" vendor={vendor} readOnly={false} onSaved={() => exitEdit()} />
+          ) : (
+            <VendorSummary vendor={vendor} />
+          )}
         </TabsContent>
 
         <TabsContent value="systems" className="mt-4">
