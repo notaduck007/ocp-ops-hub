@@ -37,34 +37,32 @@ function ReportPage() {
   const [to, setTo] = useState(today.toISOString().slice(0, 10));
 
   return (
-    <div className="space-y-4">
-      <div className="flex flex-wrap items-end justify-between gap-3 print:hidden">
-        <div className="flex items-center gap-3">
-          <Button asChild variant="ghost" size="sm">
-            <Link to="/reports">
-              <ArrowLeft className="mr-2 h-4 w-4" />
-              All reports
-            </Link>
-          </Button>
-        </div>
-        <div className="flex flex-wrap items-end gap-3">
-          {reportId === "governance" && (
-            <>
-              <div>
-                <Label className="text-xs">From</Label>
-                <Input type="date" value={from} onChange={(e) => setFrom(e.target.value)} />
-              </div>
-              <div>
-                <Label className="text-xs">To</Label>
-                <Input type="date" value={to} onChange={(e) => setTo(e.target.value)} />
-              </div>
-            </>
-          )}
-          <Button onClick={() => window.print()}>
-            <Printer className="mr-2 h-4 w-4" />
-            Print / Save as PDF
-          </Button>
-        </div>
+    <PageShell>
+      <div className="print:hidden">
+        <PageHeader
+          backTo={{ to: "/reports", label: "Reports" }}
+          title={title}
+          actions={
+            <div className="flex flex-wrap items-end gap-3">
+              {reportId === "governance" && (
+                <>
+                  <div>
+                    <Label className="text-xs">From</Label>
+                    <Input type="date" value={from} onChange={(e) => setFrom(e.target.value)} />
+                  </div>
+                  <div>
+                    <Label className="text-xs">To</Label>
+                    <Input type="date" value={to} onChange={(e) => setTo(e.target.value)} />
+                  </div>
+                </>
+              )}
+              <Button onClick={() => window.print()}>
+                <Printer className="mr-2 h-4 w-4" />
+                Print / Save as PDF
+              </Button>
+            </div>
+          }
+        />
       </div>
 
       <article className="mx-auto max-w-4xl space-y-6 rounded-md border bg-card p-8 print:border-0 print:p-0">
