@@ -132,11 +132,21 @@ function PolicyDetailPage() {
           </>
         }
         actions={
-          isAdmin && policy.status !== "retired" && (
-            <Button variant="outline" onClick={() => retire.mutate()}>
-              Retire policy
-            </Button>
-          )
+          <div className="flex items-center gap-2">
+            {canEdit && policy.status !== "retired" && (
+              <EditToggle
+                editing={editing}
+                onEdit={enterEdit}
+                onCancel={exitEdit}
+                editLabel="Edit (creates new draft)"
+              />
+            )}
+            {isAdmin && policy.status !== "retired" && (
+              <Button variant="outline" onClick={() => retire.mutate()}>
+                Retire policy
+              </Button>
+            )}
+          </div>
         }
       />
 
@@ -162,24 +172,11 @@ function PolicyDetailPage() {
                 <Button onClick={() => saveDraft.mutate()} disabled={saveDraft.isPending || !draftBody.trim()}>
                   Save draft
                 </Button>
-                <Button variant="ghost" onClick={() => setEditing(false)}>Cancel</Button>
+                <Button variant="ghost" onClick={exitEdit}>Cancel</Button>
               </div>
             </div>
           ) : (
-            <>
-              {canEdit && policy.status !== "retired" && (
-                <div className="flex justify-end">
-                  <Button variant="outline" onClick={startEdit}>
-                    Edit (creates new draft version)
-                  </Button>
-                </div>
-              )}
-              <Card>
-                <CardContent className="prose prose-sm max-w-none p-6 dark:prose-invert">
-                  <ReactMarkdown>{policy.body_md}</ReactMarkdown>
-                </CardContent>
-              </Card>
-            </>
+            <PolicySummary policy={policy} />
           )}
         </TabsContent>
 
