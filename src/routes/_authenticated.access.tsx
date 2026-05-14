@@ -192,14 +192,7 @@ function AccessListPage() {
           </TableHeader>
           <TableBody>
             {isLoading ? (
-              <TableRow>
-                <TableCell
-                  colSpan={canEdit ? 7 : 6}
-                  className="text-center text-sm text-muted-foreground"
-                >
-                  Loading…
-                </TableCell>
-              </TableRow>
+              <TableSkeleton rows={8} cols={canEdit ? 7 : 6} />
             ) : grants.length === 0 ? (
               <TableRow>
                 <TableCell

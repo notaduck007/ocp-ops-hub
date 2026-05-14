@@ -139,7 +139,9 @@ function AuditPage() {
           </thead>
           <tbody className="divide-y">
             {isLoading ? (
-              <tr><td colSpan={5} className="px-3 py-6 text-center text-muted-foreground">Loading…</td></tr>
+              Array.from({ length: 6 }).map((_, i) => (
+                <tr key={i}><td colSpan={5} className="px-3 py-3"><Skeleton className="h-4 w-full" /></td></tr>
+              ))
             ) : rows.length === 0 ? (
               <tr><td colSpan={5} className="px-3 py-6 text-center text-muted-foreground">No matching audit entries.</td></tr>
             ) : (

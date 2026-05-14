@@ -36,7 +36,7 @@ function DrPlanPage() {
     queryFn: () => fn(),
   });
 
-  if (isLoading || !data) return <div className="text-muted-foreground">Loading…</div>;
+  if (isLoading || !data) return <DetailFormSkeleton rows={5} />;
 
   return (
     <div className="space-y-8 print:space-y-6">
