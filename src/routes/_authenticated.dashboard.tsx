@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 
 import { Skeleton } from "@/components/ui/skeleton";
+import { INTENT_ICON_CLASSES, INTENT_FILL_CLASSES } from "@/lib/status-tokens";
 import { FeedRowSkeleton } from "@/components/layout/skeletons";
 import { AttentionList } from "@/components/inbox/attention-list";
 
@@ -120,7 +121,7 @@ function DashboardPage() {
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
         {/* MFA Coverage */}
         <Tile
-          icon={<ShieldCheck className="h-4 w-4 text-emerald-600" />}
+          icon={<ShieldCheck className={`h-4 w-4 ${INTENT_ICON_CLASSES.success}`} />}
           title="MFA coverage"
           adornment={
             <TooltipProvider>
@@ -150,7 +151,7 @@ function DashboardPage() {
               </div>
               <div className="mt-2 h-2 overflow-hidden rounded bg-muted">
                 <div
-                  className="h-full bg-emerald-500"
+                  className={`h-full ${INTENT_FILL_CLASSES.success}`}
                   style={{ width: `${mfa.data.mfa_coverage_pct}%` }}
                 />
               </div>
@@ -164,7 +165,7 @@ function DashboardPage() {
 
         {/* Open Critical Risks */}
         <Tile
-          icon={<AlertTriangle className="h-4 w-4 text-red-600" />}
+          icon={<AlertTriangle className={`h-4 w-4 ${INTENT_ICON_CLASSES.danger}`} />}
           title="Open critical risks"
         >
           {risks.data == null ? (
@@ -200,7 +201,7 @@ function DashboardPage() {
 
         {/* Overdue Reviews */}
         <Tile
-          icon={<Clock className="h-4 w-4 text-amber-600" />}
+          icon={<Clock className={`h-4 w-4 ${INTENT_ICON_CLASSES.warning}`} />}
           title="Overdue reviews"
         >
           {overdue.data == null ? (
@@ -223,7 +224,7 @@ function DashboardPage() {
 
         {/* Incidents this quarter */}
         <Tile
-          icon={<Activity className="h-4 w-4 text-sky-600" />}
+          icon={<Activity className={`h-4 w-4 ${INTENT_ICON_CLASSES.info}`} />}
           title="Incidents this quarter"
         >
           {incidents.data == null ? (
@@ -240,7 +241,7 @@ function DashboardPage() {
 
         {/* DR Readiness */}
         <Tile
-          icon={<LifeBuoy className="h-4 w-4 text-indigo-600" />}
+          icon={<LifeBuoy className={`h-4 w-4 ${INTENT_ICON_CLASSES.info}`} />}
           title="DR readiness"
         >
           {dr.data == null ? (
@@ -259,7 +260,7 @@ function DashboardPage() {
 
         {/* Vendor Health */}
         <Tile
-          icon={<Building2 className="h-4 w-4 text-fuchsia-600" />}
+          icon={<Building2 className={`h-4 w-4 ${INTENT_ICON_CLASSES.neutral}`} />}
           title="Vendor health"
         >
           {vendor.data == null ? (
