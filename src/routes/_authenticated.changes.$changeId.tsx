@@ -241,7 +241,7 @@ function ChangeDetailPage() {
           <EvidenceFilesTab kind="change" linkedEntityType="change" linkedEntityId={changeId} />
         </TabsContent>
       </Tabs>
-    </div>
+    </PageShell>
   );
 }
 
