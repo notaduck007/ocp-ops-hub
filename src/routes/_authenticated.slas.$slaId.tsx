@@ -33,16 +33,22 @@ import {
 } from "@/lib/slas.functions";
 
 export const Route = createFileRoute("/_authenticated/slas/$slaId")({
+  validateSearch: detailSearchValidator,
   component: SlaDetailPage,
 });
 
 function SlaDetailPage() {
   const { slaId } = Route.useParams();
+  const { edit } = Route.useSearch();
   const navigate = useNavigate();
   const qc = useQueryClient();
   const { data: role } = useCurrentRole();
   const canEdit = role === "admin" || role === "editor";
   const isAdmin = role === "admin";
+  const editing = !!edit && canEdit;
+
+  const enterEdit = () => navigate({ to: ".", search: { edit: true } });
+  const exitEdit = () => navigate({ to: ".", search: { edit: undefined } });
 
   const get = useServerFn(getSla);
   const lBreaches = useServerFn(listBreaches);
