@@ -16,6 +16,7 @@ import { Route as AuthCallbackRouteImport } from './routes/auth.callback'
 import { Route as AuthenticatedVendorsRouteImport } from './routes/_authenticated.vendors'
 import { Route as AuthenticatedSystemsRouteImport } from './routes/_authenticated.systems'
 import { Route as AuthenticatedSlasRouteImport } from './routes/_authenticated.slas'
+import { Route as AuthenticatedRunbooksRouteImport } from './routes/_authenticated.runbooks'
 import { Route as AuthenticatedRisksRouteImport } from './routes/_authenticated.risks'
 import { Route as AuthenticatedReviewsRouteImport } from './routes/_authenticated.reviews'
 import { Route as AuthenticatedPoliciesRouteImport } from './routes/_authenticated.policies'
@@ -27,6 +28,7 @@ import { Route as AuthenticatedAccessRouteImport } from './routes/_authenticated
 import { Route as AuthenticatedVendorsIndexRouteImport } from './routes/_authenticated.vendors.index'
 import { Route as AuthenticatedSystemsIndexRouteImport } from './routes/_authenticated.systems.index'
 import { Route as AuthenticatedSlasIndexRouteImport } from './routes/_authenticated.slas.index'
+import { Route as AuthenticatedRunbooksIndexRouteImport } from './routes/_authenticated.runbooks.index'
 import { Route as AuthenticatedRisksIndexRouteImport } from './routes/_authenticated.risks.index'
 import { Route as AuthenticatedReviewsIndexRouteImport } from './routes/_authenticated.reviews.index'
 import { Route as AuthenticatedPoliciesIndexRouteImport } from './routes/_authenticated.policies.index'
@@ -36,6 +38,7 @@ import { Route as AuthenticatedChangesIndexRouteImport } from './routes/_authent
 import { Route as AuthenticatedVendorsVendorIdRouteImport } from './routes/_authenticated.vendors.$vendorId'
 import { Route as AuthenticatedSystemsSystemIdRouteImport } from './routes/_authenticated.systems.$systemId'
 import { Route as AuthenticatedSlasSlaIdRouteImport } from './routes/_authenticated.slas.$slaId'
+import { Route as AuthenticatedRunbooksRunbookIdRouteImport } from './routes/_authenticated.runbooks.$runbookId'
 import { Route as AuthenticatedRisksRiskIdRouteImport } from './routes/_authenticated.risks.$riskId'
 import { Route as AuthenticatedReviewsNewRouteImport } from './routes/_authenticated.reviews.new'
 import { Route as AuthenticatedReviewsCampaignIdRouteImport } from './routes/_authenticated.reviews.$campaignId'
@@ -78,6 +81,11 @@ const AuthenticatedSystemsRoute = AuthenticatedSystemsRouteImport.update({
 const AuthenticatedSlasRoute = AuthenticatedSlasRouteImport.update({
   id: '/slas',
   path: '/slas',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
+const AuthenticatedRunbooksRoute = AuthenticatedRunbooksRouteImport.update({
+  id: '/runbooks',
+  path: '/runbooks',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
 const AuthenticatedRisksRoute = AuthenticatedRisksRouteImport.update({
@@ -137,6 +145,12 @@ const AuthenticatedSlasIndexRoute = AuthenticatedSlasIndexRouteImport.update({
   path: '/',
   getParentRoute: () => AuthenticatedSlasRoute,
 } as any)
+const AuthenticatedRunbooksIndexRoute =
+  AuthenticatedRunbooksIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => AuthenticatedRunbooksRoute,
+  } as any)
 const AuthenticatedRisksIndexRoute = AuthenticatedRisksIndexRouteImport.update({
   id: '/',
   path: '/',
@@ -189,6 +203,12 @@ const AuthenticatedSlasSlaIdRoute = AuthenticatedSlasSlaIdRouteImport.update({
   path: '/$slaId',
   getParentRoute: () => AuthenticatedSlasRoute,
 } as any)
+const AuthenticatedRunbooksRunbookIdRoute =
+  AuthenticatedRunbooksRunbookIdRouteImport.update({
+    id: '/$runbookId',
+    path: '/$runbookId',
+    getParentRoute: () => AuthenticatedRunbooksRoute,
+  } as any)
 const AuthenticatedRisksRiskIdRoute =
   AuthenticatedRisksRiskIdRouteImport.update({
     id: '/$riskId',
@@ -253,6 +273,7 @@ export interface FileRoutesByFullPath {
   '/policies': typeof AuthenticatedPoliciesRouteWithChildren
   '/reviews': typeof AuthenticatedReviewsRouteWithChildren
   '/risks': typeof AuthenticatedRisksRouteWithChildren
+  '/runbooks': typeof AuthenticatedRunbooksRouteWithChildren
   '/slas': typeof AuthenticatedSlasRouteWithChildren
   '/systems': typeof AuthenticatedSystemsRouteWithChildren
   '/vendors': typeof AuthenticatedVendorsRouteWithChildren
@@ -265,6 +286,7 @@ export interface FileRoutesByFullPath {
   '/reviews/$campaignId': typeof AuthenticatedReviewsCampaignIdRoute
   '/reviews/new': typeof AuthenticatedReviewsNewRoute
   '/risks/$riskId': typeof AuthenticatedRisksRiskIdRoute
+  '/runbooks/$runbookId': typeof AuthenticatedRunbooksRunbookIdRoute
   '/slas/$slaId': typeof AuthenticatedSlasSlaIdRoute
   '/systems/$systemId': typeof AuthenticatedSystemsSystemIdRoute
   '/vendors/$vendorId': typeof AuthenticatedVendorsVendorIdRoute
@@ -274,6 +296,7 @@ export interface FileRoutesByFullPath {
   '/policies/': typeof AuthenticatedPoliciesIndexRoute
   '/reviews/': typeof AuthenticatedReviewsIndexRoute
   '/risks/': typeof AuthenticatedRisksIndexRoute
+  '/runbooks/': typeof AuthenticatedRunbooksIndexRoute
   '/slas/': typeof AuthenticatedSlasIndexRoute
   '/systems/': typeof AuthenticatedSystemsIndexRoute
   '/vendors/': typeof AuthenticatedVendorsIndexRoute
@@ -293,6 +316,7 @@ export interface FileRoutesByTo {
   '/reviews/$campaignId': typeof AuthenticatedReviewsCampaignIdRoute
   '/reviews/new': typeof AuthenticatedReviewsNewRoute
   '/risks/$riskId': typeof AuthenticatedRisksRiskIdRoute
+  '/runbooks/$runbookId': typeof AuthenticatedRunbooksRunbookIdRoute
   '/slas/$slaId': typeof AuthenticatedSlasSlaIdRoute
   '/systems/$systemId': typeof AuthenticatedSystemsSystemIdRoute
   '/vendors/$vendorId': typeof AuthenticatedVendorsVendorIdRoute
@@ -302,6 +326,7 @@ export interface FileRoutesByTo {
   '/policies': typeof AuthenticatedPoliciesIndexRoute
   '/reviews': typeof AuthenticatedReviewsIndexRoute
   '/risks': typeof AuthenticatedRisksIndexRoute
+  '/runbooks': typeof AuthenticatedRunbooksIndexRoute
   '/slas': typeof AuthenticatedSlasIndexRoute
   '/systems': typeof AuthenticatedSystemsIndexRoute
   '/vendors': typeof AuthenticatedVendorsIndexRoute
@@ -320,6 +345,7 @@ export interface FileRoutesById {
   '/_authenticated/policies': typeof AuthenticatedPoliciesRouteWithChildren
   '/_authenticated/reviews': typeof AuthenticatedReviewsRouteWithChildren
   '/_authenticated/risks': typeof AuthenticatedRisksRouteWithChildren
+  '/_authenticated/runbooks': typeof AuthenticatedRunbooksRouteWithChildren
   '/_authenticated/slas': typeof AuthenticatedSlasRouteWithChildren
   '/_authenticated/systems': typeof AuthenticatedSystemsRouteWithChildren
   '/_authenticated/vendors': typeof AuthenticatedVendorsRouteWithChildren
@@ -332,6 +358,7 @@ export interface FileRoutesById {
   '/_authenticated/reviews/$campaignId': typeof AuthenticatedReviewsCampaignIdRoute
   '/_authenticated/reviews/new': typeof AuthenticatedReviewsNewRoute
   '/_authenticated/risks/$riskId': typeof AuthenticatedRisksRiskIdRoute
+  '/_authenticated/runbooks/$runbookId': typeof AuthenticatedRunbooksRunbookIdRoute
   '/_authenticated/slas/$slaId': typeof AuthenticatedSlasSlaIdRoute
   '/_authenticated/systems/$systemId': typeof AuthenticatedSystemsSystemIdRoute
   '/_authenticated/vendors/$vendorId': typeof AuthenticatedVendorsVendorIdRoute
@@ -341,6 +368,7 @@ export interface FileRoutesById {
   '/_authenticated/policies/': typeof AuthenticatedPoliciesIndexRoute
   '/_authenticated/reviews/': typeof AuthenticatedReviewsIndexRoute
   '/_authenticated/risks/': typeof AuthenticatedRisksIndexRoute
+  '/_authenticated/runbooks/': typeof AuthenticatedRunbooksIndexRoute
   '/_authenticated/slas/': typeof AuthenticatedSlasIndexRoute
   '/_authenticated/systems/': typeof AuthenticatedSystemsIndexRoute
   '/_authenticated/vendors/': typeof AuthenticatedVendorsIndexRoute
@@ -359,6 +387,7 @@ export interface FileRouteTypes {
     | '/policies'
     | '/reviews'
     | '/risks'
+    | '/runbooks'
     | '/slas'
     | '/systems'
     | '/vendors'
@@ -371,6 +400,7 @@ export interface FileRouteTypes {
     | '/reviews/$campaignId'
     | '/reviews/new'
     | '/risks/$riskId'
+    | '/runbooks/$runbookId'
     | '/slas/$slaId'
     | '/systems/$systemId'
     | '/vendors/$vendorId'
@@ -380,6 +410,7 @@ export interface FileRouteTypes {
     | '/policies/'
     | '/reviews/'
     | '/risks/'
+    | '/runbooks/'
     | '/slas/'
     | '/systems/'
     | '/vendors/'
@@ -399,6 +430,7 @@ export interface FileRouteTypes {
     | '/reviews/$campaignId'
     | '/reviews/new'
     | '/risks/$riskId'
+    | '/runbooks/$runbookId'
     | '/slas/$slaId'
     | '/systems/$systemId'
     | '/vendors/$vendorId'
@@ -408,6 +440,7 @@ export interface FileRouteTypes {
     | '/policies'
     | '/reviews'
     | '/risks'
+    | '/runbooks'
     | '/slas'
     | '/systems'
     | '/vendors'
@@ -425,6 +458,7 @@ export interface FileRouteTypes {
     | '/_authenticated/policies'
     | '/_authenticated/reviews'
     | '/_authenticated/risks'
+    | '/_authenticated/runbooks'
     | '/_authenticated/slas'
     | '/_authenticated/systems'
     | '/_authenticated/vendors'
@@ -437,6 +471,7 @@ export interface FileRouteTypes {
     | '/_authenticated/reviews/$campaignId'
     | '/_authenticated/reviews/new'
     | '/_authenticated/risks/$riskId'
+    | '/_authenticated/runbooks/$runbookId'
     | '/_authenticated/slas/$slaId'
     | '/_authenticated/systems/$systemId'
     | '/_authenticated/vendors/$vendorId'
@@ -446,6 +481,7 @@ export interface FileRouteTypes {
     | '/_authenticated/policies/'
     | '/_authenticated/reviews/'
     | '/_authenticated/risks/'
+    | '/_authenticated/runbooks/'
     | '/_authenticated/slas/'
     | '/_authenticated/systems/'
     | '/_authenticated/vendors/'
@@ -509,6 +545,13 @@ declare module '@tanstack/react-router' {
       path: '/slas'
       fullPath: '/slas'
       preLoaderRoute: typeof AuthenticatedSlasRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/runbooks': {
+      id: '/_authenticated/runbooks'
+      path: '/runbooks'
+      fullPath: '/runbooks'
+      preLoaderRoute: typeof AuthenticatedRunbooksRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
     '/_authenticated/risks': {
@@ -588,6 +631,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedSlasIndexRouteImport
       parentRoute: typeof AuthenticatedSlasRoute
     }
+    '/_authenticated/runbooks/': {
+      id: '/_authenticated/runbooks/'
+      path: '/'
+      fullPath: '/runbooks/'
+      preLoaderRoute: typeof AuthenticatedRunbooksIndexRouteImport
+      parentRoute: typeof AuthenticatedRunbooksRoute
+    }
     '/_authenticated/risks/': {
       id: '/_authenticated/risks/'
       path: '/'
@@ -650,6 +700,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/slas/$slaId'
       preLoaderRoute: typeof AuthenticatedSlasSlaIdRouteImport
       parentRoute: typeof AuthenticatedSlasRoute
+    }
+    '/_authenticated/runbooks/$runbookId': {
+      id: '/_authenticated/runbooks/$runbookId'
+      path: '/$runbookId'
+      fullPath: '/runbooks/$runbookId'
+      preLoaderRoute: typeof AuthenticatedRunbooksRunbookIdRouteImport
+      parentRoute: typeof AuthenticatedRunbooksRoute
     }
     '/_authenticated/risks/$riskId': {
       id: '/_authenticated/risks/$riskId'
@@ -803,6 +860,21 @@ const AuthenticatedRisksRouteChildren: AuthenticatedRisksRouteChildren = {
 const AuthenticatedRisksRouteWithChildren =
   AuthenticatedRisksRoute._addFileChildren(AuthenticatedRisksRouteChildren)
 
+interface AuthenticatedRunbooksRouteChildren {
+  AuthenticatedRunbooksRunbookIdRoute: typeof AuthenticatedRunbooksRunbookIdRoute
+  AuthenticatedRunbooksIndexRoute: typeof AuthenticatedRunbooksIndexRoute
+}
+
+const AuthenticatedRunbooksRouteChildren: AuthenticatedRunbooksRouteChildren = {
+  AuthenticatedRunbooksRunbookIdRoute: AuthenticatedRunbooksRunbookIdRoute,
+  AuthenticatedRunbooksIndexRoute: AuthenticatedRunbooksIndexRoute,
+}
+
+const AuthenticatedRunbooksRouteWithChildren =
+  AuthenticatedRunbooksRoute._addFileChildren(
+    AuthenticatedRunbooksRouteChildren,
+  )
+
 interface AuthenticatedSlasRouteChildren {
   AuthenticatedSlasSlaIdRoute: typeof AuthenticatedSlasSlaIdRoute
   AuthenticatedSlasIndexRoute: typeof AuthenticatedSlasIndexRoute
@@ -851,6 +923,7 @@ interface AuthenticatedRouteChildren {
   AuthenticatedPoliciesRoute: typeof AuthenticatedPoliciesRouteWithChildren
   AuthenticatedReviewsRoute: typeof AuthenticatedReviewsRouteWithChildren
   AuthenticatedRisksRoute: typeof AuthenticatedRisksRouteWithChildren
+  AuthenticatedRunbooksRoute: typeof AuthenticatedRunbooksRouteWithChildren
   AuthenticatedSlasRoute: typeof AuthenticatedSlasRouteWithChildren
   AuthenticatedSystemsRoute: typeof AuthenticatedSystemsRouteWithChildren
   AuthenticatedVendorsRoute: typeof AuthenticatedVendorsRouteWithChildren
@@ -866,6 +939,7 @@ const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedPoliciesRoute: AuthenticatedPoliciesRouteWithChildren,
   AuthenticatedReviewsRoute: AuthenticatedReviewsRouteWithChildren,
   AuthenticatedRisksRoute: AuthenticatedRisksRouteWithChildren,
+  AuthenticatedRunbooksRoute: AuthenticatedRunbooksRouteWithChildren,
   AuthenticatedSlasRoute: AuthenticatedSlasRouteWithChildren,
   AuthenticatedSystemsRoute: AuthenticatedSystemsRouteWithChildren,
   AuthenticatedVendorsRoute: AuthenticatedVendorsRouteWithChildren,
@@ -886,3 +960,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
