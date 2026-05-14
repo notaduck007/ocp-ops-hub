@@ -3,7 +3,8 @@ import { useEffect, useState } from "react";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
-import { Plus } from "lucide-react";
+import { Plus, ScrollText } from "lucide-react";
+import { EmptyState } from "@/components/states/empty-state";
 import { format } from "date-fns";
 import { toast } from "sonner";
 
@@ -186,9 +187,7 @@ function RunbookDetail() {
         <TabsContent value="activity" className="mt-4">
           <div className="space-y-3">
             {activity.length === 0 ? (
-              <div className="rounded-md border bg-card p-4 text-sm text-muted-foreground">
-                No activity yet.
-              </div>
+              <EmptyState icon={ScrollText} title="No activity yet" description="Edits to this record will appear here." variant="card" />
             ) : (
               activity.map((a: any) => <AuditEntry key={a.id} entry={a} />)
             )}
