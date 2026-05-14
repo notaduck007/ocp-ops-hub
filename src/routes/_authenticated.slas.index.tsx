@@ -2,6 +2,8 @@ import { useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
+import { FileCheck2 } from "lucide-react";
+import { EmptyState } from "@/components/states/empty-state";
 
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -53,7 +55,15 @@ function SlasListPage() {
             {isLoading ? (
               <TableSkeleton rows={8} cols={6} />
             ) : rows.length === 0 ? (
-              <TableRow><TableCell colSpan={6} className="text-center text-sm text-muted-foreground">No SLAs yet.</TableCell></TableRow>
+              <TableRow>
+                <TableCell colSpan={6} className="p-0">
+                  <EmptyState
+                    icon={FileCheck2}
+                    title="No SLAs yet"
+                    description="Capture vendor commitments so you can hold them to it."
+                  />
+                </TableCell>
+              </TableRow>
             ) : rows.map((s) => (
               <TableRow key={s.id}>
                 <TableCell className="font-medium">

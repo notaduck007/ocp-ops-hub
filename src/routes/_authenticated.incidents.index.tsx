@@ -2,7 +2,8 @@ import { useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
-import { Plus } from "lucide-react";
+import { Plus, AlertOctagon } from "lucide-react";
+import { EmptyState } from "@/components/states/empty-state";
 import { formatDistanceToNow } from "date-fns";
 
 import { Button } from "@/components/ui/button";
@@ -131,8 +132,13 @@ function IncidentsListPage() {
               <TableSkeleton rows={8} cols={6} />
             ) : filtered.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={6} className="text-muted-foreground">
-                  No incidents.
+                <TableCell colSpan={6} className="p-0">
+                  <EmptyState
+                    icon={AlertOctagon}
+                    title="No incidents on record"
+                    description="Declare one when something breaks. You'll be glad you did when leadership asks for the post-mortem."
+                    action={canEdit ? { label: "Declare incident", onClick: () => setDeclareOpen(true) } : undefined}
+                  />
                 </TableCell>
               </TableRow>
             ) : (

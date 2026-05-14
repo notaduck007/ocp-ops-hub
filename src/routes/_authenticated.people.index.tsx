@@ -2,7 +2,8 @@ import { useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
-import { Plus } from "lucide-react";
+import { Plus, UserCircle } from "lucide-react";
+import { EmptyState } from "@/components/states/empty-state";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -186,8 +187,13 @@ function PeopleListPage() {
               <TableSkeleton rows={8} cols={5} />
             ) : rows.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={5} className="text-center text-sm text-muted-foreground">
-                  No people match your filters.
+                <TableCell colSpan={5} className="p-0">
+                  <EmptyState
+                    icon={UserCircle}
+                    title="No people yet"
+                    description="Add the first person to start the inventory."
+                    action={canEdit ? { label: "New person", onClick: () => setCreateOpen(true) } : undefined}
+                  />
                 </TableCell>
               </TableRow>
             ) : (

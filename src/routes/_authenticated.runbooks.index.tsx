@@ -2,7 +2,8 @@ import { useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
-import { Plus } from "lucide-react";
+import { Plus, BookOpenCheck } from "lucide-react";
+import { EmptyState } from "@/components/states/empty-state";
 import { format } from "date-fns";
 
 import { Button } from "@/components/ui/button";
@@ -69,7 +70,16 @@ function RunbooksList() {
             {isLoading ? (
               <TableSkeleton rows={8} cols={6} />
             ) : rows.length === 0 ? (
-              <TableRow><TableCell colSpan={6} className="text-muted-foreground">No runbooks.</TableCell></TableRow>
+              <TableRow>
+                <TableCell colSpan={6} className="p-0">
+                  <EmptyState
+                    icon={BookOpenCheck}
+                    title="No runbooks yet"
+                    description="Document how to recover when things break."
+                    action={canEdit ? { label: "New runbook", onClick: () => setOpen(true) } : undefined}
+                  />
+                </TableCell>
+              </TableRow>
             ) : (
               rows.map((r) => {
                 const last = r.last_tested_at ? new Date(r.last_tested_at) : null;
