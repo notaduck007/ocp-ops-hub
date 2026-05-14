@@ -78,9 +78,21 @@ export const getIncidentsThisQuarter = createServerFn({ method: "GET" })
 
 export const getDrReadiness = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
-  .handler(async () => {
-    // Placeholder until DR module ships
-    return { critical_systems: 0, tested_last_12mo: 0, readiness_pct: 0 };
+  .handler(async ({ context }) => {
+    const { supabase } = context;
+    const { data, error } = await supabase
+      .from("v_dr_readiness" as any)
+      .select("critical_systems_total, critical_systems_tested_recently, pct")
+      .maybeSingle();
+    if (error) throw new Error(error.message);
+    const row = (data ?? null) as
+      | { critical_systems_total: number; critical_systems_tested_recently: number; pct: number | null }
+      | null;
+    return {
+      critical_systems: row?.critical_systems_total ?? 0,
+      tested_last_12mo: row?.critical_systems_tested_recently ?? 0,
+      readiness_pct: Number(row?.pct ?? 0),
+    };
   });
 
 export const getVendorHealth = createServerFn({ method: "GET" })
