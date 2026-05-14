@@ -29,6 +29,7 @@ import { VendorForm } from "@/components/vendors/vendor-form";
 import { SlaForm } from "@/components/slas/sla-form";
 import { BreachForm } from "@/components/slas/breach-form";
 import { useCanEdit, useIsAdmin } from "@/hooks/use-role";
+import { AdminOnly } from "@/components/auth/role-gate";
 import { archiveVendor, getVendor, listVendorSystems } from "@/lib/vendors.functions";
 import {
   BREACH_STATUSES, listBreaches, listSlas, updateBreach,

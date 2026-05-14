@@ -24,6 +24,7 @@ import { PageHeaderSkeleton, DetailFormSkeleton } from "@/components/layout/skel
 import { EditToggle } from "@/components/layout/edit-toggle";
 import { detailSearchValidator } from "@/lib/detail-search";
 import { useCanEdit, useIsAdmin } from "@/hooks/use-role";
+import { AdminOnly } from "@/components/auth/role-gate";
 import {
   archiveSystem,
   getSystem,

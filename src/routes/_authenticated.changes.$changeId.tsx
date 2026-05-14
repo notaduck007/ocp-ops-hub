@@ -45,6 +45,7 @@ import {
   updateChange,
 } from "@/lib/changes.functions";
 import { useCanEdit, useIsAdmin } from "@/hooks/use-role";
+import { AdminOnly } from "@/components/auth/role-gate";
 
 export const Route = createFileRoute(
   "/_authenticated/changes/$changeId",
