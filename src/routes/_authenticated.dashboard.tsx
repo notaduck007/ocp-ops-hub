@@ -241,7 +241,7 @@ function DashboardPage() {
 
         {/* DR Readiness */}
         <Tile
-          icon={<LifeBuoy className="h-4 w-4 text-indigo-600" />}
+          icon={<LifeBuoy className={`h-4 w-4 ${INTENT_ICON_CLASSES.info}`} />}
           title="DR readiness"
         >
           {dr.data == null ? (
