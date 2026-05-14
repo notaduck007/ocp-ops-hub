@@ -191,7 +191,7 @@ function IncidentDetailPage() {
           <EvidenceFilesTab kind="incident" linkedEntityType="incident" linkedEntityId={incidentId} />
         </TabsContent>
       </Tabs>
-    </div>
+    </PageShell>
   );
 }
 
