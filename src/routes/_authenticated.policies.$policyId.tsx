@@ -240,6 +240,6 @@ function PolicyDetailPage() {
           <EvidenceFilesTab kind="policy" linkedEntityType="policy" linkedEntityId={policyId} />
         </TabsContent>
       </Tabs>
-    </div>
+    </PageShell>
   );
 }
