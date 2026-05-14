@@ -91,29 +91,26 @@ function IncidentDetailPage() {
   }
 
   return (
-    <div className="space-y-4">
-      <div>
-        <Link
-          to="/incidents"
-          className="text-xs text-muted-foreground hover:underline"
-        >
-          ← All incidents
-        </Link>
-        <div className="mt-1 flex flex-wrap items-center gap-3">
-          <h1 className="text-2xl font-semibold tracking-tight">
-            {incident.title}
-          </h1>
-          <SeverityBadge value={incident.severity} />
-          <IncidentStatusBadge value={incident.status} />
-          <span className="text-xs text-muted-foreground">
+    <PageShell>
+      <PageHeader
+        backTo={{ to: "/incidents", label: "All incidents" }}
+        title={incident.title}
+        badges={
+          <>
+            <SeverityBadge value={incident.severity} />
+            <IncidentStatusBadge value={incident.status} />
+          </>
+        }
+        meta={
+          <>
             Declared{" "}
             {formatDistanceToNow(new Date(incident.declared_at), {
               addSuffix: true,
             })}{" "}
             by {incident.declarer?.full_name ?? incident.declarer?.email ?? "—"}
-          </span>
-        </div>
-      </div>
+          </>
+        }
+      />
 
       <Tabs defaultValue="overview">
         <TabsList>
