@@ -49,10 +49,8 @@ export function PageHeader({
         <div className="min-w-0 space-y-2">
           {backTo && (
             <Link
-              {...({
-                to: backTo.to,
-                params: backTo.params,
-              } as never)}
+              to={backTo.to as never}
+              params={backTo.params as never}
               className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground"
             >
               <ArrowLeft className="h-3 w-3" />
