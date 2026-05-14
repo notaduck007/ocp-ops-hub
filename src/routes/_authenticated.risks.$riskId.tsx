@@ -68,24 +68,21 @@ function RiskDetailPage() {
   );
 
   return (
-    <div className="space-y-5">
-      <div>
-        <Link
-          to="/risks"
-          className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground"
-        >
-          <ArrowLeft className="h-3 w-3" /> Risks
-        </Link>
-        <h1 className="mt-1 text-2xl font-semibold tracking-tight">{risk.title}</h1>
-        <div className="mt-2 flex flex-wrap items-center gap-2">
-          <KindBadge value={risk.kind} />
-          <StatusBadge value={risk.status} />
-          <SeverityBadge value={risk.severity} />
-          <LikelihoodBadge value={risk.likelihood} />
-          <ScoreBadge value={risk.score} />
-          {risk.archived_at && <Badge variant="outline">Archived</Badge>}
-        </div>
-      </div>
+    <PageShell>
+      <PageHeader
+        backTo={{ to: "/risks", label: "Risks" }}
+        title={risk.title}
+        badges={
+          <>
+            <KindBadge value={risk.kind} />
+            <StatusBadge value={risk.status} />
+            <SeverityBadge value={risk.severity} />
+            <LikelihoodBadge value={risk.likelihood} />
+            <ScoreBadge value={risk.score} />
+            {risk.archived_at && <Badge variant="outline">Archived</Badge>}
+          </>
+        }
+      />
 
       <Tabs defaultValue="overview">
         <TabsList>
@@ -106,13 +103,7 @@ function RiskDetailPage() {
               label="System"
               value={
                 risk.system ? (
-                  <Link
-                    to="/systems/$systemId"
-                    params={{ systemId: risk.system.id }}
-                    className="hover:underline"
-                  >
-                    {risk.system.name}
-                  </Link>
+                  <RecordLink kind="system" id={risk.system.id} label={risk.system.name} />
                 ) : null
               }
             />
@@ -120,13 +111,7 @@ function RiskDetailPage() {
               label="Vendor"
               value={
                 risk.vendor ? (
-                  <Link
-                    to="/vendors/$vendorId"
-                    params={{ vendorId: risk.vendor.id }}
-                    className="hover:underline"
-                  >
-                    {risk.vendor.name}
-                  </Link>
+                  <RecordLink kind="vendor" id={risk.vendor.id} label={risk.vendor.name} />
                 ) : null
               }
             />
@@ -134,13 +119,21 @@ function RiskDetailPage() {
               label="Policy"
               value={
                 risk.policy_id ? (
-                  <span className="font-mono text-xs">{risk.policy_id}</span>
+                  <RecordLink kind="policy" id={risk.policy_id} label={risk.policy_id.slice(0, 8)} />
                 ) : null
               }
             />
             <LinkRow
               label="Owner"
-              value={risk.owner?.full_name || risk.owner?.email || null}
+              value={
+                risk.owner ? (
+                  <RecordLink
+                    kind="person"
+                    id={risk.owner.id}
+                    label={risk.owner.full_name || risk.owner.email}
+                  />
+                ) : null
+              }
             />
           </div>
         </TabsContent>
