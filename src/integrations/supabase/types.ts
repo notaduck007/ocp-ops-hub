@@ -181,6 +181,139 @@ export type Database = {
           },
         ]
       }
+      sla_breaches: {
+        Row: {
+          closed_at: string | null
+          created_at: string
+          created_by: string | null
+          detected_at: string | null
+          id: string
+          impact_summary: string
+          occurred_at: string
+          remediation_notes: string | null
+          sla_id: string
+          status: Database["public"]["Enums"]["breach_status"]
+          updated_at: string
+          updated_by: string | null
+        }
+        Insert: {
+          closed_at?: string | null
+          created_at?: string
+          created_by?: string | null
+          detected_at?: string | null
+          id?: string
+          impact_summary: string
+          occurred_at: string
+          remediation_notes?: string | null
+          sla_id: string
+          status?: Database["public"]["Enums"]["breach_status"]
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Update: {
+          closed_at?: string | null
+          created_at?: string
+          created_by?: string | null
+          detected_at?: string | null
+          id?: string
+          impact_summary?: string
+          occurred_at?: string
+          remediation_notes?: string | null
+          sla_id?: string
+          status?: Database["public"]["Enums"]["breach_status"]
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "sla_breaches_sla_id_fkey"
+            columns: ["sla_id"]
+            isOneToOne: false
+            referencedRelation: "slas"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "sla_breaches_sla_id_fkey"
+            columns: ["sla_id"]
+            isOneToOne: false
+            referencedRelation: "v_sla_review_status"
+            referencedColumns: ["sla_id"]
+          },
+        ]
+      }
+      slas: {
+        Row: {
+          archived_at: string | null
+          created_at: string
+          created_by: string | null
+          id: string
+          last_reviewed_at: string | null
+          name: string
+          notes: string | null
+          review_cadence_days: number
+          system_id: string | null
+          target_type: Database["public"]["Enums"]["sla_target_type"]
+          target_value: number
+          updated_at: string
+          updated_by: string | null
+          vendor_id: string
+        }
+        Insert: {
+          archived_at?: string | null
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          last_reviewed_at?: string | null
+          name: string
+          notes?: string | null
+          review_cadence_days?: number
+          system_id?: string | null
+          target_type: Database["public"]["Enums"]["sla_target_type"]
+          target_value: number
+          updated_at?: string
+          updated_by?: string | null
+          vendor_id: string
+        }
+        Update: {
+          archived_at?: string | null
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          last_reviewed_at?: string | null
+          name?: string
+          notes?: string | null
+          review_cadence_days?: number
+          system_id?: string | null
+          target_type?: Database["public"]["Enums"]["sla_target_type"]
+          target_value?: number
+          updated_at?: string
+          updated_by?: string | null
+          vendor_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "slas_system_id_fkey"
+            columns: ["system_id"]
+            isOneToOne: false
+            referencedRelation: "systems"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "slas_vendor_id_fkey"
+            columns: ["vendor_id"]
+            isOneToOne: false
+            referencedRelation: "v_vendor_health"
+            referencedColumns: ["vendor_id"]
+          },
+          {
+            foreignKeyName: "slas_vendor_id_fkey"
+            columns: ["vendor_id"]
+            isOneToOne: false
+            referencedRelation: "vendors"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       systems: {
         Row: {
           archived_at: string | null
@@ -274,6 +407,20 @@ export type Database = {
             referencedRelation: "users"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "systems_vendor_id_fkey"
+            columns: ["vendor_id"]
+            isOneToOne: false
+            referencedRelation: "v_vendor_health"
+            referencedColumns: ["vendor_id"]
+          },
+          {
+            foreignKeyName: "systems_vendor_id_fkey"
+            columns: ["vendor_id"]
+            isOneToOne: false
+            referencedRelation: "vendors"
+            referencedColumns: ["id"]
+          },
         ]
       }
       user_roles: {
@@ -338,6 +485,77 @@ export type Database = {
         }
         Relationships: []
       }
+      vendors: {
+        Row: {
+          archived_at: string | null
+          contract_end_at: string | null
+          contract_url: string | null
+          created_at: string
+          created_by: string | null
+          escalation_contact_email: string | null
+          escalation_contact_name: string | null
+          id: string
+          internal_owner_id: string | null
+          name: string
+          notes: string | null
+          primary_contact_email: string | null
+          primary_contact_name: string | null
+          renewal_window_days: number
+          status: Database["public"]["Enums"]["vendor_status"]
+          updated_at: string
+          updated_by: string | null
+          website: string | null
+        }
+        Insert: {
+          archived_at?: string | null
+          contract_end_at?: string | null
+          contract_url?: string | null
+          created_at?: string
+          created_by?: string | null
+          escalation_contact_email?: string | null
+          escalation_contact_name?: string | null
+          id?: string
+          internal_owner_id?: string | null
+          name: string
+          notes?: string | null
+          primary_contact_email?: string | null
+          primary_contact_name?: string | null
+          renewal_window_days?: number
+          status?: Database["public"]["Enums"]["vendor_status"]
+          updated_at?: string
+          updated_by?: string | null
+          website?: string | null
+        }
+        Update: {
+          archived_at?: string | null
+          contract_end_at?: string | null
+          contract_url?: string | null
+          created_at?: string
+          created_by?: string | null
+          escalation_contact_email?: string | null
+          escalation_contact_name?: string | null
+          id?: string
+          internal_owner_id?: string | null
+          name?: string
+          notes?: string | null
+          primary_contact_email?: string | null
+          primary_contact_name?: string | null
+          renewal_window_days?: number
+          status?: Database["public"]["Enums"]["vendor_status"]
+          updated_at?: string
+          updated_by?: string | null
+          website?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "vendors_internal_owner_id_fkey"
+            columns: ["internal_owner_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       v_mfa_coverage: {
@@ -345,6 +563,76 @@ export type Database = {
           covered_count: number | null
           eligible_count: number | null
           mfa_coverage_pct: number | null
+        }
+        Relationships: []
+      }
+      v_sla_review_status: {
+        Row: {
+          is_overdue: boolean | null
+          last_reviewed_at: string | null
+          name: string | null
+          review_cadence_days: number | null
+          sla_id: string | null
+          system_id: string | null
+          target_type: Database["public"]["Enums"]["sla_target_type"] | null
+          target_value: number | null
+          vendor_id: string | null
+        }
+        Insert: {
+          is_overdue?: never
+          last_reviewed_at?: string | null
+          name?: string | null
+          review_cadence_days?: number | null
+          sla_id?: string | null
+          system_id?: string | null
+          target_type?: Database["public"]["Enums"]["sla_target_type"] | null
+          target_value?: number | null
+          vendor_id?: string | null
+        }
+        Update: {
+          is_overdue?: never
+          last_reviewed_at?: string | null
+          name?: string | null
+          review_cadence_days?: number | null
+          sla_id?: string | null
+          system_id?: string | null
+          target_type?: Database["public"]["Enums"]["sla_target_type"] | null
+          target_value?: number | null
+          vendor_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "slas_system_id_fkey"
+            columns: ["system_id"]
+            isOneToOne: false
+            referencedRelation: "systems"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "slas_vendor_id_fkey"
+            columns: ["vendor_id"]
+            isOneToOne: false
+            referencedRelation: "v_vendor_health"
+            referencedColumns: ["vendor_id"]
+          },
+          {
+            foreignKeyName: "slas_vendor_id_fkey"
+            columns: ["vendor_id"]
+            isOneToOne: false
+            referencedRelation: "vendors"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      v_vendor_health: {
+        Row: {
+          contract_end_at: string | null
+          contract_ending_soon: boolean | null
+          has_recent_open_breach: boolean | null
+          name: string | null
+          open_breaches_90d: number | null
+          status: Database["public"]["Enums"]["vendor_status"] | null
+          vendor_id: string | null
         }
         Relationships: []
       }
@@ -371,6 +659,7 @@ export type Database = {
     Enums: {
       access_role_level: "read" | "write" | "admin" | "owner"
       app_role: "admin" | "editor" | "viewer"
+      breach_status: "open" | "remediated" | "escalated" | "closed_no_action"
       criticality: "low" | "medium" | "high" | "critical"
       data_class:
         | "none"
@@ -381,6 +670,11 @@ export type Database = {
         | "public"
       person_status: "active" | "inactive" | "offboarded"
       person_type: "staff" | "contractor" | "vendor_user" | "service_account"
+      sla_target_type:
+        | "uptime_pct"
+        | "response_minutes"
+        | "resolution_minutes"
+        | "custom"
       system_category:
         | "idp"
         | "github"
@@ -392,6 +686,7 @@ export type Database = {
         | "security"
         | "collab"
         | "other"
+      vendor_status: "active" | "onboarding" | "offboarding" | "terminated"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -521,6 +816,7 @@ export const Constants = {
     Enums: {
       access_role_level: ["read", "write", "admin", "owner"],
       app_role: ["admin", "editor", "viewer"],
+      breach_status: ["open", "remediated", "escalated", "closed_no_action"],
       criticality: ["low", "medium", "high", "critical"],
       data_class: [
         "none",
@@ -532,6 +828,12 @@ export const Constants = {
       ],
       person_status: ["active", "inactive", "offboarded"],
       person_type: ["staff", "contractor", "vendor_user", "service_account"],
+      sla_target_type: [
+        "uptime_pct",
+        "response_minutes",
+        "resolution_minutes",
+        "custom",
+      ],
       system_category: [
         "idp",
         "github",
@@ -544,6 +846,7 @@ export const Constants = {
         "collab",
         "other",
       ],
+      vendor_status: ["active", "onboarding", "offboarding", "terminated"],
     },
   },
 } as const
