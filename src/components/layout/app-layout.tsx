@@ -8,6 +8,7 @@ import { CommandPalette } from "@/components/command-palette";
 import { cn } from "@/lib/utils";
 
 import { useAuth, useCurrentRole } from "@/hooks/use-auth";
+import { useIsAdmin } from "@/hooks/use-role";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -105,7 +106,7 @@ function useSidebarCollapsed(): [boolean, (v: boolean) => void] {
 
 function Sidebar({ collapsed, onToggle }: { collapsed: boolean; onToggle: () => void }) {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
-  const { data: role } = useCurrentRole();
+  const isAdmin = useIsAdmin();
   const attentionCount = useAttentionCount();
 
   return (
@@ -118,7 +119,7 @@ function Sidebar({ collapsed, onToggle }: { collapsed: boolean; onToggle: () => 
       </div>
       <nav className="flex-1 space-y-4 p-2">
         {NAV_GROUPS.map((group, gi) => {
-          const items = group.items.filter((i) => !i.adminOnly || role === "admin");
+          const items = group.items.filter((i) => !i.adminOnly || isAdmin);
           if (items.length === 0) return null;
           return (
             <div key={gi} className="space-y-1">
