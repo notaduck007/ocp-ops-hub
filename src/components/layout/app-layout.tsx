@@ -336,7 +336,7 @@ function TopBar() {
       >
         <Search className="h-4 w-4" />
         <span className="flex-1 text-left">Search…</span>
-        <kbd className="rounded bg-muted px-1.5 py-0.5 text-[10px] font-medium">⌘K</kbd>
+        <kbd className="hidden rounded bg-muted px-1.5 py-0.5 text-[10px] font-medium lg:inline-flex">⌘K</kbd>
       </button>
       <NotificationBell />
       <UserMenu />
