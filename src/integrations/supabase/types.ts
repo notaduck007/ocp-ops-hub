@@ -116,6 +116,133 @@ export type Database = {
         }
         Relationships: []
       }
+      change_systems: {
+        Row: {
+          change_id: string
+          system_id: string
+        }
+        Insert: {
+          change_id: string
+          system_id: string
+        }
+        Update: {
+          change_id?: string
+          system_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "change_systems_change_id_fkey"
+            columns: ["change_id"]
+            isOneToOne: false
+            referencedRelation: "changes"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "change_systems_system_id_fkey"
+            columns: ["system_id"]
+            isOneToOne: false
+            referencedRelation: "systems"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      changes: {
+        Row: {
+          approved_at: string | null
+          approver_id: string | null
+          archived_at: string | null
+          class: Database["public"]["Enums"]["change_class"]
+          comms_plan: string | null
+          completed_at: string | null
+          created_at: string
+          created_by: string | null
+          description: string | null
+          id: string
+          linked_incident_id: string | null
+          requested_by: string
+          risk_summary: string | null
+          rollback_note: string | null
+          rollback_plan: string
+          rolled_back_at: string | null
+          scheduled_at: string | null
+          started_at: string | null
+          status: Database["public"]["Enums"]["change_status"]
+          title: string
+          updated_at: string
+          updated_by: string | null
+        }
+        Insert: {
+          approved_at?: string | null
+          approver_id?: string | null
+          archived_at?: string | null
+          class: Database["public"]["Enums"]["change_class"]
+          comms_plan?: string | null
+          completed_at?: string | null
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          id?: string
+          linked_incident_id?: string | null
+          requested_by: string
+          risk_summary?: string | null
+          rollback_note?: string | null
+          rollback_plan: string
+          rolled_back_at?: string | null
+          scheduled_at?: string | null
+          started_at?: string | null
+          status?: Database["public"]["Enums"]["change_status"]
+          title: string
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Update: {
+          approved_at?: string | null
+          approver_id?: string | null
+          archived_at?: string | null
+          class?: Database["public"]["Enums"]["change_class"]
+          comms_plan?: string | null
+          completed_at?: string | null
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          id?: string
+          linked_incident_id?: string | null
+          requested_by?: string
+          risk_summary?: string | null
+          rollback_note?: string | null
+          rollback_plan?: string
+          rolled_back_at?: string | null
+          scheduled_at?: string | null
+          started_at?: string | null
+          status?: Database["public"]["Enums"]["change_status"]
+          title?: string
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "changes_approver_id_fkey"
+            columns: ["approver_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "changes_linked_incident_id_fkey"
+            columns: ["linked_incident_id"]
+            isOneToOne: false
+            referencedRelation: "incidents"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "changes_requested_by_fkey"
+            columns: ["requested_by"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       incident_comms: {
         Row: {
           audience: Database["public"]["Enums"]["comms_audience"]
@@ -1018,6 +1145,14 @@ export type Database = {
       access_role_level: "read" | "write" | "admin" | "owner"
       app_role: "admin" | "editor" | "viewer"
       breach_status: "open" | "remediated" | "escalated" | "closed_no_action"
+      change_class: "standard" | "normal" | "emergency"
+      change_status:
+        | "proposed"
+        | "approved"
+        | "rejected"
+        | "in_flight"
+        | "completed"
+        | "rolled_back"
       comms_audience:
         | "internal_it"
         | "leadership"
@@ -1190,6 +1325,15 @@ export const Constants = {
       access_role_level: ["read", "write", "admin", "owner"],
       app_role: ["admin", "editor", "viewer"],
       breach_status: ["open", "remediated", "escalated", "closed_no_action"],
+      change_class: ["standard", "normal", "emergency"],
+      change_status: [
+        "proposed",
+        "approved",
+        "rejected",
+        "in_flight",
+        "completed",
+        "rolled_back",
+      ],
       comms_audience: [
         "internal_it",
         "leadership",
