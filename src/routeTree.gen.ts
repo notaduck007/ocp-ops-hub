@@ -14,9 +14,13 @@ import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthCallbackRouteImport } from './routes/auth.callback'
 import { Route as AuthenticatedSystemsRouteImport } from './routes/_authenticated.systems'
+import { Route as AuthenticatedPeopleRouteImport } from './routes/_authenticated.people'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated.dashboard'
+import { Route as AuthenticatedAccessRouteImport } from './routes/_authenticated.access'
 import { Route as AuthenticatedSystemsIndexRouteImport } from './routes/_authenticated.systems.index'
+import { Route as AuthenticatedPeopleIndexRouteImport } from './routes/_authenticated.people.index'
 import { Route as AuthenticatedSystemsSystemIdRouteImport } from './routes/_authenticated.systems.$systemId'
+import { Route as AuthenticatedPeoplePersonIdRouteImport } from './routes/_authenticated.people.$personId'
 import { Route as AuthenticatedAdminUsersRouteImport } from './routes/_authenticated.admin.users'
 
 const LoginRoute = LoginRouteImport.update({
@@ -43,9 +47,19 @@ const AuthenticatedSystemsRoute = AuthenticatedSystemsRouteImport.update({
   path: '/systems',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
+const AuthenticatedPeopleRoute = AuthenticatedPeopleRouteImport.update({
+  id: '/people',
+  path: '/people',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
 const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
+const AuthenticatedAccessRoute = AuthenticatedAccessRouteImport.update({
+  id: '/access',
+  path: '/access',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
 const AuthenticatedSystemsIndexRoute =
@@ -54,11 +68,23 @@ const AuthenticatedSystemsIndexRoute =
     path: '/',
     getParentRoute: () => AuthenticatedSystemsRoute,
   } as any)
+const AuthenticatedPeopleIndexRoute =
+  AuthenticatedPeopleIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => AuthenticatedPeopleRoute,
+  } as any)
 const AuthenticatedSystemsSystemIdRoute =
   AuthenticatedSystemsSystemIdRouteImport.update({
     id: '/$systemId',
     path: '/$systemId',
     getParentRoute: () => AuthenticatedSystemsRoute,
+  } as any)
+const AuthenticatedPeoplePersonIdRoute =
+  AuthenticatedPeoplePersonIdRouteImport.update({
+    id: '/$personId',
+    path: '/$personId',
+    getParentRoute: () => AuthenticatedPeopleRoute,
   } as any)
 const AuthenticatedAdminUsersRoute = AuthenticatedAdminUsersRouteImport.update({
   id: '/admin/users',
@@ -69,20 +95,27 @@ const AuthenticatedAdminUsersRoute = AuthenticatedAdminUsersRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
+  '/access': typeof AuthenticatedAccessRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
+  '/people': typeof AuthenticatedPeopleRouteWithChildren
   '/systems': typeof AuthenticatedSystemsRouteWithChildren
   '/auth/callback': typeof AuthCallbackRoute
   '/admin/users': typeof AuthenticatedAdminUsersRoute
+  '/people/$personId': typeof AuthenticatedPeoplePersonIdRoute
   '/systems/$systemId': typeof AuthenticatedSystemsSystemIdRoute
+  '/people/': typeof AuthenticatedPeopleIndexRoute
   '/systems/': typeof AuthenticatedSystemsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
+  '/access': typeof AuthenticatedAccessRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/auth/callback': typeof AuthCallbackRoute
   '/admin/users': typeof AuthenticatedAdminUsersRoute
+  '/people/$personId': typeof AuthenticatedPeoplePersonIdRoute
   '/systems/$systemId': typeof AuthenticatedSystemsSystemIdRoute
+  '/people': typeof AuthenticatedPeopleIndexRoute
   '/systems': typeof AuthenticatedSystemsIndexRoute
 }
 export interface FileRoutesById {
@@ -90,11 +123,15 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteWithChildren
   '/login': typeof LoginRoute
+  '/_authenticated/access': typeof AuthenticatedAccessRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
+  '/_authenticated/people': typeof AuthenticatedPeopleRouteWithChildren
   '/_authenticated/systems': typeof AuthenticatedSystemsRouteWithChildren
   '/auth/callback': typeof AuthCallbackRoute
   '/_authenticated/admin/users': typeof AuthenticatedAdminUsersRoute
+  '/_authenticated/people/$personId': typeof AuthenticatedPeoplePersonIdRoute
   '/_authenticated/systems/$systemId': typeof AuthenticatedSystemsSystemIdRoute
+  '/_authenticated/people/': typeof AuthenticatedPeopleIndexRoute
   '/_authenticated/systems/': typeof AuthenticatedSystemsIndexRoute
 }
 export interface FileRouteTypes {
@@ -102,31 +139,42 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/login'
+    | '/access'
     | '/dashboard'
+    | '/people'
     | '/systems'
     | '/auth/callback'
     | '/admin/users'
+    | '/people/$personId'
     | '/systems/$systemId'
+    | '/people/'
     | '/systems/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/login'
+    | '/access'
     | '/dashboard'
     | '/auth/callback'
     | '/admin/users'
+    | '/people/$personId'
     | '/systems/$systemId'
+    | '/people'
     | '/systems'
   id:
     | '__root__'
     | '/'
     | '/_authenticated'
     | '/login'
+    | '/_authenticated/access'
     | '/_authenticated/dashboard'
+    | '/_authenticated/people'
     | '/_authenticated/systems'
     | '/auth/callback'
     | '/_authenticated/admin/users'
+    | '/_authenticated/people/$personId'
     | '/_authenticated/systems/$systemId'
+    | '/_authenticated/people/'
     | '/_authenticated/systems/'
   fileRoutesById: FileRoutesById
 }
@@ -174,11 +222,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedSystemsRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
+    '/_authenticated/people': {
+      id: '/_authenticated/people'
+      path: '/people'
+      fullPath: '/people'
+      preLoaderRoute: typeof AuthenticatedPeopleRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
     '/_authenticated/dashboard': {
       id: '/_authenticated/dashboard'
       path: '/dashboard'
       fullPath: '/dashboard'
       preLoaderRoute: typeof AuthenticatedDashboardRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/access': {
+      id: '/_authenticated/access'
+      path: '/access'
+      fullPath: '/access'
+      preLoaderRoute: typeof AuthenticatedAccessRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
     '/_authenticated/systems/': {
@@ -188,12 +250,26 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedSystemsIndexRouteImport
       parentRoute: typeof AuthenticatedSystemsRoute
     }
+    '/_authenticated/people/': {
+      id: '/_authenticated/people/'
+      path: '/'
+      fullPath: '/people/'
+      preLoaderRoute: typeof AuthenticatedPeopleIndexRouteImport
+      parentRoute: typeof AuthenticatedPeopleRoute
+    }
     '/_authenticated/systems/$systemId': {
       id: '/_authenticated/systems/$systemId'
       path: '/$systemId'
       fullPath: '/systems/$systemId'
       preLoaderRoute: typeof AuthenticatedSystemsSystemIdRouteImport
       parentRoute: typeof AuthenticatedSystemsRoute
+    }
+    '/_authenticated/people/$personId': {
+      id: '/_authenticated/people/$personId'
+      path: '/$personId'
+      fullPath: '/people/$personId'
+      preLoaderRoute: typeof AuthenticatedPeoplePersonIdRouteImport
+      parentRoute: typeof AuthenticatedPeopleRoute
     }
     '/_authenticated/admin/users': {
       id: '/_authenticated/admin/users'
@@ -204,6 +280,19 @@ declare module '@tanstack/react-router' {
     }
   }
 }
+
+interface AuthenticatedPeopleRouteChildren {
+  AuthenticatedPeoplePersonIdRoute: typeof AuthenticatedPeoplePersonIdRoute
+  AuthenticatedPeopleIndexRoute: typeof AuthenticatedPeopleIndexRoute
+}
+
+const AuthenticatedPeopleRouteChildren: AuthenticatedPeopleRouteChildren = {
+  AuthenticatedPeoplePersonIdRoute: AuthenticatedPeoplePersonIdRoute,
+  AuthenticatedPeopleIndexRoute: AuthenticatedPeopleIndexRoute,
+}
+
+const AuthenticatedPeopleRouteWithChildren =
+  AuthenticatedPeopleRoute._addFileChildren(AuthenticatedPeopleRouteChildren)
 
 interface AuthenticatedSystemsRouteChildren {
   AuthenticatedSystemsSystemIdRoute: typeof AuthenticatedSystemsSystemIdRoute
@@ -219,13 +308,17 @@ const AuthenticatedSystemsRouteWithChildren =
   AuthenticatedSystemsRoute._addFileChildren(AuthenticatedSystemsRouteChildren)
 
 interface AuthenticatedRouteChildren {
+  AuthenticatedAccessRoute: typeof AuthenticatedAccessRoute
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
+  AuthenticatedPeopleRoute: typeof AuthenticatedPeopleRouteWithChildren
   AuthenticatedSystemsRoute: typeof AuthenticatedSystemsRouteWithChildren
   AuthenticatedAdminUsersRoute: typeof AuthenticatedAdminUsersRoute
 }
 
 const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
+  AuthenticatedAccessRoute: AuthenticatedAccessRoute,
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
+  AuthenticatedPeopleRoute: AuthenticatedPeopleRouteWithChildren,
   AuthenticatedSystemsRoute: AuthenticatedSystemsRouteWithChildren,
   AuthenticatedAdminUsersRoute: AuthenticatedAdminUsersRoute,
 }
