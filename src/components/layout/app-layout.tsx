@@ -1,6 +1,6 @@
 import { type ReactNode } from "react";
 import { Link, useRouterState } from "@tanstack/react-router";
-import { LayoutDashboard, Users, Search } from "lucide-react";
+import { LayoutDashboard, Users, Search, Server } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import { Input } from "@/components/ui/input";
@@ -25,9 +25,21 @@ type NavItem = {
   adminOnly?: boolean;
 };
 
-const NAV: NavItem[] = [
-  { to: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
-  { to: "/admin/users", label: "Users", icon: Users, adminOnly: true },
+type NavGroup = { label: string | null; items: NavItem[] };
+
+const NAV_GROUPS: NavGroup[] = [
+  {
+    label: null,
+    items: [{ to: "/dashboard", label: "Dashboard", icon: LayoutDashboard }],
+  },
+  {
+    label: "Inventory",
+    items: [{ to: "/systems", label: "Systems", icon: Server }],
+  },
+  {
+    label: "Admin",
+    items: [{ to: "/admin/users", label: "Users", icon: Users, adminOnly: true }],
+  },
 ];
 
 function Sidebar() {
@@ -39,24 +51,37 @@ function Sidebar() {
       <div className="flex h-14 items-center border-b px-4">
         <span className="text-sm font-semibold tracking-tight">OCP IT Hub</span>
       </div>
-      <nav className="flex-1 space-y-1 p-2">
-        {NAV.filter((i) => !i.adminOnly || role === "admin").map((item) => {
-          const Icon = item.icon;
-          const active = pathname === item.to || pathname.startsWith(item.to + "/");
+      <nav className="flex-1 space-y-4 p-2">
+        {NAV_GROUPS.map((group, gi) => {
+          const items = group.items.filter((i) => !i.adminOnly || role === "admin");
+          if (items.length === 0) return null;
           return (
-            <Link
-              key={item.to}
-              to={item.to}
-              className={cn(
-                "flex items-center gap-2 rounded-md px-3 py-2 text-sm transition-colors",
-                active
-                  ? "bg-accent text-accent-foreground font-medium"
-                  : "text-muted-foreground hover:bg-accent/50 hover:text-foreground",
+            <div key={gi} className="space-y-1">
+              {group.label && (
+                <div className="px-3 pb-1 text-xs font-medium uppercase tracking-wide text-muted-foreground/70">
+                  {group.label}
+                </div>
               )}
-            >
-              <Icon className="h-4 w-4" />
-              {item.label}
-            </Link>
+              {items.map((item) => {
+                const Icon = item.icon;
+                const active = pathname === item.to || pathname.startsWith(item.to + "/");
+                return (
+                  <Link
+                    key={item.to}
+                    to={item.to}
+                    className={cn(
+                      "flex items-center gap-2 rounded-md px-3 py-2 text-sm transition-colors",
+                      active
+                        ? "bg-accent text-accent-foreground font-medium"
+                        : "text-muted-foreground hover:bg-accent/50 hover:text-foreground",
+                    )}
+                  >
+                    <Icon className="h-4 w-4" />
+                    {item.label}
+                  </Link>
+                );
+              })}
+            </div>
           );
         })}
       </nav>

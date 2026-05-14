@@ -47,6 +47,101 @@ export type Database = {
         }
         Relationships: []
       }
+      systems: {
+        Row: {
+          archived_at: string | null
+          business_owner_id: string | null
+          category: Database["public"]["Enums"]["system_category"]
+          created_at: string
+          created_by: string | null
+          criticality: Database["public"]["Enums"]["criticality"]
+          data_classes: Database["public"]["Enums"]["data_class"][]
+          description: string | null
+          id: string
+          mfa_required: boolean
+          name: string
+          notes: string | null
+          rpo_minutes: number | null
+          rto_minutes: number | null
+          technical_owner_id: string | null
+          updated_at: string
+          updated_by: string | null
+          url: string | null
+          vendor_id: string | null
+        }
+        Insert: {
+          archived_at?: string | null
+          business_owner_id?: string | null
+          category: Database["public"]["Enums"]["system_category"]
+          created_at?: string
+          created_by?: string | null
+          criticality?: Database["public"]["Enums"]["criticality"]
+          data_classes?: Database["public"]["Enums"]["data_class"][]
+          description?: string | null
+          id?: string
+          mfa_required?: boolean
+          name: string
+          notes?: string | null
+          rpo_minutes?: number | null
+          rto_minutes?: number | null
+          technical_owner_id?: string | null
+          updated_at?: string
+          updated_by?: string | null
+          url?: string | null
+          vendor_id?: string | null
+        }
+        Update: {
+          archived_at?: string | null
+          business_owner_id?: string | null
+          category?: Database["public"]["Enums"]["system_category"]
+          created_at?: string
+          created_by?: string | null
+          criticality?: Database["public"]["Enums"]["criticality"]
+          data_classes?: Database["public"]["Enums"]["data_class"][]
+          description?: string | null
+          id?: string
+          mfa_required?: boolean
+          name?: string
+          notes?: string | null
+          rpo_minutes?: number | null
+          rto_minutes?: number | null
+          technical_owner_id?: string | null
+          updated_at?: string
+          updated_by?: string | null
+          url?: string | null
+          vendor_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "systems_business_owner_id_fkey"
+            columns: ["business_owner_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "systems_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "systems_technical_owner_id_fkey"
+            columns: ["technical_owner_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "systems_updated_by_fkey"
+            columns: ["updated_by"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       user_roles: {
         Row: {
           created_at: string
@@ -134,6 +229,25 @@ export type Database = {
     }
     Enums: {
       app_role: "admin" | "editor" | "viewer"
+      criticality: "low" | "medium" | "high" | "critical"
+      data_class:
+        | "none"
+        | "member_pii"
+        | "staff_pii"
+        | "financial"
+        | "unpublished_spec"
+        | "public"
+      system_category:
+        | "idp"
+        | "github"
+        | "crm"
+        | "cms"
+        | "storage"
+        | "finance"
+        | "event"
+        | "security"
+        | "collab"
+        | "other"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -262,6 +376,27 @@ export const Constants = {
   public: {
     Enums: {
       app_role: ["admin", "editor", "viewer"],
+      criticality: ["low", "medium", "high", "critical"],
+      data_class: [
+        "none",
+        "member_pii",
+        "staff_pii",
+        "financial",
+        "unpublished_spec",
+        "public",
+      ],
+      system_category: [
+        "idp",
+        "github",
+        "crm",
+        "cms",
+        "storage",
+        "finance",
+        "event",
+        "security",
+        "collab",
+        "other",
+      ],
     },
   },
 } as const

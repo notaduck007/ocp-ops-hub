@@ -13,7 +13,10 @@ import { Route as LoginRouteImport } from './routes/login'
 import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthCallbackRouteImport } from './routes/auth.callback'
+import { Route as AuthenticatedSystemsRouteImport } from './routes/_authenticated.systems'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated.dashboard'
+import { Route as AuthenticatedSystemsIndexRouteImport } from './routes/_authenticated.systems.index'
+import { Route as AuthenticatedSystemsSystemIdRouteImport } from './routes/_authenticated.systems.$systemId'
 import { Route as AuthenticatedAdminUsersRouteImport } from './routes/_authenticated.admin.users'
 
 const LoginRoute = LoginRouteImport.update({
@@ -35,11 +38,28 @@ const AuthCallbackRoute = AuthCallbackRouteImport.update({
   path: '/auth/callback',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedSystemsRoute = AuthenticatedSystemsRouteImport.update({
+  id: '/systems',
+  path: '/systems',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
 const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
+const AuthenticatedSystemsIndexRoute =
+  AuthenticatedSystemsIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => AuthenticatedSystemsRoute,
+  } as any)
+const AuthenticatedSystemsSystemIdRoute =
+  AuthenticatedSystemsSystemIdRouteImport.update({
+    id: '/$systemId',
+    path: '/$systemId',
+    getParentRoute: () => AuthenticatedSystemsRoute,
+  } as any)
 const AuthenticatedAdminUsersRoute = AuthenticatedAdminUsersRouteImport.update({
   id: '/admin/users',
   path: '/admin/users',
@@ -50,8 +70,11 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
+  '/systems': typeof AuthenticatedSystemsRouteWithChildren
   '/auth/callback': typeof AuthCallbackRoute
   '/admin/users': typeof AuthenticatedAdminUsersRoute
+  '/systems/$systemId': typeof AuthenticatedSystemsSystemIdRoute
+  '/systems/': typeof AuthenticatedSystemsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -59,6 +82,8 @@ export interface FileRoutesByTo {
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/auth/callback': typeof AuthCallbackRoute
   '/admin/users': typeof AuthenticatedAdminUsersRoute
+  '/systems/$systemId': typeof AuthenticatedSystemsSystemIdRoute
+  '/systems': typeof AuthenticatedSystemsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -66,22 +91,43 @@ export interface FileRoutesById {
   '/_authenticated': typeof AuthenticatedRouteWithChildren
   '/login': typeof LoginRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
+  '/_authenticated/systems': typeof AuthenticatedSystemsRouteWithChildren
   '/auth/callback': typeof AuthCallbackRoute
   '/_authenticated/admin/users': typeof AuthenticatedAdminUsersRoute
+  '/_authenticated/systems/$systemId': typeof AuthenticatedSystemsSystemIdRoute
+  '/_authenticated/systems/': typeof AuthenticatedSystemsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/login' | '/dashboard' | '/auth/callback' | '/admin/users'
+  fullPaths:
+    | '/'
+    | '/login'
+    | '/dashboard'
+    | '/systems'
+    | '/auth/callback'
+    | '/admin/users'
+    | '/systems/$systemId'
+    | '/systems/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/login' | '/dashboard' | '/auth/callback' | '/admin/users'
+  to:
+    | '/'
+    | '/login'
+    | '/dashboard'
+    | '/auth/callback'
+    | '/admin/users'
+    | '/systems/$systemId'
+    | '/systems'
   id:
     | '__root__'
     | '/'
     | '/_authenticated'
     | '/login'
     | '/_authenticated/dashboard'
+    | '/_authenticated/systems'
     | '/auth/callback'
     | '/_authenticated/admin/users'
+    | '/_authenticated/systems/$systemId'
+    | '/_authenticated/systems/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -121,12 +167,33 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthCallbackRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated/systems': {
+      id: '/_authenticated/systems'
+      path: '/systems'
+      fullPath: '/systems'
+      preLoaderRoute: typeof AuthenticatedSystemsRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
     '/_authenticated/dashboard': {
       id: '/_authenticated/dashboard'
       path: '/dashboard'
       fullPath: '/dashboard'
       preLoaderRoute: typeof AuthenticatedDashboardRouteImport
       parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/systems/': {
+      id: '/_authenticated/systems/'
+      path: '/'
+      fullPath: '/systems/'
+      preLoaderRoute: typeof AuthenticatedSystemsIndexRouteImport
+      parentRoute: typeof AuthenticatedSystemsRoute
+    }
+    '/_authenticated/systems/$systemId': {
+      id: '/_authenticated/systems/$systemId'
+      path: '/$systemId'
+      fullPath: '/systems/$systemId'
+      preLoaderRoute: typeof AuthenticatedSystemsSystemIdRouteImport
+      parentRoute: typeof AuthenticatedSystemsRoute
     }
     '/_authenticated/admin/users': {
       id: '/_authenticated/admin/users'
@@ -138,13 +205,28 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface AuthenticatedSystemsRouteChildren {
+  AuthenticatedSystemsSystemIdRoute: typeof AuthenticatedSystemsSystemIdRoute
+  AuthenticatedSystemsIndexRoute: typeof AuthenticatedSystemsIndexRoute
+}
+
+const AuthenticatedSystemsRouteChildren: AuthenticatedSystemsRouteChildren = {
+  AuthenticatedSystemsSystemIdRoute: AuthenticatedSystemsSystemIdRoute,
+  AuthenticatedSystemsIndexRoute: AuthenticatedSystemsIndexRoute,
+}
+
+const AuthenticatedSystemsRouteWithChildren =
+  AuthenticatedSystemsRoute._addFileChildren(AuthenticatedSystemsRouteChildren)
+
 interface AuthenticatedRouteChildren {
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
+  AuthenticatedSystemsRoute: typeof AuthenticatedSystemsRouteWithChildren
   AuthenticatedAdminUsersRoute: typeof AuthenticatedAdminUsersRoute
 }
 
 const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
+  AuthenticatedSystemsRoute: AuthenticatedSystemsRouteWithChildren,
   AuthenticatedAdminUsersRoute: AuthenticatedAdminUsersRoute,
 }
 
