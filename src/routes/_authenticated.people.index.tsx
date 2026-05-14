@@ -36,7 +36,7 @@ import { TableSkeleton } from "@/components/layout/skeletons";
 import { PersonStatusBadge, PersonTypeBadge } from "@/components/people/badges";
 import { PersonForm } from "@/components/people/person-form";
 import { ExportCsvButton } from "@/components/export-csv-button";
-import { useCurrentRole } from "@/hooks/use-auth";
+import { useCanEdit } from "@/hooks/use-role";
 import {
   PERSON_STATUSES,
   PERSON_TYPES,
@@ -50,8 +50,7 @@ export const Route = createFileRoute("/_authenticated/people/")({
 
 function PeopleListPage() {
   const list = useServerFn(listPeople);
-  const { data: role } = useCurrentRole();
-  const canEdit = role === "admin" || role === "editor";
+  const canEdit = useCanEdit();
 
   const [search, setSearch] = useState("");
   const [type, setType] = useState<string>("all");

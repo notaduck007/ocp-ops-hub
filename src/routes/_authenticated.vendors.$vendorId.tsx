@@ -28,7 +28,7 @@ import { CategoryBadge, CriticalityBadge } from "@/components/systems/badges";
 import { VendorForm } from "@/components/vendors/vendor-form";
 import { SlaForm } from "@/components/slas/sla-form";
 import { BreachForm } from "@/components/slas/breach-form";
-import { useCurrentRole } from "@/hooks/use-auth";
+import { useCanEdit, useIsAdmin } from "@/hooks/use-role";
 import { archiveVendor, getVendor, listVendorSystems } from "@/lib/vendors.functions";
 import {
   BREACH_STATUSES, listBreaches, listSlas, updateBreach,
@@ -44,9 +44,8 @@ function VendorDetailPage() {
   const { edit } = Route.useSearch();
   const navigate = useNavigate();
   const qc = useQueryClient();
-  const { data: role } = useCurrentRole();
-  const canEdit = role === "admin" || role === "editor";
-  const isAdmin = role === "admin";
+  const canEdit = useCanEdit();
+  const isAdmin = useIsAdmin();
   const editing = !!edit && canEdit;
 
   const enterEdit = () => navigate({ to: ".", search: { edit: true } });

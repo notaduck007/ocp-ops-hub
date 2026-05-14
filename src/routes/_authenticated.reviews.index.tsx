@@ -12,15 +12,14 @@ import {
 } from "@/components/ui/table";
 import { TableSkeleton } from "@/components/layout/skeletons";
 import { listCampaigns } from "@/lib/reviews.functions";
-import { useCurrentRole } from "@/hooks/use-auth";
+import { useCanEdit } from "@/hooks/use-role";
 
 export const Route = createFileRoute("/_authenticated/reviews/")({
   component: ReviewsList,
 });
 
 function ReviewsList() {
-  const { data: role } = useCurrentRole();
-  const canEdit = role === "admin" || role === "editor";
+  const canEdit = useCanEdit();
   const list = useServerFn(listCampaigns);
   const { data: rows = [], isLoading } = useQuery({
     queryKey: ["campaigns"],

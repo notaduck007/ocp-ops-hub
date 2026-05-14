@@ -37,7 +37,7 @@ import { OwnerCombobox } from "@/components/owner-combobox";
 import { CategoryBadge, CriticalityBadge } from "@/components/systems/badges";
 import { SystemForm } from "@/components/systems/system-form";
 import { ExportCsvButton } from "@/components/export-csv-button";
-import { useCurrentRole } from "@/hooks/use-auth";
+import { useCanEdit } from "@/hooks/use-role";
 import {
   CRITICALITIES,
   SYSTEM_CATEGORIES,
@@ -53,8 +53,7 @@ type SortKey = "name" | "category" | "criticality" | "updated_at";
 
 function SystemsListPage() {
   const list = useServerFn(listSystems);
-  const { data: role } = useCurrentRole();
-  const canEdit = role === "admin" || role === "editor";
+  const canEdit = useCanEdit();
 
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState<string>("all");

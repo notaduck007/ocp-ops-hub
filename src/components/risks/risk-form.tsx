@@ -28,7 +28,7 @@ import {
 import { OwnerCombobox } from "@/components/owner-combobox";
 import { SystemCombobox } from "@/components/access/system-combobox";
 import { VendorCombobox } from "@/components/vendors/vendor-combobox";
-import { useCurrentRole } from "@/hooks/use-auth";
+import { useIsAdmin } from "@/hooks/use-role";
 import {
   RISK_KINDS,
   RISK_STATUSES,
@@ -65,8 +65,7 @@ type Props = {
 
 export function RiskForm({ mode, risk, readOnly, onSaved }: Props) {
   const queryClient = useQueryClient();
-  const { data: role } = useCurrentRole();
-  const isAdmin = role === "admin";
+  const isAdmin = useIsAdmin();
 
   const create = useServerFn(createRisk);
   const update = useServerFn(updateRisk);

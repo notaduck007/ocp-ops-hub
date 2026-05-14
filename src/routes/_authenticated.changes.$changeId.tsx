@@ -44,7 +44,7 @@ import {
   transitionChange,
   updateChange,
 } from "@/lib/changes.functions";
-import { useCurrentRole } from "@/hooks/use-auth";
+import { useCanEdit, useIsAdmin } from "@/hooks/use-role";
 
 export const Route = createFileRoute(
   "/_authenticated/changes/$changeId",
@@ -58,9 +58,8 @@ function ChangeDetailPage() {
   const { edit } = Route.useSearch();
   const navigate = useNavigate();
   const qc = useQueryClient();
-  const { data: role } = useCurrentRole();
-  const isAdmin = role === "admin";
-  const canEdit = isAdmin || role === "editor";
+  const isAdmin = useIsAdmin();
+  const canEdit = useCanEdit();
 
   const get = useServerFn(getChange);
   const update = useServerFn(updateChange);

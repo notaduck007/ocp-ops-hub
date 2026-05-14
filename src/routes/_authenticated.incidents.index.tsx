@@ -33,15 +33,14 @@ import {
   listIncidents,
   type IncidentStatus,
 } from "@/lib/incidents.functions";
-import { useCurrentRole } from "@/hooks/use-auth";
+import { useCanEdit } from "@/hooks/use-role";
 
 export const Route = createFileRoute("/_authenticated/incidents/")({
   component: IncidentsListPage,
 });
 
 function IncidentsListPage() {
-  const { data: role } = useCurrentRole();
-  const canEdit = role === "admin" || role === "editor";
+  const canEdit = useCanEdit();
   const list = useServerFn(listIncidents);
 
   const [status, setStatus] = useState<IncidentStatus | "all">("all");

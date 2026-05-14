@@ -31,7 +31,7 @@ import {
 } from "@/components/incidents/badges";
 import { SystemMultiCombobox } from "@/components/incidents/system-multi-combobox";
 import { EvidenceFilesTab } from "@/components/evidence/files-tab";
-import { useCurrentRole } from "@/hooks/use-auth";
+import { useCanEdit, useIsAdmin } from "@/hooks/use-role";
 import {
   getIncident,
   updateIncident,
@@ -57,9 +57,8 @@ function IncidentDetailPage() {
   const { edit } = Route.useSearch();
   const navigate = useNavigate();
   const qc = useQueryClient();
-  const { data: role } = useCurrentRole();
-  const isAdmin = role === "admin";
-  const canEdit = isAdmin || role === "editor";
+  const isAdmin = useIsAdmin();
+  const canEdit = useCanEdit();
 
   const get = useServerFn(getIncident);
   const update = useServerFn(updateIncident);

@@ -41,7 +41,7 @@ import {
   StatusBadge,
 } from "@/components/risks/badges";
 import { RiskForm } from "@/components/risks/risk-form";
-import { useCurrentRole } from "@/hooks/use-auth";
+import { useCanEdit } from "@/hooks/use-role";
 import {
   RISK_KINDS,
   RISK_STATUSES,
@@ -55,8 +55,7 @@ export const Route = createFileRoute("/_authenticated/risks/")({
 
 function RisksListPage() {
   const list = useServerFn(listRisks);
-  const { data: role } = useCurrentRole();
-  const canEdit = role === "admin" || role === "editor";
+  const canEdit = useCanEdit();
 
   const [kind, setKind] = useState<string>("all");
   const [status, setStatus] = useState<string>("all");

@@ -21,7 +21,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { VendorStatusBadge, ContractEndBadge } from "@/components/vendors/badges";
 import { VendorForm } from "@/components/vendors/vendor-form";
-import { useCurrentRole } from "@/hooks/use-auth";
+import { useCanEdit } from "@/hooks/use-role";
 import { listVendors, VENDOR_STATUSES } from "@/lib/vendors.functions";
 
 export const Route = createFileRoute("/_authenticated/vendors/")({
@@ -30,8 +30,7 @@ export const Route = createFileRoute("/_authenticated/vendors/")({
 
 function VendorsListPage() {
   const list = useServerFn(listVendors);
-  const { data: role } = useCurrentRole();
-  const canEdit = role === "admin" || role === "editor";
+  const canEdit = useCanEdit();
 
   const [search, setSearch] = useState("");
   const [status, setStatus] = useState<string>("all");

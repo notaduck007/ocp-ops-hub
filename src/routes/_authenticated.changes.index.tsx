@@ -35,15 +35,14 @@ import {
   type ChangeClass,
   type ChangeStatus,
 } from "@/lib/changes.functions";
-import { useCurrentRole } from "@/hooks/use-auth";
+import { useCanEdit } from "@/hooks/use-role";
 
 export const Route = createFileRoute("/_authenticated/changes/")({
   component: ChangesListPage,
 });
 
 function ChangesListPage() {
-  const { data: role } = useCurrentRole();
-  const canEdit = role === "admin" || role === "editor";
+  const canEdit = useCanEdit();
   const list = useServerFn(listChanges);
 
   const [status, setStatus] = useState<ChangeStatus | "all">("all");
