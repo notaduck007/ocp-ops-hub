@@ -1,5 +1,70 @@
 import { createServerFn } from "@tanstack/react-start";
+import { z } from "zod";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
+
+export type AttentionItem = {
+  kind: string;
+  id: string;
+  label: string;
+  sublabel?: string | null;
+  due_at: string | null;
+  owner_id: string | null;
+  owner_name: string | null;
+  severity?: number | null;
+};
+
+const listAttentionInput = z.object({
+  limit: z.number().int().min(1).max(1000).optional(),
+  kind: z.string().optional(),
+  ownerScope: z.enum(["all", "me"]).optional(),
+});
+
+export const listAttention = createServerFn({ method: "GET" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((i: unknown) =>
+    i === undefined ? {} : listAttentionInput.parse(i),
+  )
+  .handler(async ({ data, context }) => {
+    const { supabase, userId } = context;
+    let q = supabase
+      .from("v_overdue_reviews" as any)
+      .select("kind,id,label,due_at,owner_id")
+      .order("due_at", { ascending: true });
+    if (data.kind) q = q.eq("kind", data.kind);
+    if (data.ownerScope === "me") q = q.eq("owner_id", userId);
+    if (data.limit) q = q.limit(data.limit);
+    const { data: rows, error } = await q;
+    if (error) throw new Error(error.message);
+    const list = (rows ?? []) as unknown as Array<{
+      kind: string;
+      id: string;
+      label: string;
+      due_at: string | null;
+      owner_id: string | null;
+    }>;
+    const ownerIds = Array.from(
+      new Set(list.map((r) => r.owner_id).filter((v): v is string => !!v)),
+    );
+    const owners: Record<string, string> = {};
+    if (ownerIds.length) {
+      const { data: people } = await supabase
+        .from("people")
+        .select("id,full_name")
+        .in("id", ownerIds);
+      for (const p of people ?? []) owners[p.id] = p.full_name;
+      const { data: users } = await supabase
+        .from("users")
+        .select("id,full_name,email")
+        .in("id", ownerIds);
+      for (const u of users ?? [])
+        if (!owners[u.id]) owners[u.id] = u.full_name ?? u.email;
+    }
+    const items: AttentionItem[] = list.map((r) => ({
+      ...r,
+      owner_name: r.owner_id ? owners[r.owner_id] ?? null : null,
+    }));
+    return { count: items.length, items };
+  });
 
 export const getOpenCriticalRisks = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
