@@ -44,7 +44,8 @@ import {
   transitionChange,
   updateChange,
 } from "@/lib/changes.functions";
-import { useCurrentRole } from "@/hooks/use-auth";
+import { useCanEdit, useIsAdmin } from "@/hooks/use-role";
+import { AdminOnly } from "@/components/auth/role-gate";
 
 export const Route = createFileRoute(
   "/_authenticated/changes/$changeId",
@@ -58,9 +59,8 @@ function ChangeDetailPage() {
   const { edit } = Route.useSearch();
   const navigate = useNavigate();
   const qc = useQueryClient();
-  const { data: role } = useCurrentRole();
-  const isAdmin = role === "admin";
-  const canEdit = isAdmin || role === "editor";
+  const isAdmin = useIsAdmin();
+  const canEdit = useCanEdit();
 
   const get = useServerFn(getChange);
   const update = useServerFn(updateChange);
@@ -570,7 +570,7 @@ function ExecutionTab({
               </Button>
             </div>
 
-            {isAdmin && (
+            <AdminOnly mode="disable" disabledTooltip="Admin only — roll back a change">
               <div className="space-y-2 rounded-md border p-3">
                 <Label>Roll back (admin only)</Label>
                 <Textarea
@@ -596,7 +596,7 @@ function ExecutionTab({
                   </Button>
                 </div>
               </div>
-            )}
+            </AdminOnly>
           </>
         ) : (
           <p className="text-xs text-muted-foreground">

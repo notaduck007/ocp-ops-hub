@@ -11,7 +11,7 @@ import { ContinuityScenarioSummary } from "@/components/continuity/scenario-summ
 import { Button } from "@/components/ui/button";
 import { ContinuityScenarioDialog } from "@/components/continuity/scenario-dialog";
 import { getContinuityScenario } from "@/lib/continuity.functions";
-import { useCurrentRole } from "@/hooks/use-auth";
+import { useCanEdit } from "@/hooks/use-role";
 
 export const Route = createFileRoute("/_authenticated/continuity/$scenarioId")({
   component: ContinuityDetail,
@@ -19,8 +19,7 @@ export const Route = createFileRoute("/_authenticated/continuity/$scenarioId")({
 
 function ContinuityDetail() {
   const { scenarioId } = Route.useParams();
-  const { data: role } = useCurrentRole();
-  const canEdit = role === "admin" || role === "editor";
+  const canEdit = useCanEdit();
   const get = useServerFn(getContinuityScenario);
   const [editing, setEditing] = useState(false);
 

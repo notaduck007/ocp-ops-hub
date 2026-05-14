@@ -36,7 +36,8 @@ import { PageShell, PageHeader } from "@/components/layout/page-shell";
 import { PageHeaderSkeleton, DetailFormSkeleton, TableSkeleton } from "@/components/layout/skeletons";
 import { EditToggle } from "@/components/layout/edit-toggle";
 import { detailSearchValidator } from "@/lib/detail-search";
-import { useCurrentRole } from "@/hooks/use-auth";
+import { useCanEdit, useIsAdmin } from "@/hooks/use-role";
+import { AdminOnly } from "@/components/auth/role-gate";
 import {
   archivePerson,
   getPerson,
@@ -56,9 +57,8 @@ function PersonDetailPage() {
   const { edit } = Route.useSearch();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
-  const { data: role } = useCurrentRole();
-  const canEdit = role === "admin" || role === "editor";
-  const isAdmin = role === "admin";
+  const canEdit = useCanEdit();
+  const isAdmin = useIsAdmin();
   const editing = !!edit && canEdit;
 
   const enterEdit = () => navigate({ to: ".", search: { edit: true } });
@@ -121,7 +121,7 @@ function PersonDetailPage() {
             {canEdit && (
               <EditToggle editing={editing} onEdit={enterEdit} onCancel={exitEdit} />
             )}
-            {isAdmin && (
+            <AdminOnly mode="disable" disabledTooltip="Admin only — archive a person">
               <Button
                 variant="outline"
                 onClick={() => archiveMut.mutate(!archived)}
@@ -139,7 +139,7 @@ function PersonDetailPage() {
                   </>
                 )}
               </Button>
-            )}
+            </AdminOnly>
           </div>
         }
       />

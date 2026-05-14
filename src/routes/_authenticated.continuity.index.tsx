@@ -16,15 +16,14 @@ import {
 import { TableSkeleton } from "@/components/layout/skeletons";
 import { ContinuityScenarioDialog } from "@/components/continuity/scenario-dialog";
 import { listContinuityScenarios } from "@/lib/continuity.functions";
-import { useCurrentRole } from "@/hooks/use-auth";
+import { useCanEdit } from "@/hooks/use-role";
 
 export const Route = createFileRoute("/_authenticated/continuity/")({
   component: ContinuityList,
 });
 
 function ContinuityList() {
-  const { data: role } = useCurrentRole();
-  const canEdit = role === "admin" || role === "editor";
+  const canEdit = useCanEdit();
   const list = useServerFn(listContinuityScenarios);
   const [open, setOpen] = useState(false);
 

@@ -21,7 +21,7 @@ import { PageHeaderSkeleton, DetailFormSkeleton } from "@/components/layout/skel
 import { EditToggle } from "@/components/layout/edit-toggle";
 import { RecordLink } from "@/components/record-link";
 import { detailSearchValidator } from "@/lib/detail-search";
-import { useCurrentRole } from "@/hooks/use-auth";
+import { useCanEdit } from "@/hooks/use-role";
 import { getRisk, listRiskAudit } from "@/lib/risks.functions";
 
 export const Route = createFileRoute("/_authenticated/risks/$riskId")({
@@ -33,8 +33,7 @@ function RiskDetailPage() {
   const { riskId } = Route.useParams();
   const { edit } = Route.useSearch();
   const navigate = useNavigate();
-  const { data: role } = useCurrentRole();
-  const canEdit = role === "admin" || role === "editor";
+  const canEdit = useCanEdit();
   const editing = !!edit && canEdit;
 
   const get = useServerFn(getRisk);

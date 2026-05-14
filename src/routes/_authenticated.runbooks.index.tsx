@@ -18,7 +18,7 @@ import { TableSkeleton } from "@/components/layout/skeletons";
 import { ScenarioBadge } from "@/components/runbooks/badges";
 import { NewRunbookDialog } from "@/components/runbooks/new-runbook-dialog";
 import { listRunbooks } from "@/lib/runbooks.functions";
-import { useCurrentRole } from "@/hooks/use-auth";
+import { useCanEdit } from "@/hooks/use-role";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/_authenticated/runbooks/")({
@@ -26,8 +26,7 @@ export const Route = createFileRoute("/_authenticated/runbooks/")({
 });
 
 function RunbooksList() {
-  const { data: role } = useCurrentRole();
-  const canEdit = role === "admin" || role === "editor";
+  const canEdit = useCanEdit();
   const list = useServerFn(listRunbooks);
   const [open, setOpen] = useState(false);
 

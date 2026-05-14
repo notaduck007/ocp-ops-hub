@@ -8,6 +8,7 @@ import { CommandPalette } from "@/components/command-palette";
 import { cn } from "@/lib/utils";
 
 import { useAuth, useCurrentRole } from "@/hooks/use-auth";
+import { useIsAdmin } from "@/hooks/use-role";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -105,7 +106,7 @@ function useSidebarCollapsed(): [boolean, (v: boolean) => void] {
 
 function Sidebar({ collapsed, onToggle }: { collapsed: boolean; onToggle: () => void }) {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
-  const { data: role } = useCurrentRole();
+  const isAdmin = useIsAdmin();
   const attentionCount = useAttentionCount();
 
   return (
@@ -118,7 +119,7 @@ function Sidebar({ collapsed, onToggle }: { collapsed: boolean; onToggle: () => 
       </div>
       <nav className="flex-1 space-y-4 p-2">
         {NAV_GROUPS.map((group, gi) => {
-          const items = group.items.filter((i) => !i.adminOnly || role === "admin");
+          const items = group.items.filter((i) => !i.adminOnly || isAdmin);
           if (items.length === 0) return null;
           return (
             <div key={gi} className="space-y-1">
@@ -185,6 +186,37 @@ function Breadcrumbs() {
   );
 }
 
+const ADMIN_CONTACT_EMAIL =
+  (import.meta.env.VITE_ADMIN_CONTACT_EMAIL as string | undefined) ?? "";
+
+function capabilitiesFor(role: string | null | undefined): string {
+  switch (role) {
+    case "admin":
+      return "Manage users, edit policies, accept risks, archive records, approve changes.";
+    case "editor":
+      return "Edit inventory, declare incidents, draft policies, propose changes.";
+    case "viewer":
+      return "Read-only access to all records and reports.";
+    default:
+      return "No role assigned. Contact your administrator.";
+  }
+}
+
+function requestElevatedAccess() {
+  if (ADMIN_CONTACT_EMAIL) {
+    window.location.href =
+      `mailto:${ADMIN_CONTACT_EMAIL}?subject=${encodeURIComponent(
+        "OCP IT Hub — request for elevated access",
+      )}&body=${encodeURIComponent(
+        "Hi,\n\nI would like to request elevated access to the OCP IT Hub.\n\nReason:\n",
+      )}`;
+    return;
+  }
+  window.alert(
+    "Contact your administrator to request elevated access.\n\nNo admin contact email is configured for this workspace.",
+  );
+}
+
 function UserMenu() {
   const { user } = useAuth();
   const { data: role } = useCurrentRole();
@@ -208,7 +240,7 @@ function UserMenu() {
           )}
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="w-56">
+      <DropdownMenuContent align="end" className="w-64">
         <DropdownMenuLabel className="flex flex-col gap-1">
           <span className="text-sm font-medium">{user.email}</span>
           {role && (
@@ -218,6 +250,16 @@ function UserMenu() {
           )}
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
+        <div className="px-2 py-1.5 text-xs text-muted-foreground">
+          <div className="font-medium uppercase tracking-wide text-muted-foreground/70">
+            Capabilities
+          </div>
+          <p className="mt-1 leading-snug">{capabilitiesFor(role)}</p>
+        </div>
+        <DropdownMenuSeparator />
+        <DropdownMenuItem onClick={requestElevatedAccess}>
+          Request elevated access
+        </DropdownMenuItem>
         <DropdownMenuItem onClick={() => supabase.auth.signOut()}>Sign out</DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

@@ -19,7 +19,8 @@ import { PageShell, PageHeader } from "@/components/layout/page-shell";
 import { PageHeaderSkeleton, DetailFormSkeleton } from "@/components/layout/skeletons";
 import { EditToggle } from "@/components/layout/edit-toggle";
 import { detailSearchValidator } from "@/lib/detail-search";
-import { useCurrentRole } from "@/hooks/use-auth";
+import { useCanEdit, useIsAdmin } from "@/hooks/use-role";
+import { AdminOnly } from "@/components/auth/role-gate";
 import {
   approveVersion,
   createDraftVersion,
@@ -38,9 +39,8 @@ function PolicyDetailPage() {
   const { edit } = Route.useSearch();
   const navigate = useNavigate();
   const qc = useQueryClient();
-  const { data: role } = useCurrentRole();
-  const canEdit = role === "admin" || role === "editor";
-  const isAdmin = role === "admin";
+  const canEdit = useCanEdit();
+  const isAdmin = useIsAdmin();
 
   const get = useServerFn(getPolicy);
   const listVer = useServerFn(listPolicyVersions);
@@ -141,10 +141,12 @@ function PolicyDetailPage() {
                 editLabel="Edit (creates new draft)"
               />
             )}
-            {isAdmin && policy.status !== "retired" && (
-              <Button variant="outline" onClick={() => retire.mutate()}>
-                Retire policy
-              </Button>
+            {policy.status !== "retired" && (
+              <AdminOnly mode="disable" disabledTooltip="Admin only — retire a policy">
+                <Button variant="outline" onClick={() => retire.mutate()}>
+                  Retire policy
+                </Button>
+              </AdminOnly>
             )}
           </div>
         }
@@ -190,11 +192,11 @@ function PolicyDetailPage() {
                   <CardTitle className="text-base">
                     Draft v{d.version} · updated {format(new Date(d.updated_at), "PP p")}
                   </CardTitle>
-                  {isAdmin && (
+                  <AdminOnly mode="disable" disabledTooltip="Admin only — approve a policy draft">
                     <Button size="sm" onClick={() => approve.mutate(d.id)} disabled={approve.isPending}>
                       <Check className="mr-1 h-4 w-4" /> Approve
                     </Button>
-                  )}
+                  </AdminOnly>
                 </CardHeader>
                 <CardContent className="prose prose-sm max-w-none dark:prose-invert">
                   <ReactMarkdown>{d.body_md}</ReactMarkdown>

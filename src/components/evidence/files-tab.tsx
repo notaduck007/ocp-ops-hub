@@ -7,7 +7,8 @@ import { Upload, FileText, Loader2 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
-import { useAuth, useCurrentRole } from "@/hooks/use-auth";
+import { useAuth } from "@/hooks/use-auth";
+import { useCanEdit } from "@/hooks/use-role";
 import { supabase } from "@/integrations/supabase/client";
 import {
   listEvidence,
@@ -29,8 +30,7 @@ export function EvidenceFilesTab({
 }: Props) {
   const qc = useQueryClient();
   const { user } = useAuth();
-  const { data: role } = useCurrentRole();
-  const canUpload = role === "admin" || role === "editor";
+  const canUpload = useCanEdit();
 
   const list = useServerFn(listEvidence);
   const create = useServerFn(createEvidence);

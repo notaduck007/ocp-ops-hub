@@ -27,7 +27,7 @@ import {
 } from "@/components/ui/table";
 import { RoleLevelBadge, PersonTypeBadge } from "@/components/people/badges";
 import { CategoryBadge } from "@/components/systems/badges";
-import { useCurrentRole } from "@/hooks/use-auth";
+import { useCanEdit } from "@/hooks/use-role";
 import {
   PERSON_TYPES,
   listAccessGrants,
@@ -56,8 +56,7 @@ function AccessListPage() {
   const queryClient = useQueryClient();
   const list = useServerFn(listAccessGrants);
   const markReviewed = useServerFn(markGrantsReviewed);
-  const { data: role } = useCurrentRole();
-  const canEdit = role === "admin" || role === "editor";
+  const canEdit = useCanEdit();
 
   const [personType, setPersonType] = useState<string>("all");
   const [systemCategory, setSystemCategory] = useState<string>("all");

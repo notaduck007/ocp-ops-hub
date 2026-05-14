@@ -23,7 +23,8 @@ import { PageShell, PageHeader } from "@/components/layout/page-shell";
 import { PageHeaderSkeleton, DetailFormSkeleton } from "@/components/layout/skeletons";
 import { EditToggle } from "@/components/layout/edit-toggle";
 import { detailSearchValidator } from "@/lib/detail-search";
-import { useCurrentRole } from "@/hooks/use-auth";
+import { useCanEdit, useIsAdmin } from "@/hooks/use-role";
+import { AdminOnly } from "@/components/auth/role-gate";
 import {
   archiveSystem,
   getSystem,
@@ -40,9 +41,8 @@ function SystemDetailPage() {
   const { edit } = Route.useSearch();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
-  const { data: role } = useCurrentRole();
-  const canEdit = role === "admin" || role === "editor";
-  const isAdmin = role === "admin";
+  const canEdit = useCanEdit();
+  const isAdmin = useIsAdmin();
   const editing = !!edit && canEdit;
 
   const get = useServerFn(getSystem);
@@ -110,7 +110,7 @@ function SystemDetailPage() {
                 onCancel={exitEdit}
               />
             )}
-            {isAdmin && (
+            <AdminOnly mode="disable" disabledTooltip="Admin only — archive a system">
               <Button
                 variant="outline"
                 size="sm"
@@ -129,7 +129,7 @@ function SystemDetailPage() {
                   </>
                 )}
               </Button>
-            )}
+            </AdminOnly>
           </div>
         }
       />

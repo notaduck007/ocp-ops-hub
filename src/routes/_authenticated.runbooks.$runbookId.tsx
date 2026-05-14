@@ -33,7 +33,7 @@ import {
   listRunbookActivity,
   updateRunbook,
 } from "@/lib/runbooks.functions";
-import { useCurrentRole } from "@/hooks/use-auth";
+import { useCanEdit } from "@/hooks/use-role";
 
 export const Route = createFileRoute("/_authenticated/runbooks/$runbookId")({
   validateSearch: detailSearchValidator,
@@ -45,8 +45,7 @@ function RunbookDetail() {
   const { edit } = Route.useSearch();
   const navigate = useNavigate();
   const qc = useQueryClient();
-  const { data: role } = useCurrentRole();
-  const canEdit = role === "admin" || role === "editor";
+  const canEdit = useCanEdit();
 
   const get = useServerFn(getRunbook);
   const listTests = useServerFn(listDrTests);

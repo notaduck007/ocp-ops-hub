@@ -20,7 +20,7 @@ import { TableSkeleton } from "@/components/layout/skeletons";
 import { PolicyStatusBadge } from "@/components/policies/badges";
 import { NewPolicyDialog } from "@/components/policies/new-policy-dialog";
 import { listPolicies } from "@/lib/policies.functions";
-import { useCurrentRole } from "@/hooks/use-auth";
+import { useCanEdit } from "@/hooks/use-role";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/_authenticated/policies/")({
@@ -28,8 +28,7 @@ export const Route = createFileRoute("/_authenticated/policies/")({
 });
 
 function PoliciesListPage() {
-  const { data: role } = useCurrentRole();
-  const canEdit = role === "admin" || role === "editor";
+  const canEdit = useCanEdit();
   const list = useServerFn(listPolicies);
 
   const [includeRetired, setIncludeRetired] = useState(false);

@@ -28,7 +28,8 @@ import { CategoryBadge, CriticalityBadge } from "@/components/systems/badges";
 import { VendorForm } from "@/components/vendors/vendor-form";
 import { SlaForm } from "@/components/slas/sla-form";
 import { BreachForm } from "@/components/slas/breach-form";
-import { useCurrentRole } from "@/hooks/use-auth";
+import { useCanEdit, useIsAdmin } from "@/hooks/use-role";
+import { AdminOnly } from "@/components/auth/role-gate";
 import { archiveVendor, getVendor, listVendorSystems } from "@/lib/vendors.functions";
 import {
   BREACH_STATUSES, listBreaches, listSlas, updateBreach,
@@ -44,9 +45,8 @@ function VendorDetailPage() {
   const { edit } = Route.useSearch();
   const navigate = useNavigate();
   const qc = useQueryClient();
-  const { data: role } = useCurrentRole();
-  const canEdit = role === "admin" || role === "editor";
-  const isAdmin = role === "admin";
+  const canEdit = useCanEdit();
+  const isAdmin = useIsAdmin();
   const editing = !!edit && canEdit;
 
   const enterEdit = () => navigate({ to: ".", search: { edit: true } });
@@ -127,11 +127,11 @@ function VendorDetailPage() {
             {canEdit && (
               <EditToggle editing={editing} onEdit={enterEdit} onCancel={exitEdit} />
             )}
-            {isAdmin && (
+            <AdminOnly mode="disable" disabledTooltip="Admin only — archive a vendor">
               <Button variant="outline" onClick={() => archiveMut.mutate(!archived)} disabled={archiveMut.isPending}>
                 {archived ? <><ArchiveRestore className="mr-2 h-4 w-4" />Unarchive</> : <><Archive className="mr-2 h-4 w-4" />Archive</>}
               </Button>
-            )}
+            </AdminOnly>
           </div>
         }
       />
