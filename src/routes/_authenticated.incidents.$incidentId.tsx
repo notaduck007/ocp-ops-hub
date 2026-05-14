@@ -401,9 +401,12 @@ function Timeline({ comms, audit }: { comms: Comm[]; audit: AuditEntry[] }) {
 
   if (items.length === 0) {
     return (
-      <div className="rounded-lg border bg-card p-5 text-sm text-muted-foreground">
-        No timeline entries yet.
-      </div>
+      <EmptyState
+        icon={ClipboardList}
+        title="No timeline entries yet"
+        description="Status changes and comms will appear here as the incident progresses."
+        variant="card"
+      />
     );
   }
 
@@ -501,9 +504,12 @@ function AddCommsForm({
 function CommsList({ comms }: { comms: Comm[] }) {
   if (comms.length === 0) {
     return (
-      <div className="rounded-lg border bg-card p-5 text-sm text-muted-foreground">
-        No comms entries yet.
-      </div>
+      <EmptyState
+        icon={MessageSquareOff}
+        title="No comms yet"
+        description="Posted updates to staff or leadership will appear here."
+        variant="card"
+      />
     );
   }
   return (
