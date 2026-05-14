@@ -109,7 +109,7 @@ function SystemDetailPage() {
                 onCancel={exitEdit}
               />
             )}
-            {isAdmin && (
+            <AdminOnly mode="disable" disabledTooltip="Admin only — archive a system">
               <Button
                 variant="outline"
                 size="sm"
