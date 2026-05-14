@@ -97,6 +97,10 @@ function IncidentDetailPage() {
     return (<PageShell><PageHeaderSkeleton /><DetailFormSkeleton /></PageShell>);
   }
 
+  const editing = !!edit && canEdit;
+  const enterEdit = () => navigate({ to: ".", search: { edit: true } });
+  const exitEdit = () => navigate({ to: ".", search: { edit: undefined } });
+
   return (
     <PageShell>
       <PageHeader
@@ -117,6 +121,11 @@ function IncidentDetailPage() {
             by {incident.declarer?.full_name ?? incident.declarer?.email ?? "—"}
           </>
         }
+        actions={
+          canEdit && (
+            <EditToggle editing={editing} onEdit={enterEdit} onCancel={exitEdit} />
+          )
+        }
       />
 
       <Tabs defaultValue="overview">
@@ -130,13 +139,20 @@ function IncidentDetailPage() {
         </TabsList>
 
         <TabsContent value="overview" className="space-y-4 pt-4">
-          <OverviewForm
-            incident={incident}
-            canEdit={canEdit}
-            isAdmin={isAdmin}
-            onSave={(patch) => updateMutation.mutate(patch)}
-            saving={updateMutation.isPending}
-          />
+          {editing ? (
+            <OverviewForm
+              incident={incident}
+              canEdit={canEdit}
+              isAdmin={isAdmin}
+              onSave={async (patch) => {
+                await updateMutation.mutateAsync(patch);
+                exitEdit();
+              }}
+              saving={updateMutation.isPending}
+            />
+          ) : (
+            <IncidentSummary incident={incident} />
+          )}
         </TabsContent>
 
         <TabsContent value="timeline" className="pt-4">
