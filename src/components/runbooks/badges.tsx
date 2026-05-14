@@ -1,4 +1,5 @@
-import { Badge } from "@/components/ui/badge";
+import { StatusBadge } from "@/components/ui/status-badge";
+import { DR_RESULT_INTENT } from "@/lib/status-mappings";
 import type { DrTestResult, RunbookScenario } from "@/lib/runbooks.functions";
 
 const SCENARIO_LABEL: Record<RunbookScenario, string> = {
@@ -10,23 +11,9 @@ const SCENARIO_LABEL: Record<RunbookScenario, string> = {
 };
 
 export function ScenarioBadge({ value }: { value: RunbookScenario }) {
-  return (
-    <Badge variant="outline" className="capitalize">
-      {SCENARIO_LABEL[value]}
-    </Badge>
-  );
+  return <StatusBadge intent="neutral">{SCENARIO_LABEL[value]}</StatusBadge>;
 }
 
 export function DrResultBadge({ value }: { value: DrTestResult }) {
-  const cls =
-    value === "pass"
-      ? "bg-emerald-100 text-emerald-800 border-emerald-200"
-      : value === "partial"
-        ? "bg-amber-100 text-amber-800 border-amber-200"
-        : "bg-red-100 text-red-800 border-red-200";
-  return (
-    <Badge variant="outline" className={`capitalize ${cls}`}>
-      {value}
-    </Badge>
-  );
+  return <StatusBadge intent={DR_RESULT_INTENT[value]}>{value}</StatusBadge>;
 }

@@ -24,6 +24,13 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import type { Database } from "@/integrations/supabase/types";
 import { Skeleton } from "@/components/ui/skeleton";
 import { TableSkeleton } from "@/components/layout/skeletons";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
+import { StatusLegend } from "@/components/ui/status-legend";
 
 type AppRole = Database["public"]["Enums"]["app_role"];
 
@@ -127,6 +134,18 @@ function AdminUsersPage() {
           </TableBody>
         </Table>
       </div>
+
+      <Accordion type="single" collapsible className="rounded-lg border bg-card px-4">
+        <AccordionItem value="legend" className="border-none">
+          <AccordionTrigger className="text-sm font-medium">Color key</AccordionTrigger>
+          <AccordionContent>
+            <p className="mb-3 text-xs text-muted-foreground">
+              Status colors used across the app. Every badge — risk, incident, change, vendor, policy — maps to one of these intents.
+            </p>
+            <StatusLegend />
+          </AccordionContent>
+        </AccordionItem>
+      </Accordion>
     </div>
   );
 }
