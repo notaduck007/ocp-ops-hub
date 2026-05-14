@@ -127,6 +127,11 @@ function ChangeDetailPage() {
     return (<PageShell><PageHeaderSkeleton /><DetailFormSkeleton /></PageShell>);
   }
 
+  const overviewEditable = canEdit && (isAdmin || change.status === "proposed");
+  const editing = !!edit && overviewEditable;
+  const enterEdit = () => navigate({ to: ".", search: { edit: true } });
+  const exitEdit = () => navigate({ to: ".", search: { edit: undefined } });
+
   return (
     <PageShell>
       <PageHeader
@@ -155,6 +160,11 @@ function ChangeDetailPage() {
             )}
           </>
         }
+        actions={
+          overviewEditable && (
+            <EditToggle editing={editing} onEdit={enterEdit} onCancel={exitEdit} />
+          )
+        }
       />
 
       <Tabs defaultValue="overview">
@@ -169,13 +179,20 @@ function ChangeDetailPage() {
         </TabsList>
 
         <TabsContent value="overview" className="space-y-4">
-          <OverviewTab
-            change={change}
-            canEdit={canEdit && (isAdmin || change.status === "proposed")}
-            onSave={(patch) => updateMutation.mutate(patch)}
-            onSetSystems={(ids) => systemsMutation.mutate(ids)}
-            incidentSearch={incidentSearch}
-          />
+          {editing ? (
+            <OverviewTab
+              change={change}
+              canEdit={true}
+              onSave={async (patch) => {
+                await updateMutation.mutateAsync(patch);
+                exitEdit();
+              }}
+              onSetSystems={(ids) => systemsMutation.mutate(ids)}
+              incidentSearch={incidentSearch}
+            />
+          ) : (
+            <ChangeSummary change={change} />
+          )}
         </TabsContent>
 
         <TabsContent value="approval" className="space-y-4">
