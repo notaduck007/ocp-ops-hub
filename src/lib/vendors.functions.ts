@@ -3,6 +3,7 @@ import { z } from "zod";
 
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import type { Database, Json } from "@/integrations/supabase/types";
+import { attachActors } from "@/lib/load-actors";
 
 type VendorStatus = Database["public"]["Enums"]["vendor_status"];
 
@@ -101,11 +102,11 @@ export const getVendor = createServerFn({ method: "POST" })
     if (!row) return null;
     const owners = await loadOwners(supabase, [row.internal_owner_id].filter(Boolean) as string[]);
     const counts = await loadSystemCounts(supabase, [row.id]);
-    return {
+    return attachActors(supabase, {
       ...row,
       internal_owner: row.internal_owner_id ? (owners.get(row.internal_owner_id) as any) ?? null : null,
       linked_systems_count: counts.get(row.id) ?? 0,
-    };
+    }) as any;
   });
 
 export const createVendor = createServerFn({ method: "POST" })

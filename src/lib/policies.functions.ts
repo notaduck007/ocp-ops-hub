@@ -3,6 +3,7 @@ import { z } from "zod";
 
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import type { Database } from "@/integrations/supabase/types";
+import { attachActors } from "@/lib/load-actors";
 
 export type PolicyStatus = Database["public"]["Enums"]["policy_status"];
 export const POLICY_STATUSES = ["draft", "approved", "retired"] as const satisfies readonly PolicyStatus[];
@@ -70,7 +71,8 @@ export const getPolicy = createServerFn({ method: "POST" })
     if (error) throw new Error(error.message);
     if (!row) return null;
     const decorated = await decoratePolicies(supabase, [row]);
-    return decorated[0] ?? null;
+    const first = decorated[0];
+    return first ? ((await attachActors(supabase, first)) as any) : null;
   });
 
 export const listPolicyVersions = createServerFn({ method: "POST" })

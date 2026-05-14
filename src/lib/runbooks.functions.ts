@@ -3,6 +3,7 @@ import { z } from "zod";
 
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import type { Database } from "@/integrations/supabase/types";
+import { attachActors } from "@/lib/load-actors";
 
 export type RunbookScenario = Database["public"]["Enums"]["runbook_scenario"];
 export const RUNBOOK_SCENARIOS = [
@@ -90,11 +91,11 @@ export const getRunbook = createServerFn({ method: "POST" })
     if (!row) return null;
     const users = await loadUsers(supabase, [row.owner_id]);
     const systems = await loadSystems(supabase, [row.system_id]);
-    return {
+    return (await attachActors(supabase, {
       ...row,
       owner: users.get(row.owner_id) ?? null,
       system: systems.get(row.system_id) ?? null,
-    };
+    })) as any;
   });
 
 const createSchema = z.object({

@@ -3,6 +3,7 @@ import { z } from "zod";
 
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import type { Database, Json } from "@/integrations/supabase/types";
+import { attachActors } from "@/lib/load-actors";
 
 type SlaTargetType = Database["public"]["Enums"]["sla_target_type"];
 type BreachStatus = Database["public"]["Enums"]["breach_status"];
@@ -116,7 +117,7 @@ export const getSla = createServerFn({ method: "POST" })
     if (error) throw new Error(error.message);
     if (!row) return null;
     const [enriched] = await attachVendorSystem(supabase, [row]);
-    return enriched as SlaRow;
+    return (await attachActors(supabase, enriched)) as SlaRow;
   });
 
 export const createSla = createServerFn({ method: "POST" })

@@ -6,13 +6,15 @@ import {
   SummaryGrid,
   SummaryField,
 } from "@/components/layout/record-summary";
+import { RecordMetaFooter } from "@/components/layout/record-meta-footer";
 import { RecordLink } from "@/components/record-link";
 import { CategoryBadge, CriticalityBadge } from "@/components/systems/badges";
 import type { SystemRow } from "@/lib/systems.functions";
 
 export function SystemSummary({ system }: { system: SystemRow }) {
   return (
-    <SummarySection>
+    <div>
+      <SummarySection>
       <SummaryGrid>
         <SummaryField label="Category">
           <CategoryBadge value={system.category} />
@@ -87,5 +89,7 @@ export function SystemSummary({ system }: { system: SystemRow }) {
         </SummaryField>
       </SummaryGrid>
     </SummarySection>
+    <RecordMetaFooter record={system as any} />
+    </div>
   );
 }

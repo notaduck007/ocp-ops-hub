@@ -4,6 +4,7 @@ import {
   SummaryField,
   MarkdownBlock,
 } from "@/components/layout/record-summary";
+import { RecordMetaFooter } from "@/components/layout/record-meta-footer";
 import { RecordLink } from "@/components/record-link";
 
 export function ContinuityScenarioSummary({ scenario }: { scenario: any }) {
@@ -85,6 +86,7 @@ export function ContinuityScenarioSummary({ scenario }: { scenario: any }) {
           empty="No template defined."
         />
       </SummarySection>
+      <RecordMetaFooter record={scenario} />
     </div>
   );
 }

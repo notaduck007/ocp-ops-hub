@@ -6,6 +6,7 @@ import {
   SummaryField,
   MarkdownBlock,
 } from "@/components/layout/record-summary";
+import { RecordMetaFooter } from "@/components/layout/record-meta-footer";
 import { RecordLink } from "@/components/record-link";
 import { PolicyStatusBadge } from "@/components/policies/badges";
 
@@ -37,6 +38,7 @@ export function PolicySummary({ policy }: { policy: any }) {
       <SummarySection title="Body">
         <MarkdownBlock source={policy.body_md} />
       </SummarySection>
+      <RecordMetaFooter record={policy} />
     </div>
   );
 }

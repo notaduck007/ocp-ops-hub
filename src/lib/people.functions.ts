@@ -3,6 +3,7 @@ import { z } from "zod";
 
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import type { Database, Json } from "@/integrations/supabase/types";
+import { attachActors } from "@/lib/load-actors";
 
 type PersonType = Database["public"]["Enums"]["person_type"];
 type PersonStatus = Database["public"]["Enums"]["person_status"];
@@ -130,7 +131,8 @@ export const getPerson = createServerFn({ method: "POST" })
       .eq("id", data.id)
       .maybeSingle();
     if (error) throw new Error(error.message);
-    return row ?? null;
+    if (!row) return null;
+    return (await attachActors(supabase, row)) as any;
   });
 
 export const createPerson = createServerFn({ method: "POST" })

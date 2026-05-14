@@ -3,6 +3,7 @@ import { z } from "zod";
 
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import type { Database, Json } from "@/integrations/supabase/types";
+import { attachActors } from "@/lib/load-actors";
 
 type OwnerLite = { id: string; full_name: string | null; email: string };
 
@@ -135,11 +136,11 @@ export const getSystem = createServerFn({ method: "POST" })
       supabase,
       [row.business_owner_id, row.technical_owner_id].filter(Boolean) as string[],
     );
-    return {
+    return attachActors(supabase, {
       ...row,
       business_owner: row.business_owner_id ? owners.get(row.business_owner_id) ?? null : null,
       technical_owner: row.technical_owner_id ? owners.get(row.technical_owner_id) ?? null : null,
-    };
+    }) as any;
   });
 
 export const createSystem = createServerFn({ method: "POST" })

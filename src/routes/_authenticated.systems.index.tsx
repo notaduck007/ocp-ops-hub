@@ -307,7 +307,12 @@ function SystemRowItem({ system }: { system: SystemRow }) {
         )}
       </TableCell>
       <TableCell className="text-sm text-muted-foreground">
-        {new Date(system.updated_at).toLocaleString()}
+        <div>{new Date(system.updated_at).toLocaleString()}</div>
+        {(system as any).updated_by_user && (
+          <div className="text-xs">
+            by {(system as any).updated_by_user.full_name || (system as any).updated_by_user.email}
+          </div>
+        )}
       </TableCell>
     </TableRow>
   );

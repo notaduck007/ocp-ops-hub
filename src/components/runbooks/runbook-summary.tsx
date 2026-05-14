@@ -6,6 +6,7 @@ import {
   SummaryField,
   MarkdownBlock,
 } from "@/components/layout/record-summary";
+import { RecordMetaFooter } from "@/components/layout/record-meta-footer";
 import { RecordLink } from "@/components/record-link";
 import { ScenarioBadge } from "@/components/runbooks/badges";
 
@@ -50,6 +51,7 @@ export function RunbookSummary({ runbook }: { runbook: any }) {
       <SummarySection title="Body">
         <MarkdownBlock source={runbook.body_md} />
       </SummarySection>
+      <RecordMetaFooter record={runbook} />
     </div>
   );
 }
