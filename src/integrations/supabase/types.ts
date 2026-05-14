@@ -363,6 +363,122 @@ export type Database = {
           },
         ]
       }
+      continuity_scenarios: {
+        Row: {
+          archived_at: string | null
+          comms_template_md: string | null
+          created_at: string
+          created_by: string | null
+          decision_authority_user_id: string
+          id: string
+          impact_summary: string | null
+          linked_runbook_ids: string[]
+          linked_system_ids: string[]
+          name: string
+          trigger_summary: string | null
+          updated_at: string
+          updated_by: string | null
+        }
+        Insert: {
+          archived_at?: string | null
+          comms_template_md?: string | null
+          created_at?: string
+          created_by?: string | null
+          decision_authority_user_id: string
+          id?: string
+          impact_summary?: string | null
+          linked_runbook_ids?: string[]
+          linked_system_ids?: string[]
+          name: string
+          trigger_summary?: string | null
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Update: {
+          archived_at?: string | null
+          comms_template_md?: string | null
+          created_at?: string
+          created_by?: string | null
+          decision_authority_user_id?: string
+          id?: string
+          impact_summary?: string | null
+          linked_runbook_ids?: string[]
+          linked_system_ids?: string[]
+          name?: string
+          trigger_summary?: string | null
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "continuity_scenarios_decision_authority_user_id_fkey"
+            columns: ["decision_authority_user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      dr_tests: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          duration_minutes: number | null
+          id: string
+          notes_md: string | null
+          performed_at: string
+          performed_by_id: string
+          remediation_items: string | null
+          result: Database["public"]["Enums"]["dr_test_result"]
+          runbook_id: string
+          updated_at: string
+          updated_by: string | null
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          duration_minutes?: number | null
+          id?: string
+          notes_md?: string | null
+          performed_at: string
+          performed_by_id: string
+          remediation_items?: string | null
+          result: Database["public"]["Enums"]["dr_test_result"]
+          runbook_id: string
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          duration_minutes?: number | null
+          id?: string
+          notes_md?: string | null
+          performed_at?: string
+          performed_by_id?: string
+          remediation_items?: string | null
+          result?: Database["public"]["Enums"]["dr_test_result"]
+          runbook_id?: string
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "dr_tests_performed_by_id_fkey"
+            columns: ["performed_by_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "dr_tests_runbook_id_fkey"
+            columns: ["runbook_id"]
+            isOneToOne: false
+            referencedRelation: "runbooks"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       incident_comms: {
         Row: {
           audience: Database["public"]["Enums"]["comms_audience"]
@@ -923,6 +1039,72 @@ export type Database = {
           },
         ]
       }
+      runbooks: {
+        Row: {
+          archived_at: string | null
+          body_md: string
+          created_at: string
+          created_by: string | null
+          id: string
+          last_tested_at: string | null
+          next_test_due_at: string | null
+          owner_id: string
+          scenario: Database["public"]["Enums"]["runbook_scenario"]
+          system_id: string
+          test_cadence_days: number
+          title: string
+          updated_at: string
+          updated_by: string | null
+        }
+        Insert: {
+          archived_at?: string | null
+          body_md?: string
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          last_tested_at?: string | null
+          next_test_due_at?: string | null
+          owner_id: string
+          scenario: Database["public"]["Enums"]["runbook_scenario"]
+          system_id: string
+          test_cadence_days?: number
+          title: string
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Update: {
+          archived_at?: string | null
+          body_md?: string
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          last_tested_at?: string | null
+          next_test_due_at?: string | null
+          owner_id?: string
+          scenario?: Database["public"]["Enums"]["runbook_scenario"]
+          system_id?: string
+          test_cadence_days?: number
+          title?: string
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "runbooks_owner_id_fkey"
+            columns: ["owner_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "runbooks_system_id_fkey"
+            columns: ["system_id"]
+            isOneToOne: false
+            referencedRelation: "systems"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       sla_breaches: {
         Row: {
           closed_at: string | null
@@ -1302,9 +1484,9 @@ export type Database = {
     Views: {
       v_dr_readiness: {
         Row: {
-          critical_systems: number | null
-          readiness_pct: number | null
-          tested_last_12mo: number | null
+          critical_systems_tested_recently: number | null
+          critical_systems_total: number | null
+          pct: number | null
         }
         Relationships: []
       }
@@ -1515,6 +1697,7 @@ export type Database = {
         | "financial"
         | "unpublished_spec"
         | "public"
+      dr_test_result: "pass" | "partial" | "fail"
       incident_status:
         | "declared"
         | "contained"
@@ -1526,6 +1709,12 @@ export type Database = {
       policy_status: "draft" | "approved" | "retired"
       risk_kind: "risk" | "exception"
       risk_status: "open" | "mitigating" | "accepted" | "closed"
+      runbook_scenario:
+        | "restore"
+        | "outage"
+        | "failover"
+        | "continuity"
+        | "offboarding"
       sla_target_type:
         | "uptime_pct"
         | "response_minutes"
@@ -1699,6 +1888,7 @@ export const Constants = {
         "unpublished_spec",
         "public",
       ],
+      dr_test_result: ["pass", "partial", "fail"],
       incident_status: [
         "declared",
         "contained",
@@ -1711,6 +1901,13 @@ export const Constants = {
       policy_status: ["draft", "approved", "retired"],
       risk_kind: ["risk", "exception"],
       risk_status: ["open", "mitigating", "accepted", "closed"],
+      runbook_scenario: [
+        "restore",
+        "outage",
+        "failover",
+        "continuity",
+        "offboarding",
+      ],
       sla_target_type: [
         "uptime_pct",
         "response_minutes",
