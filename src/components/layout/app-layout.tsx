@@ -213,16 +213,15 @@ function TopBar() {
       <div className="flex-1">
         <Breadcrumbs />
       </div>
-      <div className="relative hidden w-72 md:block">
-        <Search className="pointer-events-none absolute left-2 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-        <Input
-          type="search"
-          placeholder="Search…"
-          className="h-9 pl-8"
-          // Placeholder for Cmd+K work in a later prompt.
-          onChange={() => undefined}
-        />
-      </div>
+      <button
+        type="button"
+        onClick={() => window.dispatchEvent(new CustomEvent("open-command-palette"))}
+        className="hidden h-9 w-72 items-center gap-2 rounded-md border bg-background px-3 text-sm text-muted-foreground hover:bg-accent md:flex"
+      >
+        <Search className="h-4 w-4" />
+        <span className="flex-1 text-left">Search…</span>
+        <kbd className="rounded bg-muted px-1.5 py-0.5 text-[10px] font-medium">⌘K</kbd>
+      </button>
       <NotificationBell />
       <UserMenu />
     </header>
