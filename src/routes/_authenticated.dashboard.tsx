@@ -260,7 +260,7 @@ function DashboardPage() {
 
         {/* Vendor Health */}
         <Tile
-          icon={<Building2 className="h-4 w-4 text-fuchsia-600" />}
+          icon={<Building2 className={`h-4 w-4 ${INTENT_ICON_CLASSES.neutral}`} />}
           title="Vendor health"
         >
           {vendor.data == null ? (
