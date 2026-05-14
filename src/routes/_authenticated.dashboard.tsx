@@ -121,7 +121,7 @@ function DashboardPage() {
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
         {/* MFA Coverage */}
         <Tile
-          icon={<ShieldCheck className="h-4 w-4 text-emerald-600" />}
+          icon={<ShieldCheck className={`h-4 w-4 ${INTENT_ICON_CLASSES.success}`} />}
           title="MFA coverage"
           adornment={
             <TooltipProvider>
