@@ -16,6 +16,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { CategoryBadge, CriticalityBadge } from "@/components/systems/badges";
+import { AuditEntry } from "@/components/audit/audit-entry";
 import { SystemForm } from "@/components/systems/system-form";
 import { SystemSummary } from "@/components/systems/system-summary";
 import { PageShell, PageHeader } from "@/components/layout/page-shell";
