@@ -34,23 +34,21 @@ function ContinuityDetail() {
   if (!s) return <div>Scenario not found.</div>;
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-start justify-between">
-        <div className="space-y-1">
-          <Button asChild variant="ghost" size="sm" className="-ml-2">
-            <Link to="/continuity"><ArrowLeft className="mr-1 h-4 w-4" /> Back</Link>
-          </Button>
-          <h1 className="text-2xl font-semibold tracking-tight">{s.name}</h1>
-          <p className="text-sm text-muted-foreground">
-            Decision authority: {s.decision_authority?.full_name ?? s.decision_authority?.email ?? "—"}
-          </p>
-        </div>
-        {canEdit && (
-          <Button variant="outline" onClick={() => setEditing(true)}>
-            <Edit className="mr-2 h-4 w-4" /> Edit
-          </Button>
-        )}
-      </div>
+    <PageShell>
+      <PageHeader
+        backTo={{ to: "/continuity", label: "Continuity" }}
+        title={s.name}
+        meta={
+          <>Decision authority: {s.decision_authority?.full_name ?? s.decision_authority?.email ?? "—"}</>
+        }
+        actions={
+          canEdit && (
+            <Button variant="outline" onClick={() => setEditing(true)}>
+              <Edit className="mr-2 h-4 w-4" /> Edit
+            </Button>
+          )
+        }
+      />
 
       <div className="grid gap-4 md:grid-cols-2">
         <Card>
