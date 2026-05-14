@@ -130,6 +130,7 @@ function Sidebar({ collapsed, onToggle }: { collapsed: boolean; onToggle: () => 
               {items.map((item) => {
                 const Icon = item.icon;
                 const active = pathname === item.to || pathname.startsWith(item.to + "/");
+                const showBadge = item.badge === "live-count" && attentionCount > 0;
                 return (
                   <Link
                     key={item.to}
@@ -144,7 +145,17 @@ function Sidebar({ collapsed, onToggle }: { collapsed: boolean; onToggle: () => 
                     )}
                   >
                     <Icon className="h-4 w-4" />
-                    {!collapsed && item.label}
+                    {!collapsed && <span className="flex-1">{item.label}</span>}
+                    {showBadge && (
+                      <span
+                        className={cn(
+                          "rounded-full bg-red-500/15 px-1.5 py-0.5 text-[10px] font-semibold text-red-700",
+                          collapsed && "absolute",
+                        )}
+                      >
+                        {attentionCount}
+                      </span>
+                    )}
                   </Link>
                 );
               })}
