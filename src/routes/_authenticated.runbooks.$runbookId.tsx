@@ -23,6 +23,7 @@ import {
 } from "@/components/ui/table";
 import { ScenarioBadge, DrResultBadge } from "@/components/runbooks/badges";
 import { LogTestDialog } from "@/components/runbooks/log-test-dialog";
+import { PageShell, PageHeader } from "@/components/layout/page-shell";
 import {
   getRunbook,
   listDrTests,
