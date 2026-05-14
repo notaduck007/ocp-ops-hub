@@ -105,30 +105,32 @@ function PolicyDetailPage() {
   if (!policy) return <div>Policy not found.</div>;
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <div className="space-y-1">
-          <Button asChild variant="ghost" size="sm" className="-ml-2">
-            <Link to="/policies"><ArrowLeft className="mr-1 h-4 w-4" /> Back</Link>
-          </Button>
-          <div className="flex items-center gap-3">
-            <h1 className="text-2xl font-semibold tracking-tight">{policy.title}</h1>
+    <PageShell>
+      <PageHeader
+        backTo={{ to: "/policies", label: "Policies" }}
+        title={policy.title}
+        badges={
+          <>
             <PolicyStatusBadge value={policy.status} />
             <span className="text-sm text-muted-foreground">v{policy.version}</span>
-          </div>
-          <p className="text-sm text-muted-foreground">
+          </>
+        }
+        meta={
+          <>
             Owner: {policy.owner?.full_name ?? policy.owner?.email ?? "—"}
             {policy.next_review_due_at && (
               <> · Next review {format(new Date(policy.next_review_due_at), "PP")}</>
             )}
-          </p>
-        </div>
-        {isAdmin && policy.status !== "retired" && (
-          <Button variant="outline" onClick={() => retire.mutate()}>
-            Retire policy
-          </Button>
-        )}
-      </div>
+          </>
+        }
+        actions={
+          isAdmin && policy.status !== "retired" && (
+            <Button variant="outline" onClick={() => retire.mutate()}>
+              Retire policy
+            </Button>
+          )
+        }
+      />
 
       <Tabs defaultValue="current">
         <TabsList>
