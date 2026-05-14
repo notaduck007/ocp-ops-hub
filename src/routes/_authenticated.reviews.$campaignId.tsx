@@ -1,9 +1,10 @@
 import { EvidenceFilesTab } from "@/components/evidence/files-tab";
 import { useState, useMemo } from "react";
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
-import { ArrowLeft, Check } from "lucide-react";
+import { Check } from "lucide-react";
+import { PageShell, PageHeader } from "@/components/layout/page-shell";
 import { format } from "date-fns";
 import { toast } from "sonner";
 
@@ -82,35 +83,34 @@ function CampaignWorkspace() {
   const allDecided = campaign.total_items > 0 && campaign.decided_items === campaign.total_items;
 
   return (
-    <div className="space-y-4">
-      <Button asChild variant="ghost" size="sm" className="-ml-2">
-        <Link to="/reviews"><ArrowLeft className="mr-1 h-4 w-4" /> Back</Link>
-      </Button>
-
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-semibold tracking-tight">{campaign.name}</h1>
-          <p className="text-sm text-muted-foreground">
+    <PageShell>
+      <PageHeader
+        backTo={{ to: "/reviews", label: "Reviews" }}
+        title={campaign.name}
+        meta={
+          <>
             Due {format(new Date(campaign.due_at), "PP")} · Owner {campaign.owner?.full_name ?? "—"}
             {campaign.completed_at && (
               <> · Completed {format(new Date(campaign.completed_at), "PP")}</>
             )}
-          </p>
-        </div>
-        <div className="flex items-center gap-3">
-          <div className="flex items-center gap-2 w-56">
-            <Progress value={pct} className="h-2" />
-            <span className="text-xs text-muted-foreground w-16 text-right">
-              {campaign.decided_items}/{campaign.total_items}
-            </span>
+          </>
+        }
+        actions={
+          <div className="flex items-center gap-3">
+            <div className="flex w-56 items-center gap-2">
+              <Progress value={pct} className="h-2" />
+              <span className="w-16 text-right text-xs text-muted-foreground">
+                {campaign.decided_items}/{campaign.total_items}
+              </span>
+            </div>
+            {!campaign.completed_at && (
+              <Button disabled={!allDecided || completeMut.isPending} onClick={() => completeMut.mutate()}>
+                Mark complete
+              </Button>
+            )}
           </div>
-          {!campaign.completed_at && (
-            <Button disabled={!allDecided || completeMut.isPending} onClick={() => completeMut.mutate()}>
-              Mark complete
-            </Button>
-          )}
-        </div>
-      </div>
+        }
+      />
 
       <div className="grid grid-cols-12 gap-4">
         <Card className="col-span-5 p-0">
@@ -204,6 +204,6 @@ function CampaignWorkspace() {
         <h2 className="mb-2 text-sm font-semibold text-muted-foreground">Files</h2>
         <EvidenceFilesTab kind="access_review" linkedEntityType="campaign" linkedEntityId={campaignId} />
       </div>
-    </div>
+    </PageShell>
   );
 }

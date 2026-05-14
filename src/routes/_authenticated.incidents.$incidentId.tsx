@@ -1,10 +1,12 @@
 import { useMemo, useState } from "react";
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { toast } from "sonner";
 import { format, formatDistanceToNow } from "date-fns";
 import ReactMarkdown from "react-markdown";
+
+import { PageShell, PageHeader } from "@/components/layout/page-shell";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -89,29 +91,26 @@ function IncidentDetailPage() {
   }
 
   return (
-    <div className="space-y-4">
-      <div>
-        <Link
-          to="/incidents"
-          className="text-xs text-muted-foreground hover:underline"
-        >
-          ← All incidents
-        </Link>
-        <div className="mt-1 flex flex-wrap items-center gap-3">
-          <h1 className="text-2xl font-semibold tracking-tight">
-            {incident.title}
-          </h1>
-          <SeverityBadge value={incident.severity} />
-          <IncidentStatusBadge value={incident.status} />
-          <span className="text-xs text-muted-foreground">
+    <PageShell>
+      <PageHeader
+        backTo={{ to: "/incidents", label: "All incidents" }}
+        title={incident.title}
+        badges={
+          <>
+            <SeverityBadge value={incident.severity} />
+            <IncidentStatusBadge value={incident.status} />
+          </>
+        }
+        meta={
+          <>
             Declared{" "}
             {formatDistanceToNow(new Date(incident.declared_at), {
               addSuffix: true,
             })}{" "}
             by {incident.declarer?.full_name ?? incident.declarer?.email ?? "—"}
-          </span>
-        </div>
-      </div>
+          </>
+        }
+      />
 
       <Tabs defaultValue="overview">
         <TabsList>
@@ -192,7 +191,7 @@ function IncidentDetailPage() {
           <EvidenceFilesTab kind="incident" linkedEntityType="incident" linkedEntityId={incidentId} />
         </TabsContent>
       </Tabs>
-    </div>
+    </PageShell>
   );
 }
 

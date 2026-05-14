@@ -2,8 +2,10 @@ import { useState } from "react";
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
-import { ArrowLeft, Archive, ArchiveRestore, Plus } from "lucide-react";
+import { Archive, ArchiveRestore, Plus } from "lucide-react";
 import { toast } from "sonner";
+
+import { PageShell, PageHeader } from "@/components/layout/page-shell";
 
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -99,25 +101,25 @@ function VendorDetailPage() {
   const archived = !!vendor.archived_at;
 
   return (
-    <div className="space-y-5">
-      <div className="flex flex-wrap items-start justify-between gap-3">
-        <div>
-          <Link to="/vendors" className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground">
-            <ArrowLeft className="h-3 w-3" /> Vendors
-          </Link>
-          <h1 className="mt-1 text-2xl font-semibold tracking-tight">{vendor.name}</h1>
-          <div className="mt-2 flex flex-wrap items-center gap-2">
+    <PageShell>
+      <PageHeader
+        backTo={{ to: "/vendors", label: "Vendors" }}
+        title={vendor.name}
+        badges={
+          <>
             <VendorStatusBadge value={vendor.status} />
             <ContractEndBadge date={vendor.contract_end_at} windowDays={vendor.renewal_window_days} />
             {archived && <Badge variant="outline">Archived</Badge>}
-          </div>
-        </div>
-        {isAdmin && (
-          <Button variant="outline" onClick={() => archiveMut.mutate(!archived)} disabled={archiveMut.isPending}>
-            {archived ? <><ArchiveRestore className="mr-2 h-4 w-4" />Unarchive</> : <><Archive className="mr-2 h-4 w-4" />Archive</>}
-          </Button>
-        )}
-      </div>
+          </>
+        }
+        actions={
+          isAdmin && (
+            <Button variant="outline" onClick={() => archiveMut.mutate(!archived)} disabled={archiveMut.isPending}>
+              {archived ? <><ArchiveRestore className="mr-2 h-4 w-4" />Unarchive</> : <><Archive className="mr-2 h-4 w-4" />Archive</>}
+            </Button>
+          )
+        }
+      />
 
       <Tabs defaultValue="overview">
         <TabsList>
@@ -263,6 +265,6 @@ function VendorDetailPage() {
           </div>
         </TabsContent>
       </Tabs>
-    </div>
+    </PageShell>
   );
 }

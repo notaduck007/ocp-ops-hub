@@ -1,9 +1,9 @@
 import { EvidenceFilesTab } from "@/components/evidence/files-tab";
 import { useState } from "react";
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
-import { ArrowLeft, Plus } from "lucide-react";
+import { Plus } from "lucide-react";
 import { format } from "date-fns";
 import ReactMarkdown from "react-markdown";
 import { toast } from "sonner";
@@ -23,6 +23,7 @@ import {
 } from "@/components/ui/table";
 import { ScenarioBadge, DrResultBadge } from "@/components/runbooks/badges";
 import { LogTestDialog } from "@/components/runbooks/log-test-dialog";
+import { PageShell, PageHeader } from "@/components/layout/page-shell";
 import {
   getRunbook,
   listDrTests,
@@ -77,21 +78,19 @@ function RunbookDetail() {
   if (!rb) return <div>Runbook not found.</div>;
 
   return (
-    <div className="space-y-6">
-      <div className="space-y-1">
-        <Button asChild variant="ghost" size="sm" className="-ml-2">
-          <Link to="/runbooks"><ArrowLeft className="mr-1 h-4 w-4" /> Back</Link>
-        </Button>
-        <div className="flex flex-wrap items-center gap-3">
-          <h1 className="text-2xl font-semibold tracking-tight">{rb.title}</h1>
-          <ScenarioBadge value={rb.scenario} />
-        </div>
-        <p className="text-sm text-muted-foreground">
-          {rb.system?.name ?? "—"} · Owner {rb.owner?.full_name ?? rb.owner?.email ?? "—"}
-          {rb.last_tested_at && <> · Last tested {format(new Date(rb.last_tested_at), "PP")}</>}
-          {rb.next_test_due_at && <> · Next due {format(new Date(rb.next_test_due_at), "PP")}</>}
-        </p>
-      </div>
+    <PageShell>
+      <PageHeader
+        backTo={{ to: "/runbooks", label: "Runbooks" }}
+        title={rb.title}
+        badges={<ScenarioBadge value={rb.scenario} />}
+        meta={
+          <>
+            {rb.system?.name ?? "—"} · Owner {rb.owner?.full_name ?? rb.owner?.email ?? "—"}
+            {rb.last_tested_at && <> · Last tested {format(new Date(rb.last_tested_at), "PP")}</>}
+            {rb.next_test_due_at && <> · Next due {format(new Date(rb.next_test_due_at), "PP")}</>}
+          </>
+        }
+      />
 
       <Tabs defaultValue="overview">
         <TabsList>
@@ -196,6 +195,6 @@ function RunbookDetail() {
       </Tabs>
 
       <LogTestDialog open={logOpen} onOpenChange={setLogOpen} runbookId={runbookId} />
-    </div>
+    </PageShell>
   );
 }
