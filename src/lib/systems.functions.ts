@@ -2,7 +2,9 @@ import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
-import type { Database } from "@/integrations/supabase/types";
+import type { Database, Json } from "@/integrations/supabase/types";
+
+type OwnerLite = { id: string; full_name: string | null; email: string };
 
 type SystemCategory = Database["public"]["Enums"]["system_category"];
 type Criticality = Database["public"]["Enums"]["criticality"];
@@ -59,16 +61,16 @@ const writeSchema = z.object({
 
 export type SystemWriteInput = z.infer<typeof writeSchema>;
 
-async function loadOwners(supabase: any, ids: string[]) {
+async function loadOwners(supabase: any, ids: string[]): Promise<Map<string, OwnerLite>> {
   const unique = Array.from(new Set(ids.filter(Boolean)));
-  if (unique.length === 0) return new Map<string, { id: string; full_name: string | null; email: string }>();
+  if (unique.length === 0) return new Map();
   const { data, error } = await supabase
     .from("users")
     .select("id, full_name, email")
     .in("id", unique);
   if (error) throw new Error(error.message);
-  return new Map(
-    (data ?? []).map((u: { id: string; full_name: string | null; email: string }) => [u.id, u]),
+  return new Map<string, OwnerLite>(
+    (data ?? []).map((u: OwnerLite) => [u.id, u] as const),
   );
 }
 
@@ -191,8 +193,8 @@ export const updateSystem = createServerFn({ method: "POST" })
     if (error) throw new Error(error.message);
 
     // Diff only the changed fields.
-    const before: Record<string, unknown> = {};
-    const after: Record<string, unknown> = {};
+    const before: Record<string, Json> = {};
+    const after: Record<string, Json> = {};
     for (const k of Object.keys(data.patch)) {
       if (JSON.stringify((prev as any)[k]) !== JSON.stringify((next as any)[k])) {
         before[k] = (prev as any)[k];
@@ -249,10 +251,10 @@ export const archiveSystem = createServerFn({ method: "POST" })
 export type SystemAuditEntry = {
   id: string;
   action: string;
-  before: unknown;
-  after: unknown;
+  before: Json | null;
+  after: Json | null;
   created_at: string;
-  actor: { id: string; email: string; full_name: string | null } | null;
+  actor: OwnerLite | null;
 };
 
 export const listSystemAudit = createServerFn({ method: "POST" })
