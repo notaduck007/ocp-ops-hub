@@ -183,7 +183,7 @@ function RiskDetailPage() {
           </TabsContent>
         )}
       </Tabs>
-    </div>
+    </PageShell>
   );
 }
 
