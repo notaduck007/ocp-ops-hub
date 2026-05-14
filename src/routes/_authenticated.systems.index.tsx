@@ -2,7 +2,8 @@ import { useMemo, useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
-import { Plus, ShieldCheck, ShieldOff, ArrowUpDown } from "lucide-react";
+import { Plus, ShieldCheck, ShieldOff, ArrowUpDown, Server } from "lucide-react";
+import { EmptyState } from "@/components/states/empty-state";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
