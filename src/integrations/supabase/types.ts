@@ -14,6 +14,75 @@ export type Database = {
   }
   public: {
     Tables: {
+      access_grants: {
+        Row: {
+          archived_at: string | null
+          created_at: string
+          created_by: string | null
+          granted_at: string | null
+          id: string
+          is_admin: boolean
+          last_reviewed_at: string | null
+          last_used_at: string | null
+          notes: string | null
+          person_id: string
+          role_level: Database["public"]["Enums"]["access_role_level"]
+          source: string | null
+          system_id: string
+          updated_at: string
+          updated_by: string | null
+        }
+        Insert: {
+          archived_at?: string | null
+          created_at?: string
+          created_by?: string | null
+          granted_at?: string | null
+          id?: string
+          is_admin?: boolean
+          last_reviewed_at?: string | null
+          last_used_at?: string | null
+          notes?: string | null
+          person_id: string
+          role_level: Database["public"]["Enums"]["access_role_level"]
+          source?: string | null
+          system_id: string
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Update: {
+          archived_at?: string | null
+          created_at?: string
+          created_by?: string | null
+          granted_at?: string | null
+          id?: string
+          is_admin?: boolean
+          last_reviewed_at?: string | null
+          last_used_at?: string | null
+          notes?: string | null
+          person_id?: string
+          role_level?: Database["public"]["Enums"]["access_role_level"]
+          source?: string | null
+          system_id?: string
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "access_grants_person_id_fkey"
+            columns: ["person_id"]
+            isOneToOne: false
+            referencedRelation: "people"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "access_grants_system_id_fkey"
+            columns: ["system_id"]
+            isOneToOne: false
+            referencedRelation: "systems"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       audit_log: {
         Row: {
           action: string
@@ -46,6 +115,71 @@ export type Database = {
           id?: string
         }
         Relationships: []
+      }
+      people: {
+        Row: {
+          archived_at: string | null
+          created_at: string
+          created_by: string | null
+          email: string | null
+          employer: string | null
+          employment_end: string | null
+          employment_start: string | null
+          full_name: string
+          id: string
+          last_access_review_at: string | null
+          linked_user_id: string | null
+          notes: string | null
+          status: Database["public"]["Enums"]["person_status"]
+          type: Database["public"]["Enums"]["person_type"]
+          updated_at: string
+          updated_by: string | null
+        }
+        Insert: {
+          archived_at?: string | null
+          created_at?: string
+          created_by?: string | null
+          email?: string | null
+          employer?: string | null
+          employment_end?: string | null
+          employment_start?: string | null
+          full_name: string
+          id?: string
+          last_access_review_at?: string | null
+          linked_user_id?: string | null
+          notes?: string | null
+          status?: Database["public"]["Enums"]["person_status"]
+          type: Database["public"]["Enums"]["person_type"]
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Update: {
+          archived_at?: string | null
+          created_at?: string
+          created_by?: string | null
+          email?: string | null
+          employer?: string | null
+          employment_end?: string | null
+          employment_start?: string | null
+          full_name?: string
+          id?: string
+          last_access_review_at?: string | null
+          linked_user_id?: string | null
+          notes?: string | null
+          status?: Database["public"]["Enums"]["person_status"]
+          type?: Database["public"]["Enums"]["person_type"]
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "people_linked_user_id_fkey"
+            columns: ["linked_user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       systems: {
         Row: {
@@ -206,7 +340,14 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      v_mfa_coverage: {
+        Row: {
+          covered_count: number | null
+          eligible_count: number | null
+          mfa_coverage_pct: number | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
       current_user_role: {
@@ -228,6 +369,7 @@ export type Database = {
       }
     }
     Enums: {
+      access_role_level: "read" | "write" | "admin" | "owner"
       app_role: "admin" | "editor" | "viewer"
       criticality: "low" | "medium" | "high" | "critical"
       data_class:
@@ -237,6 +379,8 @@ export type Database = {
         | "financial"
         | "unpublished_spec"
         | "public"
+      person_status: "active" | "inactive" | "offboarded"
+      person_type: "staff" | "contractor" | "vendor_user" | "service_account"
       system_category:
         | "idp"
         | "github"
@@ -375,6 +519,7 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
+      access_role_level: ["read", "write", "admin", "owner"],
       app_role: ["admin", "editor", "viewer"],
       criticality: ["low", "medium", "high", "critical"],
       data_class: [
@@ -385,6 +530,8 @@ export const Constants = {
         "unpublished_spec",
         "public",
       ],
+      person_status: ["active", "inactive", "offboarded"],
+      person_type: ["staff", "contractor", "vendor_user", "service_account"],
       system_category: [
         "idp",
         "github",
