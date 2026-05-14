@@ -181,6 +181,123 @@ export type Database = {
           },
         ]
       }
+      risks: {
+        Row: {
+          acceptance_justification: string | null
+          accepted_at: string | null
+          accepted_by: string | null
+          accepted_until: string | null
+          archived_at: string | null
+          created_at: string
+          created_by: string | null
+          description: string | null
+          id: string
+          kind: Database["public"]["Enums"]["risk_kind"]
+          likelihood: number
+          next_review_due_at: string | null
+          notes: string | null
+          owner_id: string
+          policy_id: string | null
+          review_cadence_days: number
+          score: number | null
+          severity: number
+          status: Database["public"]["Enums"]["risk_status"]
+          system_id: string | null
+          title: string
+          updated_at: string
+          updated_by: string | null
+          vendor_id: string | null
+        }
+        Insert: {
+          acceptance_justification?: string | null
+          accepted_at?: string | null
+          accepted_by?: string | null
+          accepted_until?: string | null
+          archived_at?: string | null
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          id?: string
+          kind: Database["public"]["Enums"]["risk_kind"]
+          likelihood: number
+          next_review_due_at?: string | null
+          notes?: string | null
+          owner_id: string
+          policy_id?: string | null
+          review_cadence_days?: number
+          score?: number | null
+          severity: number
+          status?: Database["public"]["Enums"]["risk_status"]
+          system_id?: string | null
+          title: string
+          updated_at?: string
+          updated_by?: string | null
+          vendor_id?: string | null
+        }
+        Update: {
+          acceptance_justification?: string | null
+          accepted_at?: string | null
+          accepted_by?: string | null
+          accepted_until?: string | null
+          archived_at?: string | null
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          id?: string
+          kind?: Database["public"]["Enums"]["risk_kind"]
+          likelihood?: number
+          next_review_due_at?: string | null
+          notes?: string | null
+          owner_id?: string
+          policy_id?: string | null
+          review_cadence_days?: number
+          score?: number | null
+          severity?: number
+          status?: Database["public"]["Enums"]["risk_status"]
+          system_id?: string | null
+          title?: string
+          updated_at?: string
+          updated_by?: string | null
+          vendor_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "risks_accepted_by_fkey"
+            columns: ["accepted_by"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "risks_owner_id_fkey"
+            columns: ["owner_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "risks_system_id_fkey"
+            columns: ["system_id"]
+            isOneToOne: false
+            referencedRelation: "systems"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "risks_vendor_id_fkey"
+            columns: ["vendor_id"]
+            isOneToOne: false
+            referencedRelation: "v_vendor_health"
+            referencedColumns: ["vendor_id"]
+          },
+          {
+            foreignKeyName: "risks_vendor_id_fkey"
+            columns: ["vendor_id"]
+            isOneToOne: false
+            referencedRelation: "vendors"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       sla_breaches: {
         Row: {
           closed_at: string | null
@@ -670,6 +787,8 @@ export type Database = {
         | "public"
       person_status: "active" | "inactive" | "offboarded"
       person_type: "staff" | "contractor" | "vendor_user" | "service_account"
+      risk_kind: "risk" | "exception"
+      risk_status: "open" | "mitigating" | "accepted" | "closed"
       sla_target_type:
         | "uptime_pct"
         | "response_minutes"
@@ -828,6 +947,8 @@ export const Constants = {
       ],
       person_status: ["active", "inactive", "offboarded"],
       person_type: ["staff", "contractor", "vendor_user", "service_account"],
+      risk_kind: ["risk", "exception"],
+      risk_status: ["open", "mitigating", "accepted", "closed"],
       sla_target_type: [
         "uptime_pct",
         "response_minutes",

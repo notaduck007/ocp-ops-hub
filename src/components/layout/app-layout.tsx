@@ -1,6 +1,6 @@
 import { type ReactNode } from "react";
 import { Link, useRouterState } from "@tanstack/react-router";
-import { LayoutDashboard, Users, Search, Server, UserCircle, KeyRound, Building2, FileCheck2 } from "lucide-react";
+import { LayoutDashboard, Users, Search, Server, UserCircle, KeyRound, Building2, FileCheck2, ShieldAlert } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import { Input } from "@/components/ui/input";
@@ -41,6 +41,10 @@ const NAV_GROUPS: NavGroup[] = [
       { to: "/vendors", label: "Vendors", icon: Building2 },
       { to: "/slas", label: "SLAs", icon: FileCheck2 },
     ],
+  },
+  {
+    label: "Governance",
+    items: [{ to: "/risks", label: "Risks", icon: ShieldAlert }],
   },
   {
     label: "Admin",
