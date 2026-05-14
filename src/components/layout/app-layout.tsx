@@ -186,6 +186,37 @@ function Breadcrumbs() {
   );
 }
 
+const ADMIN_CONTACT_EMAIL =
+  (import.meta.env.VITE_ADMIN_CONTACT_EMAIL as string | undefined) ?? "";
+
+function capabilitiesFor(role: string | null | undefined): string {
+  switch (role) {
+    case "admin":
+      return "Manage users, edit policies, accept risks, archive records, approve changes.";
+    case "editor":
+      return "Edit inventory, declare incidents, draft policies, propose changes.";
+    case "viewer":
+      return "Read-only access to all records and reports.";
+    default:
+      return "No role assigned. Contact your administrator.";
+  }
+}
+
+function requestElevatedAccess() {
+  if (ADMIN_CONTACT_EMAIL) {
+    window.location.href =
+      `mailto:${ADMIN_CONTACT_EMAIL}?subject=${encodeURIComponent(
+        "OCP IT Hub — request for elevated access",
+      )}&body=${encodeURIComponent(
+        "Hi,\n\nI would like to request elevated access to the OCP IT Hub.\n\nReason:\n",
+      )}`;
+    return;
+  }
+  window.alert(
+    "Contact your administrator to request elevated access.\n\nNo admin contact email is configured for this workspace.",
+  );
+}
+
 function UserMenu() {
   const { user } = useAuth();
   const { data: role } = useCurrentRole();
