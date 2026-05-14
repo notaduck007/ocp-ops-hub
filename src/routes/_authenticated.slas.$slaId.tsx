@@ -20,6 +20,7 @@ import {
 } from "@/components/ui/table";
 import { SlaForm } from "@/components/slas/sla-form";
 import { SlaSummary } from "@/components/slas/sla-summary";
+import { AuditEntry } from "@/components/audit/audit-entry";
 import { BreachForm } from "@/components/slas/breach-form";
 import { BreachStatusBadge } from "@/components/vendors/badges";
 import { PageShell, PageHeader } from "@/components/layout/page-shell";
@@ -113,7 +114,7 @@ function SlaDetailPage() {
           <TabsTrigger value="overview">Overview</TabsTrigger>
           <TabsTrigger value="breaches">Breaches ({breaches.length})</TabsTrigger>
           <TabsTrigger value="files">Files</TabsTrigger>
-          {canEdit && <TabsTrigger value="activity">Activity</TabsTrigger>}
+          <TabsTrigger value="activity">Activity</TabsTrigger>
         </TabsList>
 
         <TabsContent value="overview" className="mt-4 max-w-2xl">
