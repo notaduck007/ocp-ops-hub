@@ -38,8 +38,8 @@ function AuthenticatedLayout() {
 
   if (!checked) {
     return (
-      <div className="flex min-h-screen items-center justify-center text-sm text-muted-foreground">
-        Loading…
+      <div className="flex min-h-screen items-center justify-center">
+        <Skeleton className="h-8 w-40" />
       </div>
     );
   }
