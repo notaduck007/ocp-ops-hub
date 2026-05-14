@@ -47,11 +47,14 @@ import {
 export const Route = createFileRoute(
   "/_authenticated/incidents/$incidentId",
 )({
+  validateSearch: detailSearchValidator,
   component: IncidentDetailPage,
 });
 
 function IncidentDetailPage() {
   const { incidentId } = Route.useParams();
+  const { edit } = Route.useSearch();
+  const navigate = useNavigate();
   const qc = useQueryClient();
   const { data: role } = useCurrentRole();
   const isAdmin = role === "admin";
