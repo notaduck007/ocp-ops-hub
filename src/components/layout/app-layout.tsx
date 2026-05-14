@@ -106,6 +106,7 @@ function useSidebarCollapsed(): [boolean, (v: boolean) => void] {
 function Sidebar({ collapsed, onToggle }: { collapsed: boolean; onToggle: () => void }) {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   const { data: role } = useCurrentRole();
+  const attentionCount = useAttentionCount();
 
   return (
     <aside className={cn("hidden shrink-0 flex-col border-r bg-card md:flex", collapsed ? "w-14" : "w-60")}>
