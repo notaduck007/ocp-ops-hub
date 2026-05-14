@@ -11,7 +11,7 @@ export const getOpenCriticalRisks = createServerFn({ method: "GET" })
       .order("score", { ascending: false })
       .limit(100);
     if (error) throw new Error(error.message);
-    const rows = (data ?? []) as Array<{
+    const rows = (data ?? []) as unknown as Array<{
       id: string;
       title: string;
       severity: number;
@@ -30,7 +30,7 @@ export const getOverdueReviews = createServerFn({ method: "GET" })
       .order("due_at", { ascending: true })
       .limit(500);
     if (error) throw new Error(error.message);
-    const rows = (data ?? []) as Array<{
+    const rows = (data ?? []) as unknown as Array<{
       kind: "sla" | "access_grant" | "risk";
       id: string;
       label: string;
@@ -91,7 +91,7 @@ export const getVendorHealth = createServerFn({ method: "GET" })
       .from("v_vendor_health" as any)
       .select("vendor_id,name,contract_ending_soon,open_breaches_90d");
     if (error) throw new Error(error.message);
-    const rows = (data ?? []) as Array<{
+    const rows = (data ?? []) as unknown as Array<{
       vendor_id: string;
       name: string;
       contract_ending_soon: boolean;
