@@ -51,6 +51,7 @@ export function RunbookSummary({ runbook }: { runbook: any }) {
       <SummarySection title="Body">
         <MarkdownBlock source={runbook.body_md} />
       </SummarySection>
+      <RecordMetaFooter record={runbook} />
     </div>
   );
 }
