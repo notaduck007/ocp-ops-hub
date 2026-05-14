@@ -9,13 +9,11 @@ import {
   LifeBuoy,
   Building2,
   RefreshCw,
-  KeyRound,
-  FileWarning,
-  ClipboardCheck,
 } from "lucide-react";
 
 import { Skeleton } from "@/components/ui/skeleton";
 import { FeedRowSkeleton } from "@/components/layout/skeletons";
+import { AttentionList } from "@/components/inbox/attention-list";
 
 import { useAuth, useCurrentRole } from "@/hooks/use-auth";
 import { Badge } from "@/components/ui/badge";
@@ -299,19 +297,15 @@ function DashboardPage() {
             Next 10 items overdue for review
           </p>
         </div>
-        <div className="divide-y">
+        <div>
           {overdue.data == null ? (
-            <>
+            <div className="divide-y">
               <FeedRowSkeleton />
               <FeedRowSkeleton />
               <FeedRowSkeleton />
-            </>
-          ) : overdue.data.items.length === 0 ? (
-            <div className="p-5 text-sm text-muted-foreground">
-              All current. Nice.
             </div>
           ) : (
-            overdue.data.items.map((it) => <FeedRow key={`${it.kind}-${it.id}`} item={it} />)
+            <AttentionList items={overdue.data.items as any} maxRows={10} />
           )}
         </div>
       </div>
@@ -384,63 +378,3 @@ function MiniBars({
   );
 }
 
-function FeedRow({
-  item,
-}: {
-  item: {
-    kind: string;
-    id: string;
-    label: string;
-    due_at: string | null;
-    owner_name: string | null;
-  };
-}) {
-  const Icon =
-    item.kind === "sla"
-      ? FileWarning
-      : item.kind === "access_grant"
-        ? KeyRound
-        : ClipboardCheck;
-
-  const due = item.due_at ? new Date(item.due_at) : null;
-  const now = Date.now();
-  const diffDays = due ? Math.round((due.getTime() - now) / 86_400_000) : null;
-  let dueLabel = "—";
-  let dueColor = "text-muted-foreground";
-  if (diffDays != null) {
-    if (diffDays < 0) {
-      dueLabel = `${-diffDays} day${-diffDays === 1 ? "" : "s"} overdue`;
-      dueColor = "text-red-600";
-    } else if (diffDays <= 7) {
-      dueLabel = `due in ${diffDays} day${diffDays === 1 ? "" : "s"}`;
-      dueColor = "text-amber-600";
-    } else {
-      dueLabel = `due in ${diffDays} days`;
-    }
-  }
-
-  const linkProps =
-    item.kind === "sla"
-      ? ({ to: "/slas/$slaId", params: { slaId: item.id } } as const)
-      : item.kind === "risk"
-        ? ({ to: "/risks/$riskId", params: { riskId: item.id } } as const)
-        : ({ to: "/access" } as const);
-
-  return (
-    <Link
-      {...(linkProps as any)}
-      className="flex items-center justify-between gap-4 px-5 py-3 hover:bg-muted/40"
-    >
-      <div className="flex min-w-0 items-center gap-3">
-        <Icon className="h-4 w-4 shrink-0 text-muted-foreground" />
-        <div className="min-w-0">
-          <div className="truncate text-sm font-medium">{item.label}</div>
-          <div className="text-xs text-muted-foreground">
-            {item.owner_name ?? "Unassigned"}
-          </div>
-        </div>
-      </div>
-      <div className={`shrink-0 text-xs ${dueColor}`}>{dueLabel}</div>
-    </Link>
-  );
-}

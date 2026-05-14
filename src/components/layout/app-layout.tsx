@@ -1,6 +1,7 @@
 import { useEffect, useState, type ReactNode } from "react";
 import { Link, useRouterState } from "@tanstack/react-router";
-import { LayoutDashboard, Users, Search, Server, UserCircle, KeyRound, Building2, FileCheck2, ShieldAlert, AlertOctagon, GitPullRequestArrow, BookText, ClipboardCheck, BookOpenCheck, LifeBuoy, FileText, ScrollText, BarChart3, PanelLeftClose, PanelLeftOpen } from "lucide-react";
+import { LayoutDashboard, Inbox, Users, Search, Server, UserCircle, KeyRound, Building2, FileCheck2, ShieldAlert, AlertOctagon, GitPullRequestArrow, BookText, ClipboardCheck, BookOpenCheck, LifeBuoy, FileText, ScrollText, BarChart3, PanelLeftClose, PanelLeftOpen } from "lucide-react";
+import { useAttentionCount } from "@/hooks/use-attention";
 import { NotificationBell } from "@/components/notifications/notification-bell";
 import { CommandPalette } from "@/components/command-palette";
 
@@ -25,6 +26,7 @@ type NavItem = {
   label: string;
   icon: typeof LayoutDashboard;
   adminOnly?: boolean;
+  badge?: "live-count";
 };
 
 type NavGroup = { label: string | null; items: NavItem[] };
@@ -32,7 +34,10 @@ type NavGroup = { label: string | null; items: NavItem[] };
 const NAV_GROUPS: NavGroup[] = [
   {
     label: null,
-    items: [{ to: "/dashboard", label: "Dashboard", icon: LayoutDashboard }],
+    items: [
+      { to: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
+      { to: "/inbox", label: "Inbox", icon: Inbox, badge: "live-count" },
+    ],
   },
   {
     label: "Inventory",
@@ -101,6 +106,7 @@ function useSidebarCollapsed(): [boolean, (v: boolean) => void] {
 function Sidebar({ collapsed, onToggle }: { collapsed: boolean; onToggle: () => void }) {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   const { data: role } = useCurrentRole();
+  const attentionCount = useAttentionCount();
 
   return (
     <aside className={cn("hidden shrink-0 flex-col border-r bg-card md:flex", collapsed ? "w-14" : "w-60")}>
@@ -124,6 +130,7 @@ function Sidebar({ collapsed, onToggle }: { collapsed: boolean; onToggle: () => 
               {items.map((item) => {
                 const Icon = item.icon;
                 const active = pathname === item.to || pathname.startsWith(item.to + "/");
+                const showBadge = item.badge === "live-count" && attentionCount > 0;
                 return (
                   <Link
                     key={item.to}
@@ -138,7 +145,17 @@ function Sidebar({ collapsed, onToggle }: { collapsed: boolean; onToggle: () => 
                     )}
                   >
                     <Icon className="h-4 w-4" />
-                    {!collapsed && item.label}
+                    {!collapsed && <span className="flex-1">{item.label}</span>}
+                    {showBadge && (
+                      <span
+                        className={cn(
+                          "rounded-full bg-red-500/15 px-1.5 py-0.5 text-[10px] font-semibold text-red-700",
+                          collapsed && "absolute",
+                        )}
+                      >
+                        {attentionCount}
+                      </span>
+                    )}
                   </Link>
                 );
               })}
