@@ -9,13 +9,11 @@ import {
   LifeBuoy,
   Building2,
   RefreshCw,
-  KeyRound,
-  FileWarning,
-  ClipboardCheck,
 } from "lucide-react";
 
 import { Skeleton } from "@/components/ui/skeleton";
 import { FeedRowSkeleton } from "@/components/layout/skeletons";
+import { AttentionList } from "@/components/inbox/attention-list";
 
 import { useAuth, useCurrentRole } from "@/hooks/use-auth";
 import { Badge } from "@/components/ui/badge";
