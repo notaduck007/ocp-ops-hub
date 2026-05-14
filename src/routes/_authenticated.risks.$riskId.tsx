@@ -109,7 +109,11 @@ function RiskDetailPage() {
         </TabsList>
 
         <TabsContent value="overview" className="mt-4 max-w-2xl">
-          <RiskForm mode="edit" risk={risk} readOnly={!canEdit} />
+          {editing ? (
+            <RiskForm mode="edit" risk={risk} readOnly={false} onSaved={() => exitEdit()} />
+          ) : (
+            <RiskSummary risk={risk} />
+          )}
         </TabsContent>
 
         <TabsContent value="links" className="mt-4 max-w-2xl">
