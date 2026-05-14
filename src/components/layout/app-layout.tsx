@@ -5,6 +5,7 @@ import { useAttentionCount } from "@/hooks/use-attention";
 import { NotificationBell } from "@/components/notifications/notification-bell";
 import { CommandPalette } from "@/components/command-palette";
 import { Logo } from "@/components/brand/logo";
+import { AppErrorBoundary } from "@/components/states/error-boundary";
 import { APP_VERSION } from "@/lib/build-info";
 
 import { cn } from "@/lib/utils";
@@ -351,7 +352,9 @@ export function AppLayout({ children }: { children: ReactNode }) {
       <Sidebar collapsed={collapsed} onToggle={() => setCollapsed(!collapsed)} />
       <div className="flex min-w-0 flex-1 flex-col">
         <TopBar />
-        <main className="flex-1 overflow-auto p-4 md:p-6">{children}</main>
+        <main className="flex-1 overflow-auto p-4 md:p-6">
+          <AppErrorBoundary>{children}</AppErrorBoundary>
+        </main>
       </div>
       <CommandPalette />
     </div>

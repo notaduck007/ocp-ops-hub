@@ -25,6 +25,9 @@ import { EditToggle } from "@/components/layout/edit-toggle";
 import { detailSearchValidator } from "@/lib/detail-search";
 import { useCanEdit, useIsAdmin } from "@/hooks/use-role";
 import { AdminOnly } from "@/components/auth/role-gate";
+import { EmptyState } from "@/components/states/empty-state";
+import { ErrorState } from "@/components/states/error-state";
+import { ScrollText } from "lucide-react";
 import {
   archiveSystem,
   getSystem,
@@ -49,7 +52,7 @@ function SystemDetailPage() {
   const audit = useServerFn(listSystemAudit);
   const archive = useServerFn(archiveSystem);
 
-  const { data: system, isLoading } = useQuery({
+  const { data: system, isLoading, isError, error, refetch } = useQuery({
     queryKey: ["system", systemId],
     queryFn: () => get({ data: { id: systemId } }),
   });
@@ -76,14 +79,29 @@ function SystemDetailPage() {
   if (isLoading) {
     return (<PageShell><PageHeaderSkeleton /><DetailFormSkeleton /></PageShell>);
   }
+  if (isError) {
+    return (
+      <PageShell>
+        <ErrorState
+          title="Couldn't load this system"
+          message={(error as Error)?.message}
+          onRetry={() => refetch()}
+          variant="card"
+        />
+      </PageShell>
+    );
+  }
   if (!system) {
     return (
-      <div className="space-y-3">
-        <p className="text-sm text-muted-foreground">System not found.</p>
-        <Button variant="outline" onClick={() => navigate({ to: "/systems" })}>
-          Back to list
-        </Button>
-      </div>
+      <PageShell>
+        <EmptyState
+          icon={Archive}
+          title="System not found"
+          description="It may have been deleted."
+          action={{ label: "Back to systems", to: "/systems" }}
+          variant="card"
+        />
+      </PageShell>
     );
   }
 
@@ -154,9 +172,12 @@ function SystemDetailPage() {
         <TabsContent value="activity" className="mt-4">
           <div className="space-y-3">
             {auditEntries.length === 0 ? (
-              <div className="rounded-md border bg-card p-4 text-sm text-muted-foreground">
-                No activity yet.
-              </div>
+              <EmptyState
+                icon={ScrollText}
+                title="No activity yet"
+                description="Edits to this record will appear here."
+                variant="card"
+              />
             ) : (
               auditEntries.map((e) => <AuditEntry key={e.id} entry={e} />)
             )}

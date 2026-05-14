@@ -2,7 +2,8 @@ import { useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
-import { Plus } from "lucide-react";
+import { Plus, Building2 } from "lucide-react";
+import { EmptyState } from "@/components/states/empty-state";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -113,7 +114,16 @@ function VendorsListPage() {
             {isLoading ? (
               <TableSkeleton rows={8} cols={5} />
             ) : rows.length === 0 ? (
-              <TableRow><TableCell colSpan={5} className="text-center text-sm text-muted-foreground">No vendors yet.</TableCell></TableRow>
+              <TableRow>
+                <TableCell colSpan={5} className="p-0">
+                  <EmptyState
+                    icon={Building2}
+                    title="No vendors yet"
+                    description="Track suppliers and processors that touch your systems."
+                    action={canEdit ? { label: "New vendor", onClick: () => setOpen(true) } : undefined}
+                  />
+                </TableCell>
+              </TableRow>
             ) : rows.map((v) => (
               <TableRow key={v.id} className={v.archived_at ? "text-muted-foreground" : undefined}>
                 <TableCell className="font-medium">

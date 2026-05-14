@@ -2,7 +2,8 @@ import { useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
-import { Plus } from "lucide-react";
+import { Plus, LifeBuoy } from "lucide-react";
+import { EmptyState } from "@/components/states/empty-state";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -62,7 +63,16 @@ function ContinuityList() {
             {isLoading ? (
               <TableSkeleton rows={8} cols={4} />
             ) : rows.length === 0 ? (
-              <TableRow><TableCell colSpan={4} className="text-muted-foreground">No scenarios yet.</TableCell></TableRow>
+              <TableRow>
+                <TableCell colSpan={4} className="p-0">
+                  <EmptyState
+                    icon={LifeBuoy}
+                    title="No scenarios yet"
+                    description="Define the disruption scenarios you've planned for."
+                    action={canEdit ? { label: "New scenario", onClick: () => setOpen(true) } : undefined}
+                  />
+                </TableCell>
+              </TableRow>
             ) : (
               rows.map((r) => (
                 <TableRow key={r.id}>

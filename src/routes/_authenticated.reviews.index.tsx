@@ -1,7 +1,8 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
-import { Plus } from "lucide-react";
+import { Plus, ClipboardCheck } from "lucide-react";
+import { EmptyState } from "@/components/states/empty-state";
 import { format } from "date-fns";
 
 import { Button } from "@/components/ui/button";
@@ -56,7 +57,16 @@ function ReviewsList() {
             {isLoading ? (
               <TableSkeleton rows={8} cols={6} />
             ) : rows.length === 0 ? (
-              <TableRow><TableCell colSpan={6} className="text-muted-foreground">No campaigns yet.</TableCell></TableRow>
+              <TableRow>
+                <TableCell colSpan={6} className="p-0">
+                  <EmptyState
+                    icon={ClipboardCheck}
+                    title="No campaigns yet"
+                    description="Start an access review campaign to re-certify who has access to what."
+                    action={canEdit ? { label: "New campaign", to: "/reviews/new" } : undefined}
+                  />
+                </TableCell>
+              </TableRow>
             ) : rows.map((r) => {
               const pct = r.total_items ? Math.round((r.decided_items / r.total_items) * 100) : 0;
               const overdue = !r.completed_at && r.due_at && new Date(r.due_at) < new Date();

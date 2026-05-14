@@ -2,7 +2,8 @@ import { useMemo, useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
-import { Plus, ShieldCheck, ShieldOff, ArrowUpDown } from "lucide-react";
+import { Plus, ShieldCheck, ShieldOff, ArrowUpDown, Server } from "lucide-react";
+import { EmptyState } from "@/components/states/empty-state";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -231,8 +232,13 @@ function SystemsListPage() {
               <TableSkeleton rows={8} cols={7} />
             ) : sorted.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={7} className="text-center text-sm text-muted-foreground">
-                  No systems match your filters.
+                <TableCell colSpan={7} className="p-0">
+                  <EmptyState
+                    icon={Server}
+                    title="No systems yet"
+                    description="Add the first system to start the inventory."
+                    action={canEdit ? { label: "New system", onClick: () => setCreateOpen(true) } : undefined}
+                  />
                 </TableCell>
               </TableRow>
             ) : (

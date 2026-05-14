@@ -2,7 +2,8 @@ import { useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
-import { Plus } from "lucide-react";
+import { Plus, GitPullRequestArrow } from "lucide-react";
+import { EmptyState } from "@/components/states/empty-state";
 import { format } from "date-fns";
 
 import { Button } from "@/components/ui/button";
@@ -134,8 +135,13 @@ function ChangesListPage() {
               <TableSkeleton rows={8} cols={6} />
             ) : filtered.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={6} className="text-muted-foreground">
-                  No changes.
+                <TableCell colSpan={6} className="p-0">
+                  <EmptyState
+                    icon={GitPullRequestArrow}
+                    title="No changes proposed"
+                    description="Propose a change when something needs review or approval."
+                    action={canEdit ? { label: "Propose change", onClick: () => setProposeOpen(true) } : undefined}
+                  />
                 </TableCell>
               </TableRow>
             ) : (

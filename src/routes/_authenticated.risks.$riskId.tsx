@@ -2,8 +2,12 @@ import { EvidenceFilesTab } from "@/components/evidence/files-tab";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
+import { Link2Off, ScrollText, ShieldAlert } from "lucide-react";
 
-import { Button } from "@/components/ui/button";
+import { EmptyState } from "@/components/states/empty-state";
+import { ErrorState } from "@/components/states/error-state";
+
+
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { AuditEntry } from "@/components/audit/audit-entry";
@@ -39,7 +43,7 @@ function RiskDetailPage() {
   const get = useServerFn(getRisk);
   const audit = useServerFn(listRiskAudit);
 
-  const { data: risk, isLoading } = useQuery({
+  const { data: risk, isLoading, isError, error, refetch } = useQuery({
     queryKey: ["risk", riskId],
     queryFn: () => get({ data: { id: riskId } }),
   });
@@ -54,14 +58,29 @@ function RiskDetailPage() {
   const exitEdit = () => navigate({ to: ".", search: { edit: undefined } });
 
   if (isLoading) return (<PageShell><PageHeaderSkeleton /><DetailFormSkeleton /></PageShell>);
+  if (isError) {
+    return (
+      <PageShell>
+        <ErrorState
+          title="Couldn't load this risk"
+          message={(error as Error)?.message}
+          onRetry={() => refetch()}
+          variant="card"
+        />
+      </PageShell>
+    );
+  }
   if (!risk) {
     return (
-      <div className="space-y-3">
-        <p className="text-sm text-muted-foreground">Risk not found.</p>
-        <Button variant="outline" onClick={() => navigate({ to: "/risks" })}>
-          Back to list
-        </Button>
-      </div>
+      <PageShell>
+        <EmptyState
+          icon={ShieldAlert}
+          title="Risk not found"
+          description="It may have been deleted."
+          action={{ label: "Back to risks", to: "/risks" }}
+          variant="card"
+        />
+      </PageShell>
     );
   }
 
@@ -109,44 +128,53 @@ function RiskDetailPage() {
         </TabsContent>
 
         <TabsContent value="links" className="mt-4 max-w-2xl">
-          <div className="space-y-3 rounded-md border bg-card p-4 text-sm">
-            <LinkRow
-              label="System"
-              value={
-                risk.system ? (
-                  <RecordLink kind="system" id={risk.system.id} label={risk.system.name} />
-                ) : null
-              }
+          {!risk.system && !risk.vendor && !risk.policy_id && !risk.owner ? (
+            <EmptyState
+              icon={Link2Off}
+              title="No linked records"
+              description="Link a system, vendor, policy, or owner to give this risk context."
+              variant="card"
             />
-            <LinkRow
-              label="Vendor"
-              value={
-                risk.vendor ? (
-                  <RecordLink kind="vendor" id={risk.vendor.id} label={risk.vendor.name} />
-                ) : null
-              }
-            />
-            <LinkRow
-              label="Policy"
-              value={
-                risk.policy_id ? (
-                  <RecordLink kind="policy" id={risk.policy_id} label={risk.policy_id.slice(0, 8)} />
-                ) : null
-              }
-            />
-            <LinkRow
-              label="Owner"
-              value={
-                risk.owner ? (
-                  <RecordLink
-                    kind="person"
-                    id={risk.owner.id}
-                    label={risk.owner.full_name || risk.owner.email}
-                  />
-                ) : null
-              }
-            />
-          </div>
+          ) : (
+            <div className="space-y-3 rounded-md border bg-card p-4 text-sm">
+              <LinkRow
+                label="System"
+                value={
+                  risk.system ? (
+                    <RecordLink kind="system" id={risk.system.id} label={risk.system.name} />
+                  ) : null
+                }
+              />
+              <LinkRow
+                label="Vendor"
+                value={
+                  risk.vendor ? (
+                    <RecordLink kind="vendor" id={risk.vendor.id} label={risk.vendor.name} />
+                  ) : null
+                }
+              />
+              <LinkRow
+                label="Policy"
+                value={
+                  risk.policy_id ? (
+                    <RecordLink kind="policy" id={risk.policy_id} label={risk.policy_id.slice(0, 8)} />
+                  ) : null
+                }
+              />
+              <LinkRow
+                label="Owner"
+                value={
+                  risk.owner ? (
+                    <RecordLink
+                      kind="person"
+                      id={risk.owner.id}
+                      label={risk.owner.full_name || risk.owner.email}
+                    />
+                  ) : null
+                }
+              />
+            </div>
+          )}
         </TabsContent>
 
         <TabsContent value="files" className="mt-4 max-w-3xl">
@@ -207,16 +235,19 @@ function LinkRow({ label, value }: { label: string; value: React.ReactNode }) {
 
 function AuditTable({
   entries,
-  emptyText = "No activity yet.",
+  emptyText = "No activity yet",
 }: {
   entries: { id: string; action: string; before: any; after: any; created_at: string; actor: { full_name: string | null; email: string } | null }[];
   emptyText?: string;
 }) {
   if (entries.length === 0) {
     return (
-      <div className="rounded-md border bg-card p-4 text-sm text-muted-foreground">
-        {emptyText}
-      </div>
+      <EmptyState
+        icon={ScrollText}
+        title={emptyText}
+        description="Edits to this record will appear here."
+        variant="card"
+      />
     );
   }
   return (

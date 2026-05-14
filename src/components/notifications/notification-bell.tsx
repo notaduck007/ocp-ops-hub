@@ -1,4 +1,5 @@
-import { Bell } from "lucide-react";
+import { Bell, BellOff } from "lucide-react";
+import { EmptyState } from "@/components/states/empty-state";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { Link } from "@tanstack/react-router";
@@ -69,9 +70,7 @@ export function NotificationBell() {
               <ListItemSkeleton />
             </>
           ) : visible.length === 0 ? (
-            <div className="p-6 text-center text-sm text-muted-foreground">
-              All caught up.
-            </div>
+            <EmptyState icon={BellOff} title="You're caught up" variant="compact" />
           ) : (
             visible.map((n: any) => {
               const due = n.payload?.next_due_at

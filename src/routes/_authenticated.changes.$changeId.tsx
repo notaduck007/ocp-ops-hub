@@ -4,6 +4,8 @@ import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { format, formatDistanceToNow } from "date-fns";
+import { ScrollText } from "lucide-react";
+import { EmptyState } from "@/components/states/empty-state";
 import { toast } from "sonner";
 
 import { AuditEntry } from "@/components/audit/audit-entry";
@@ -235,9 +237,7 @@ function ChangeDetailPage() {
 
         <TabsContent value="activity" className="space-y-3">
           {audit.length === 0 ? (
-            <div className="rounded-md border bg-card p-4 text-sm text-muted-foreground">
-              No activity yet.
-            </div>
+            <EmptyState icon={ScrollText} title="No activity yet" description="Edits to this record will appear here." variant="card" />
           ) : (
             audit.map((a) => <AuditEntry key={a.id} entry={a} />)
           )}

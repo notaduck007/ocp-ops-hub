@@ -2,7 +2,8 @@ import { useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
-import { Plus } from "lucide-react";
+import { Plus, ShieldAlert } from "lucide-react";
+import { EmptyState } from "@/components/states/empty-state";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -200,8 +201,13 @@ function RisksListPage() {
               <TableSkeleton rows={8} cols={8} />
             ) : rows.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={8} className="text-center text-sm text-muted-foreground">
-                  No risks match your filters.
+                <TableCell colSpan={8} className="p-0">
+                  <EmptyState
+                    icon={ShieldAlert}
+                    title="No risks yet"
+                    description="Capture the first risk or exception to start the register."
+                    action={canEdit ? { label: "New risk", onClick: () => setCreateOpen(true) } : undefined}
+                  />
                 </TableCell>
               </TableRow>
             ) : (
