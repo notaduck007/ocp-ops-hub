@@ -101,6 +101,11 @@ function SlaDetailPage() {
             {sla.system && <span>· {sla.system.name}</span>}
           </span>
         }
+        actions={
+          canEdit && (
+            <EditToggle editing={editing} onEdit={enterEdit} onCancel={exitEdit} />
+          )
+        }
       />
 
       <Tabs defaultValue="overview">
@@ -112,7 +117,11 @@ function SlaDetailPage() {
         </TabsList>
 
         <TabsContent value="overview" className="mt-4 max-w-2xl">
-          <SlaForm mode="edit" sla={sla} readOnly={!canEdit} />
+          {editing ? (
+            <SlaForm mode="edit" sla={sla} readOnly={false} onSaved={() => exitEdit()} />
+          ) : (
+            <SlaSummary sla={sla} />
+          )}
         </TabsContent>
 
         <TabsContent value="breaches" className="mt-4 space-y-3">
