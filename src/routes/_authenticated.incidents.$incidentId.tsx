@@ -10,6 +10,7 @@ import { PageShell, PageHeader } from "@/components/layout/page-shell";
 import { PageHeaderSkeleton, DetailFormSkeleton } from "@/components/layout/skeletons";
 import { EditToggle } from "@/components/layout/edit-toggle";
 import { IncidentSummary } from "@/components/incidents/incident-summary";
+import { AuditDiff } from "@/components/audit/diff-row";
 import { detailSearchValidator } from "@/lib/detail-search";
 
 import { Button } from "@/components/ui/button";
