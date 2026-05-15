@@ -5,8 +5,8 @@ import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import type { Database, Json } from "@/integrations/supabase/types";
 import { attachActors } from "@/lib/load-actors";
 
-type PersonType = Database["public"]["Enums"]["person_type"];
-type PersonStatus = Database["public"]["Enums"]["person_status"];
+export type PersonType = Database["public"]["Enums"]["person_type"];
+export type PersonStatus = Database["public"]["Enums"]["person_status"];
 type AccessRoleLevel = Database["public"]["Enums"]["access_role_level"];
 type SystemCategory = Database["public"]["Enums"]["system_category"];
 
