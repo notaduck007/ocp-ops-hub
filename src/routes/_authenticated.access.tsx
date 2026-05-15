@@ -31,6 +31,7 @@ import { useCanEdit } from "@/hooks/use-role";
 import { PERSON_TYPES, listAccessGrants, markGrantsReviewed, type PersonType } from "@/lib/people.functions";
 import { TableSkeleton } from "@/components/layout/skeletons";
 import { errMessage } from "@/lib/utils";
+import type { SystemCategory } from "@/lib/systems.functions";
 
 const SYSTEM_CATEGORIES = [
   "idp",
