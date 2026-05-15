@@ -32,6 +32,7 @@ import {
   updateAccessGrant,
   type AccessGrantRow,
 } from "@/lib/people.functions";
+import { errMessage } from "@/lib/utils";
 
 const formSchema = z.object({
   system_id: z.string().uuid({ message: "System is required" }),
@@ -87,8 +88,8 @@ export function AccessGrantForm({ personId, grant, onSaved, onCancel }: Props) {
       queryClient.invalidateQueries({ queryKey: ["access-grants"] });
       onSaved?.();
     },
-    onError: (err: any) => {
-      const msg = String(err?.message ?? err);
+    onError: (err: unknown) => {
+      const msg = errMessage(err);
       if (msg.toLowerCase().includes("duplicate") || msg.includes("access_grants_person_id")) {
         toast.error("This person already has that role on this system.");
       } else {

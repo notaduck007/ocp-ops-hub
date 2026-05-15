@@ -18,6 +18,7 @@ import { SystemCombobox } from "@/components/access/system-combobox";
 import {
   SLA_TARGET_TYPES, createSla, updateSla, type SlaRow,
 } from "@/lib/slas.functions";
+import { errMessage } from "@/lib/utils";
 
 const schema = z.object({
   vendor_id: z.string().uuid("Vendor required"),
@@ -81,14 +82,14 @@ export function SlaForm({
       if (mode === "create") return create({ data: payload });
       return update({ data: { id: sla!.id, patch: payload } });
     },
-    onSuccess: (row: any) => {
+    onSuccess: (row) => {
       toast.success(mode === "create" ? "SLA created" : "SLA updated");
       qc.invalidateQueries({ queryKey: ["slas"] });
       qc.invalidateQueries({ queryKey: ["sla", row.id] });
       qc.invalidateQueries({ queryKey: ["vendor-slas"] });
       onSaved?.(row.id);
     },
-    onError: (e: any) => toast.error(String(e?.message ?? e)),
+    onError: (err: unknown) => toast.error(errMessage(err)),
   });
 
   const disabled = readOnly || mutation.isPending;

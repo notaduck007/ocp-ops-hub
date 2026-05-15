@@ -45,9 +45,13 @@ import {
   setChangeSystems,
   transitionChange,
   updateChange,
+  type ChangePatch,
+  type ChangeRow,
+  type ChangeStatus,
 } from "@/lib/changes.functions";
 import { useCanEdit, useIsAdmin } from "@/hooks/use-role";
 import { AdminOnly } from "@/components/auth/role-gate";
+import { errMessage } from "@/lib/utils";
 
 export const Route = createFileRoute(
   "/_authenticated/changes/$changeId",
@@ -87,18 +91,18 @@ function ChangeDetailPage() {
   };
 
   const updateMutation = useMutation({
-    mutationFn: (patch: Record<string, unknown>) =>
-      update({ data: { id: changeId, patch: patch as any } }),
+    mutationFn: (patch: ChangePatch) =>
+      update({ data: { id: changeId, patch } }),
     onSuccess: () => {
       toast.success("Saved");
       invalidate();
     },
-    onError: (err: any) => toast.error(String(err?.message ?? err)),
+    onError: (err: unknown) => toast.error(errMessage(err)),
   });
 
   const transitionMutation = useMutation({
     mutationFn: (vars: {
-      status: any;
+      status: ChangeStatus;
       rollback_note?: string | null;
       scheduled_at?: string | null;
     }) =>
@@ -114,7 +118,7 @@ function ChangeDetailPage() {
       toast.success(`Status → ${String(v.status).replace("_", " ")}`);
       invalidate();
     },
-    onError: (err: any) => toast.error(String(err?.message ?? err)),
+    onError: (err: unknown) => toast.error(errMessage(err)),
   });
 
   const systemsMutation = useMutation({
@@ -124,7 +128,7 @@ function ChangeDetailPage() {
       toast.success("Systems updated");
       invalidate();
     },
-    onError: (err: any) => toast.error(String(err?.message ?? err)),
+    onError: (err: unknown) => toast.error(errMessage(err)),
   });
 
   if (!change) {
@@ -258,7 +262,7 @@ function OverviewTab({
   onSetSystems,
   incidentSearch,
 }: {
-  change: any;
+  change: ChangeRow;
   canEdit: boolean;
   onSave: (patch: Record<string, unknown>) => void | Promise<void>;
   onSetSystems: (ids: string[]) => void;
@@ -462,7 +466,7 @@ function ApprovalTab({
   onApprove,
   onReject,
 }: {
-  change: any;
+  change: ChangeRow;
   isAdmin: boolean;
   onApprove: () => void;
   onReject: () => void;
@@ -527,7 +531,7 @@ function ExecutionTab({
   onComplete,
   onRollback,
 }: {
-  change: any;
+  change: ChangeRow;
   canEdit: boolean;
   isAdmin: boolean;
   onStart: (scheduled_at: string | null) => void;

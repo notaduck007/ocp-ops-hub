@@ -28,12 +28,10 @@ import {
 import { RoleLevelBadge, PersonTypeBadge } from "@/components/people/badges";
 import { CategoryBadge } from "@/components/systems/badges";
 import { useCanEdit } from "@/hooks/use-role";
-import {
-  PERSON_TYPES,
-  listAccessGrants,
-  markGrantsReviewed,
-} from "@/lib/people.functions";
+import { PERSON_TYPES, listAccessGrants, markGrantsReviewed, type PersonType } from "@/lib/people.functions";
 import { TableSkeleton } from "@/components/layout/skeletons";
+import { errMessage } from "@/lib/utils";
+import type { SystemCategory } from "@/lib/systems.functions";
 
 const SYSTEM_CATEGORIES = [
   "idp",
@@ -72,8 +70,8 @@ function AccessListPage() {
     queryFn: () =>
       list({
         data: {
-          personType: personType === "all" ? undefined : (personType as any),
-          systemCategory: systemCategory === "all" ? undefined : (systemCategory as any),
+          personType: personType === "all" ? undefined : (personType as PersonType),
+          systemCategory: systemCategory === "all" ? undefined : (systemCategory as SystemCategory),
           adminOnly: adminOnly || undefined,
           unreviewed90d: unreviewed || undefined,
         },
@@ -102,7 +100,7 @@ function AccessListPage() {
       setSelected(new Set());
       queryClient.invalidateQueries({ queryKey: ["access-grants"] });
     },
-    onError: (err: any) => toast.error(String(err?.message ?? err)),
+    onError: (err: unknown) => toast.error(errMessage(err)),
   });
 
   return (

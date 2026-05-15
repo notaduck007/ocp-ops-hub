@@ -9,8 +9,9 @@ import {
 import { RecordMetaFooter } from "@/components/layout/record-meta-footer";
 import { RecordLink } from "@/components/record-link";
 import { PolicyStatusBadge } from "@/components/policies/badges";
+import type { PolicyRow } from "@/lib/policies.functions";
 
-export function PolicySummary({ policy }: { policy: any }) {
+export function PolicySummary({ policy }: { policy: PolicyRow }) {
   return (
     <div className="space-y-4">
       <SummarySection>

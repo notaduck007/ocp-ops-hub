@@ -35,6 +35,7 @@ import {
   updateSystem,
   type SystemRow,
 } from "@/lib/systems.functions";
+import { errMessage } from "@/lib/utils";
 
 const formSchema = z.object({
   name: z.string().trim().min(1, "Name is required").max(200),
@@ -107,8 +108,8 @@ export function SystemForm({ mode, system, readOnly, onSaved }: Props) {
       queryClient.invalidateQueries({ queryKey: ["system-audit", row.id] });
       onSaved?.(row.id);
     },
-    onError: (err: any) => {
-      const msg = String(err?.message ?? err);
+    onError: (err: unknown) => {
+      const msg = errMessage(err);
       if (msg.includes("systems_name_key") || msg.toLowerCase().includes("duplicate")) {
         form.setError("name", { message: "A system with this name already exists." });
         toast.error("Name must be unique");

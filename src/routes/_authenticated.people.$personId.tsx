@@ -47,6 +47,7 @@ import {
   revokeAccessGrant,
   type AccessGrantWithRefs,
 } from "@/lib/people.functions";
+import { errMessage } from "@/lib/utils";
 
 export const Route = createFileRoute("/_authenticated/people/$personId")({
   validateSearch: detailSearchValidator,
@@ -87,7 +88,7 @@ function PersonDetailPage() {
       queryClient.invalidateQueries({ queryKey: ["people"] });
       queryClient.invalidateQueries({ queryKey: ["access-grants"] });
     },
-    onError: (err: any) => toast.error(String(err?.message ?? err)),
+    onError: (err: unknown) => toast.error(errMessage(err)),
   });
 
   if (isLoading) return (<PageShell><PageHeaderSkeleton /><DetailFormSkeleton /></PageShell>);
@@ -197,7 +198,7 @@ function AccessTab({ personId, canEdit }: { personId: string; canEdit: boolean }
       toast.success("Access revoked");
       queryClient.invalidateQueries({ queryKey: ["access-grants"] });
     },
-    onError: (err: any) => toast.error(String(err?.message ?? err)),
+    onError: (err: unknown) => toast.error(errMessage(err)),
   });
 
   return (

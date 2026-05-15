@@ -18,6 +18,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { OwnerCombobox } from "@/components/owner-combobox";
 import { createPolicy } from "@/lib/policies.functions";
 import { useAuth } from "@/hooks/use-auth";
+import { errMessage } from "@/lib/utils";
 
 export function NewPolicyDialog({
   open,
@@ -46,7 +47,7 @@ export function NewPolicyDialog({
           review_cadence_days: cadence,
         },
       }),
-    onSuccess: (row: any) => {
+    onSuccess: (row) => {
       toast.success("Draft policy created");
       qc.invalidateQueries({ queryKey: ["policies"] });
       onOpenChange(false);
@@ -54,7 +55,7 @@ export function NewPolicyDialog({
       setBody("");
       navigate({ to: "/policies/$policyId", params: { policyId: row.id } });
     },
-    onError: (e: any) => toast.error(e?.message ?? "Failed to create policy"),
+    onError: (err: unknown) => toast.error(errMessage(err, "Failed to create policy")),
   });
 
   const canSubmit = title.trim() && body.trim() && ownerId;

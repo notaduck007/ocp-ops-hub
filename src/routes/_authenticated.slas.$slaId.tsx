@@ -33,6 +33,7 @@ import { useCanEdit, useIsAdmin } from "@/hooks/use-role";
 import {
   BREACH_STATUSES, getSla, listBreaches, listSlaAudit, updateBreach,
 } from "@/lib/slas.functions";
+import { errMessage } from "@/lib/utils";
 
 export const Route = createFileRoute("/_authenticated/slas/$slaId")({
   validateSearch: detailSearchValidator,
@@ -75,7 +76,7 @@ function SlaDetailPage() {
       toast.success("Breach updated");
       qc.invalidateQueries({ queryKey: ["breaches"] });
     },
-    onError: (e: any) => toast.error(String(e?.message ?? e)),
+    onError: (err: unknown) => toast.error(errMessage(err)),
   });
 
   if (isLoading) return (<PageShell><PageHeaderSkeleton /><DetailFormSkeleton /></PageShell>);
@@ -205,7 +206,7 @@ function SlaDetailPage() {
             {auditRows.length === 0 ? (
               <EmptyState icon={ScrollText} title="No activity yet" description="Edits to this record will appear here." variant="card" />
             ) : (
-              auditRows.map((e: any) => <AuditEntry key={e.id} entry={e} />)
+              auditRows.map((e) => <AuditEntry key={e.id} entry={e} />)
             )}
           </div>
         </TabsContent>

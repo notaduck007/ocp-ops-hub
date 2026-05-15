@@ -35,6 +35,7 @@ import {
 } from "@/components/ui/form";
 import { SystemMultiCombobox } from "@/components/incidents/system-multi-combobox";
 import { CHANGE_CLASSES, proposeChange } from "@/lib/changes.functions";
+import { errMessage } from "@/lib/utils";
 
 const schema = z.object({
   title: z.string().trim().min(1, "Title is required").max(200),
@@ -98,7 +99,7 @@ export function ProposeChangeDialog({ open, onOpenChange }: Props) {
       setSystems([]);
       navigate({ to: "/changes/$changeId", params: { changeId: row.id } });
     },
-    onError: (err: any) => toast.error(String(err?.message ?? err)),
+    onError: (err: unknown) => toast.error(errMessage(err)),
   });
 
   return (

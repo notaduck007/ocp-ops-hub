@@ -6,8 +6,9 @@ import {
 } from "@/components/layout/record-summary";
 import { RecordMetaFooter } from "@/components/layout/record-meta-footer";
 import { RecordLink } from "@/components/record-link";
+import type { ContinuityScenarioRow } from "@/lib/continuity.functions";
 
-export function ContinuityScenarioSummary({ scenario }: { scenario: any }) {
+export function ContinuityScenarioSummary({ scenario }: { scenario: ContinuityScenarioRow }) {
   return (
     <div className="space-y-4">
       <SummarySection>
@@ -47,7 +48,7 @@ export function ContinuityScenarioSummary({ scenario }: { scenario: any }) {
               <p className="text-sm text-muted-foreground">None linked.</p>
             ) : (
               <div className="flex flex-wrap gap-1.5">
-                {scenario.linked_systems.map((sys: any) => (
+                {scenario.linked_systems.map((sys) => (
                   <RecordLink
                     key={sys.id}
                     kind="system"
@@ -66,7 +67,7 @@ export function ContinuityScenarioSummary({ scenario }: { scenario: any }) {
               <p className="text-sm text-muted-foreground">None linked.</p>
             ) : (
               <div className="flex flex-wrap gap-1.5">
-                {scenario.linked_runbooks.map((rb: any) => (
+                {scenario.linked_runbooks.map((rb) => (
                   <RecordLink
                     key={rb.id}
                     kind="runbook"

@@ -10,6 +10,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { createBreach } from "@/lib/slas.functions";
+import { errMessage } from "@/lib/utils";
 
 const schema = z.object({
   occurred_at: z.string().min(1, "Required"),
@@ -49,7 +50,7 @@ export function BreachForm({
       form.reset({ occurred_at: now, detected_at: "", impact_summary: "", remediation_notes: "" });
       onSaved?.();
     },
-    onError: (e: any) => toast.error(String(e?.message ?? e)),
+    onError: (err: unknown) => toast.error(errMessage(err)),
   });
 
   return (

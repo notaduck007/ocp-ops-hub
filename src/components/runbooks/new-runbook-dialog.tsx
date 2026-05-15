@@ -30,6 +30,7 @@ import {
   type RunbookScenario,
 } from "@/lib/runbooks.functions";
 import { useAuth } from "@/hooks/use-auth";
+import { errMessage } from "@/lib/utils";
 
 export function NewRunbookDialog({
   open,
@@ -64,14 +65,14 @@ export function NewRunbookDialog({
           test_cadence_days: cadence,
         },
       }),
-    onSuccess: (row: any) => {
+    onSuccess: (row) => {
       toast.success("Runbook created");
       qc.invalidateQueries({ queryKey: ["runbooks"] });
       onOpenChange(false);
       setTitle(""); setBody("");
       navigate({ to: "/runbooks/$runbookId", params: { runbookId: row.id } });
     },
-    onError: (e: any) => toast.error(e?.message ?? "Failed"),
+    onError: (err: unknown) => toast.error(errMessage(err, "Failed")),
   });
 
   const can = systemId && title.trim() && body.trim() && ownerId;

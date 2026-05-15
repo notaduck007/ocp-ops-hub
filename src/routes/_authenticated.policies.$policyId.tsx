@@ -28,6 +28,7 @@ import {
   listPolicyVersions,
   retirePolicy,
 } from "@/lib/policies.functions";
+import { errMessage } from "@/lib/utils";
 
 export const Route = createFileRoute("/_authenticated/policies/$policyId")({
   validateSearch: detailSearchValidator,
@@ -85,7 +86,7 @@ function PolicyDetailPage() {
       qc.invalidateQueries({ queryKey: ["policy", policyId] });
       exitEdit();
     },
-    onError: (e: any) => toast.error(e?.message ?? "Failed"),
+    onError: (err: unknown) => toast.error(errMessage(err, "Failed")),
   });
 
   const approve = useMutation({
@@ -96,7 +97,7 @@ function PolicyDetailPage() {
       qc.invalidateQueries({ queryKey: ["policy-versions", policyId] });
       qc.invalidateQueries({ queryKey: ["policies"] });
     },
-    onError: (e: any) => toast.error(e?.message ?? "Failed"),
+    onError: (err: unknown) => toast.error(errMessage(err, "Failed")),
   });
 
   const retire = useMutation({
@@ -106,7 +107,7 @@ function PolicyDetailPage() {
       qc.invalidateQueries({ queryKey: ["policy", policyId] });
       qc.invalidateQueries({ queryKey: ["policies"] });
     },
-    onError: (e: any) => toast.error(e?.message ?? "Failed"),
+    onError: (err: unknown) => toast.error(errMessage(err, "Failed")),
   });
 
   if (isLoading) return (<PageShell><PageHeaderSkeleton /><DetailFormSkeleton /></PageShell>);

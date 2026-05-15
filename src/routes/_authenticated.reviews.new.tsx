@@ -16,6 +16,7 @@ import {
   createCampaign,
   previewCampaignScope,
 } from "@/lib/reviews.functions";
+import { errMessage } from "@/lib/utils";
 
 export const Route = createFileRoute("/_authenticated/reviews/new")({
   component: NewCampaignWizard,
@@ -53,11 +54,11 @@ function NewCampaignWizard() {
           notes: null,
         },
       }),
-    onSuccess: (res: any) => {
+    onSuccess: (res) => {
       toast.success(`Campaign created with ${res.items} items`);
       navigate({ to: "/reviews/$campaignId", params: { campaignId: res.id } });
     },
-    onError: (e: any) => toast.error(e?.message ?? "Failed"),
+    onError: (err: unknown) => toast.error(errMessage(err, "Failed")),
   });
 
   const toggleSys = (id: string) =>
@@ -83,7 +84,7 @@ function NewCampaignWizard() {
           <div className="space-y-2">
             <Label>Scope (leave empty for all systems)</Label>
             <div className="max-h-72 space-y-1 overflow-y-auto rounded border p-3">
-              {systems.map((s: any) => (
+              {systems.map((s) => (
                 <label key={s.id} className="flex items-center gap-2 text-sm">
                   <Checkbox checked={systemIds.includes(s.id)} onCheckedChange={() => toggleSys(s.id)} />
                   <span>{s.name}</span>

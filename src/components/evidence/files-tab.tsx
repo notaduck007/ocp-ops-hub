@@ -16,6 +16,7 @@ import {
   getEvidenceSignedUrl,
   type EvidenceKind,
 } from "@/lib/evidence.functions";
+import { errMessage } from "@/lib/utils";
 
 type Props = {
   kind: EvidenceKind;
@@ -85,8 +86,8 @@ export function EvidenceFilesTab({
       qc.invalidateQueries({ queryKey });
       setTimeout(() => setProgress(null), 600);
     },
-    onError: (err: any) => {
-      toast.error(String(err?.message ?? err));
+    onError: (err: unknown) => {
+      toast.error(errMessage(err));
       setProgress(null);
     },
   });
@@ -103,8 +104,8 @@ export function EvidenceFilesTab({
     try {
       const { url } = await sign({ data: { id } });
       window.open(url, "_blank");
-    } catch (err: any) {
-      toast.error(String(err?.message ?? err));
+    } catch (err: unknown) {
+      toast.error(errMessage(err));
     }
   };
 
@@ -177,7 +178,7 @@ export function EvidenceFilesTab({
               </tr>
             </thead>
             <tbody className="divide-y">
-              {files.map((f: any) => (
+              {files.map((f) => (
                 <tr key={f.id}>
                   <td className="px-4 py-2">
                     <button

@@ -14,7 +14,7 @@ import { Badge } from "@/components/ui/badge";
 import { Textarea } from "@/components/ui/textarea";
 import { Progress } from "@/components/ui/progress";
 import { Card, CardContent } from "@/components/ui/card";
-import { cn } from "@/lib/utils";
+import { cn, errMessage } from "@/lib/utils";
 import {
   completeCampaign,
   decideItem,
@@ -64,7 +64,7 @@ function CampaignWorkspace() {
       qc.invalidateQueries({ queryKey: ["campaign-items", campaignId] });
       qc.invalidateQueries({ queryKey: ["campaign", campaignId] });
     },
-    onError: (e: any) => toast.error(e?.message ?? "Failed"),
+    onError: (err: unknown) => toast.error(errMessage(err, "Failed")),
   });
 
   const completeMut = useMutation({
@@ -74,7 +74,7 @@ function CampaignWorkspace() {
       qc.invalidateQueries({ queryKey: ["campaign", campaignId] });
       qc.invalidateQueries({ queryKey: ["campaigns"] });
     },
-    onError: (e: any) => toast.error(e?.message ?? "Cannot complete"),
+    onError: (err: unknown) => toast.error(errMessage(err, "Cannot complete")),
   });
 
   if (!campaign) return (<PageShell><PageHeaderSkeleton /><DetailFormSkeleton /></PageShell>);

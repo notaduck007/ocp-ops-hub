@@ -31,6 +31,7 @@ import {
   updatePerson,
   type PersonRow,
 } from "@/lib/people.functions";
+import { errMessage } from "@/lib/utils";
 
 const formSchema = z.object({
   full_name: z.string().trim().min(1, "Full name is required").max(200),
@@ -93,8 +94,8 @@ export function PersonForm({ mode, person, readOnly, onSaved }: Props) {
       queryClient.invalidateQueries({ queryKey: ["person-audit", row.id] });
       onSaved?.(row.id);
     },
-    onError: (err: any) => {
-      const msg = String(err?.message ?? err);
+    onError: (err: unknown) => {
+      const msg = errMessage(err);
       if (msg.includes("people_email_key") || msg.toLowerCase().includes("duplicate")) {
         form.setError("email", { message: "A person with this email already exists." });
         toast.error("Email must be unique");

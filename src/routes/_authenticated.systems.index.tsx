@@ -43,6 +43,8 @@ import {
   CRITICALITIES,
   SYSTEM_CATEGORIES,
   listSystems,
+  type Criticality,
+  type SystemCategory,
   type SystemRow,
 } from "@/lib/systems.functions";
 
@@ -71,8 +73,8 @@ function SystemsListPage() {
       list({
         data: {
           search: search || undefined,
-          category: category === "all" ? undefined : (category as any),
-          criticality: criticality === "all" ? undefined : (criticality as any),
+          category: category === "all" ? undefined : (category as SystemCategory),
+          criticality: criticality === "all" ? undefined : (criticality as Criticality),
           ownerId: ownerId ?? undefined,
           includeArchived,
         },
@@ -82,8 +84,8 @@ function SystemsListPage() {
   const sorted = useMemo(() => {
     const arr = [...rows];
     arr.sort((a, b) => {
-      const av = (a as any)[sortKey] ?? "";
-      const bv = (b as any)[sortKey] ?? "";
+      const av = a[sortKey] ?? "";
+      const bv = b[sortKey] ?? "";
       if (av < bv) return sortAsc ? -1 : 1;
       if (av > bv) return sortAsc ? 1 : -1;
       return 0;
@@ -313,9 +315,9 @@ function SystemRowItem({ system }: { system: SystemRow }) {
       </TableCell>
       <TableCell className="text-sm text-muted-foreground">
         <div>{new Date(system.updated_at).toLocaleString()}</div>
-        {(system as any).updated_by_user && (
+        {system.updated_by_user && (
           <div className="text-xs">
-            by {(system as any).updated_by_user.full_name || (system as any).updated_by_user.email}
+            by {system.updated_by_user.full_name || system.updated_by_user.email}
           </div>
         )}
       </TableCell>

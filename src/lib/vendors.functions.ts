@@ -5,7 +5,7 @@ import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import type { Database, Json } from "@/integrations/supabase/types";
 import { attachActors } from "@/lib/load-actors";
 
-type VendorStatus = Database["public"]["Enums"]["vendor_status"];
+export type VendorStatus = Database["public"]["Enums"]["vendor_status"];
 
 export const VENDOR_STATUSES = [
   "active",

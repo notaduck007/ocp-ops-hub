@@ -36,6 +36,7 @@ import {
   updateRisk,
   type RiskRow,
 } from "@/lib/risks.functions";
+import { errMessage } from "@/lib/utils";
 
 const formSchema = z.object({
   kind: z.enum(RISK_KINDS),
@@ -121,7 +122,7 @@ export function RiskForm({ mode, risk, readOnly, onSaved }: Props) {
       queryClient.invalidateQueries({ queryKey: ["risk-audit", row.id] });
       onSaved?.(row.id);
     },
-    onError: (err: any) => toast.error(String(err?.message ?? err)),
+    onError: (err: unknown) => toast.error(errMessage(err)),
   });
 
   async function onSubmit(values: FormValues) {

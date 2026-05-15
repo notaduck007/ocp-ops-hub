@@ -24,6 +24,7 @@ import {
 import { listRunbooks } from "@/lib/runbooks.functions";
 import { Badge } from "@/components/ui/badge";
 import { Check } from "lucide-react";
+import { errMessage } from "@/lib/utils";
 
 export function ContinuityScenarioDialog({
   open,
@@ -79,14 +80,14 @@ export function ContinuityScenarioDialog({
           linked_runbook_ids: rbIds,
         },
       }),
-    onSuccess: (row: any) => {
+    onSuccess: (row) => {
       toast.success(initial ? "Saved" : "Scenario created");
       qc.invalidateQueries({ queryKey: ["continuity"] });
       qc.invalidateQueries({ queryKey: ["continuity", row.id] });
       onOpenChange(false);
       if (!initial) navigate({ to: "/continuity/$scenarioId", params: { scenarioId: row.id } });
     },
-    onError: (e: any) => toast.error(e?.message ?? "Failed"),
+    onError: (err: unknown) => toast.error(errMessage(err, "Failed")),
   });
 
   const can = name.trim() && auth;

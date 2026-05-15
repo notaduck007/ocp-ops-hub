@@ -34,6 +34,7 @@ import { archiveVendor, getVendor, listVendorSystems } from "@/lib/vendors.funct
 import {
   BREACH_STATUSES, listBreaches, listSlas, updateBreach,
 } from "@/lib/slas.functions";
+import { errMessage } from "@/lib/utils";
 
 export const Route = createFileRoute("/_authenticated/vendors/$vendorId")({
   validateSearch: detailSearchValidator,
@@ -85,7 +86,7 @@ function VendorDetailPage() {
       qc.invalidateQueries({ queryKey: ["vendor", vendorId] });
       qc.invalidateQueries({ queryKey: ["vendors"] });
     },
-    onError: (e: any) => toast.error(String(e?.message ?? e)),
+    onError: (err: unknown) => toast.error(errMessage(err)),
   });
 
   const breachMut = useMutation({
@@ -96,7 +97,7 @@ function VendorDetailPage() {
       qc.invalidateQueries({ queryKey: ["breaches"] });
       qc.invalidateQueries({ queryKey: ["vendor-health"] });
     },
-    onError: (e: any) => toast.error(String(e?.message ?? e)),
+    onError: (err: unknown) => toast.error(errMessage(err)),
   });
 
   if (isLoading) return (<PageShell><PageHeaderSkeleton /><DetailFormSkeleton /></PageShell>);
@@ -165,7 +166,7 @@ function VendorDetailPage() {
               <TableBody>
                 {systems.length === 0 ? (
                   <TableRow><TableCell colSpan={3} className="text-center text-sm text-muted-foreground">No systems linked. Set vendor on a system from the Systems page.</TableCell></TableRow>
-                ) : systems.map((s: any) => (
+                ) : systems.map((s) => (
                   <TableRow key={s.id}>
                     <TableCell className="font-medium">
                       <Link to="/systems/$systemId" params={{ systemId: s.id }} className="hover:underline">{s.name}</Link>

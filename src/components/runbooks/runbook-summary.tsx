@@ -9,8 +9,9 @@ import {
 import { RecordMetaFooter } from "@/components/layout/record-meta-footer";
 import { RecordLink } from "@/components/record-link";
 import { ScenarioBadge } from "@/components/runbooks/badges";
+import type { RunbookRow } from "@/lib/runbooks.functions";
 
-export function RunbookSummary({ runbook }: { runbook: any }) {
+export function RunbookSummary({ runbook }: { runbook: RunbookRow }) {
   return (
     <div className="space-y-4">
       <SummarySection>

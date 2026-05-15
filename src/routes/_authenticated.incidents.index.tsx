@@ -88,7 +88,7 @@ function IncidentsListPage() {
           onChange={(e) => setQ(e.target.value)}
           className="w-64"
         />
-        <Select value={status} onValueChange={(v) => setStatus(v as any)}>
+        <Select value={status} onValueChange={(v) => setStatus(v as IncidentStatus | "all")}>
           <SelectTrigger className="w-[180px]">
             <SelectValue placeholder="Status" />
           </SelectTrigger>

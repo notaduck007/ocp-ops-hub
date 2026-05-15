@@ -38,12 +38,7 @@ import { PersonStatusBadge, PersonTypeBadge } from "@/components/people/badges";
 import { PersonForm } from "@/components/people/person-form";
 import { ExportCsvButton } from "@/components/export-csv-button";
 import { useCanEdit } from "@/hooks/use-role";
-import {
-  PERSON_STATUSES,
-  PERSON_TYPES,
-  listPeople,
-  type PersonRow,
-} from "@/lib/people.functions";
+import { PERSON_STATUSES, PERSON_TYPES, listPeople, type PersonRow, type PersonType, type PersonStatus } from "@/lib/people.functions";
 
 export const Route = createFileRoute("/_authenticated/people/")({
   component: PeopleListPage,
@@ -65,8 +60,8 @@ function PeopleListPage() {
       list({
         data: {
           search: search || undefined,
-          type: type === "all" ? undefined : (type as any),
-          status: status === "all" ? undefined : (status as any),
+          type: type === "all" ? undefined : (type as PersonType),
+          status: status === "all" ? undefined : (status as PersonStatus),
           includeArchived,
         },
       }),

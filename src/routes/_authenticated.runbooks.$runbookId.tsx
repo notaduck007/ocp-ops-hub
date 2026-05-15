@@ -35,6 +35,7 @@ import {
   updateRunbook,
 } from "@/lib/runbooks.functions";
 import { useCanEdit } from "@/hooks/use-role";
+import { errMessage } from "@/lib/utils";
 
 export const Route = createFileRoute("/_authenticated/runbooks/$runbookId")({
   validateSearch: detailSearchValidator,
@@ -88,7 +89,7 @@ function RunbookDetail() {
       qc.invalidateQueries({ queryKey: ["runbook", runbookId] });
       exitEdit();
     },
-    onError: (e: any) => toast.error(e?.message ?? "Failed"),
+    onError: (err: unknown) => toast.error(errMessage(err, "Failed")),
   });
 
   if (isLoading) return (<PageShell><PageHeaderSkeleton /><DetailFormSkeleton /></PageShell>);
@@ -189,7 +190,7 @@ function RunbookDetail() {
             {activity.length === 0 ? (
               <EmptyState icon={ScrollText} title="No activity yet" description="Edits to this record will appear here." variant="card" />
             ) : (
-              activity.map((a: any) => <AuditEntry key={a.id} entry={a} />)
+              activity.map((a) => <AuditEntry key={a.id} entry={a} />)
             )}
           </div>
         </TabsContent>

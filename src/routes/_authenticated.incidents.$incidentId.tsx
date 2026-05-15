@@ -45,8 +45,10 @@ import {
   INCIDENT_STATUSES,
   COMMS_AUDIENCES,
   type CommsAudience,
+  type IncidentPatch,
   type IncidentStatus,
 } from "@/lib/incidents.functions";
+import { errMessage } from "@/lib/utils";
 
 export const Route = createFileRoute(
   "/_authenticated/incidents/$incidentId",
@@ -84,8 +86,8 @@ function IncidentDetailPage() {
   });
 
   const updateMutation = useMutation({
-    mutationFn: (patch: Record<string, unknown>) =>
-      update({ data: { id: incidentId, patch: patch as any } }),
+    mutationFn: (patch: IncidentPatch) =>
+      update({ data: { id: incidentId, patch } }),
     onSuccess: () => {
       toast.success("Saved");
       qc.invalidateQueries({ queryKey: ["incident", incidentId] });
@@ -93,7 +95,7 @@ function IncidentDetailPage() {
       qc.invalidateQueries({ queryKey: ["incidents"] });
       qc.invalidateQueries({ queryKey: ["dash"] });
     },
-    onError: (err: any) => toast.error(String(err?.message ?? err)),
+    onError: (err: unknown) => toast.error(errMessage(err)),
   });
 
   if (isError) {
@@ -186,8 +188,8 @@ function IncidentDetailPage() {
                   qc.invalidateQueries({
                     queryKey: ["incident-comms", incidentId],
                   });
-                } catch (err: any) {
-                  toast.error(String(err?.message ?? err));
+                } catch (err: unknown) {
+                  toast.error(errMessage(err));
                 }
               }}
             />
@@ -218,8 +220,8 @@ function IncidentDetailPage() {
                 toast.success("Linked systems updated");
                 qc.invalidateQueries({ queryKey: ["incident", incidentId] });
                 qc.invalidateQueries({ queryKey: ["incidents"] });
-              } catch (err: any) {
-                toast.error(String(err?.message ?? err));
+              } catch (err: unknown) {
+                toast.error(errMessage(err));
               }
             }}
           />
@@ -243,7 +245,7 @@ function OverviewForm({
   incident: NonNullable<Awaited<ReturnType<typeof getIncident>>>;
   canEdit: boolean;
   isAdmin: boolean;
-  onSave: (patch: any) => void | Promise<void>;
+  onSave: (patch: IncidentPatch) => void | Promise<void>;
   saving: boolean;
 }) {
   const [title, setTitle] = useState(incident.title);

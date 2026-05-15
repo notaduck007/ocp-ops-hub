@@ -11,8 +11,9 @@ import {
   ChangeClassBadge,
   ChangeStatusBadge,
 } from "@/components/changes/badges";
+import type { ChangeRow } from "@/lib/changes.functions";
 
-export function ChangeSummary({ change }: { change: any }) {
+export function ChangeSummary({ change }: { change: ChangeRow }) {
   return (
     <div>
       <SummarySection>
@@ -45,7 +46,7 @@ export function ChangeSummary({ change }: { change: any }) {
           <SummaryField label="Affected systems">
             {Array.isArray(change.systems) && change.systems.length > 0 ? (
               <div className="flex flex-wrap gap-1.5">
-                {change.systems.map((s: any) => (
+                {change.systems.map((s) => (
                   <RecordLink key={s.id} kind="system" id={s.id} label={s.name} />
                 ))}
               </div>

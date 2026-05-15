@@ -33,6 +33,7 @@ import {
   getSystem,
   listSystemAudit,
 } from "@/lib/systems.functions";
+import { errMessage } from "@/lib/utils";
 
 export const Route = createFileRoute("/_authenticated/systems/$systemId")({
   validateSearch: detailSearchValidator,
@@ -70,7 +71,7 @@ function SystemDetailPage() {
       queryClient.invalidateQueries({ queryKey: ["system-audit", systemId] });
       queryClient.invalidateQueries({ queryKey: ["systems"] });
     },
-    onError: (err: any) => toast.error(String(err?.message ?? err)),
+    onError: (err: unknown) => toast.error(errMessage(err)),
   });
 
   const enterEdit = () => navigate({ to: ".", search: { edit: true } });
