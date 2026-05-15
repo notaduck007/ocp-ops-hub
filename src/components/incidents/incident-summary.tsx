@@ -57,7 +57,7 @@ export function IncidentSummary({ incident }: { incident: IncidentRow }) {
           <SummaryField label="Affected systems" full>
             {Array.isArray(incident.systems) && incident.systems.length > 0 ? (
               <div className="flex flex-wrap gap-1.5">
-                {incident.systems.map((s: any) => (
+                {incident.systems.map((s) => (
                   <RecordLink key={s.id} kind="system" id={s.id} label={s.name} />
                 ))}
               </div>
