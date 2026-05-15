@@ -91,8 +91,8 @@ function ChangeDetailPage() {
   };
 
   const updateMutation = useMutation({
-    mutationFn: (patch: Record<string, unknown>) =>
-      update({ data: { id: changeId, patch: patch as any } }),
+    mutationFn: (patch: ChangePatch) =>
+      update({ data: { id: changeId, patch } }),
     onSuccess: () => {
       toast.success("Saved");
       invalidate();
@@ -102,7 +102,7 @@ function ChangeDetailPage() {
 
   const transitionMutation = useMutation({
     mutationFn: (vars: {
-      status: any;
+      status: ChangeStatus;
       rollback_note?: string | null;
       scheduled_at?: string | null;
     }) =>
