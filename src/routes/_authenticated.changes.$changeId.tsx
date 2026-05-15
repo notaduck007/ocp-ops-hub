@@ -45,6 +45,9 @@ import {
   setChangeSystems,
   transitionChange,
   updateChange,
+  type ChangePatch,
+  type ChangeRow,
+  type ChangeStatus,
 } from "@/lib/changes.functions";
 import { useCanEdit, useIsAdmin } from "@/hooks/use-role";
 import { AdminOnly } from "@/components/auth/role-gate";
