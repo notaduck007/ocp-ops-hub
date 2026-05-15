@@ -73,7 +73,8 @@ export function CommandPalette() {
                     const r = ROUTE[kind](hit.id);
                     setOpen(false);
                     setQ("");
-                    navigate(r as any);
+                    // Discrimination boundary: KIND_ROUTE returns a typed { to, params } per kind, but the union exceeds navigate()'s overload set.
+                    navigate(r as unknown as Parameters<typeof navigate>[0]);
                   }}
                 >
                   <Icon className="h-4 w-4" />
