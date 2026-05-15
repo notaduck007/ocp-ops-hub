@@ -48,7 +48,7 @@ const writeSchema = z.object({
   next_test_due_at: z.string().nullable().optional(),
 });
 
-export type IncidentPatch = z.infer<typeof writeSchema>;
+export type IncidentPatch = Partial<z.infer<typeof writeSchema>>;
 
 async function loadUsers(supabase: any, ids: string[]) {
   const unique = Array.from(new Set(ids.filter(Boolean)));
