@@ -42,7 +42,7 @@ export function SlaSummary({ sla }: { sla: SlaRow }) {
           </SummaryField>
         </SummaryGrid>
       </SummarySection>
-      <RecordMetaFooter record={sla as any} />
+      <RecordMetaFooter record={sla} />
     </div>
   );
 }

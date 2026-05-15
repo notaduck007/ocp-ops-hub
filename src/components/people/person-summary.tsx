@@ -46,7 +46,7 @@ export function PersonSummary({ person }: { person: PersonRow }) {
           </SummaryField>
         </SummaryGrid>
       </SummarySection>
-      <RecordMetaFooter record={person as any} />
+      <RecordMetaFooter record={person} />
     </div>
   );
 }

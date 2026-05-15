@@ -97,7 +97,7 @@ export const getRunbook = createServerFn({ method: "POST" })
       ...row,
       owner: users.get(row.owner_id) ?? null,
       system: systems.get(row.system_id) ?? null,
-    })) as any;
+    })) as RunbookRow;
   });
 
 const createSchema = z.object({

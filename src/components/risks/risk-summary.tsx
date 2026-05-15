@@ -87,7 +87,7 @@ export function RiskSummary({ risk }: { risk: RiskRow }) {
           </SummaryField>
         </SummaryGrid>
       </SummarySection>
-      <RecordMetaFooter record={risk as any} />
+      <RecordMetaFooter record={risk} />
     </div>
   );
 }

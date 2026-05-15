@@ -89,7 +89,7 @@ export function SystemSummary({ system }: { system: SystemRow }) {
         </SummaryField>
       </SummaryGrid>
     </SummarySection>
-    <RecordMetaFooter record={system as any} />
+    <RecordMetaFooter record={system} />
     </div>
   );
 }
