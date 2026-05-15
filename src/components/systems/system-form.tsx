@@ -107,7 +107,7 @@ export function SystemForm({ mode, system, readOnly, onSaved }: Props) {
       queryClient.invalidateQueries({ queryKey: ["system-audit", row.id] });
       onSaved?.(row.id);
     },
-    onError: (err: any) => {
+    onError: (err: unknown) => {
       const msg = errMessage(err);
       if (msg.includes("systems_name_key") || msg.toLowerCase().includes("duplicate")) {
         form.setError("name", { message: "A system with this name already exists." });

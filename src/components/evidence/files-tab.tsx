@@ -85,7 +85,7 @@ export function EvidenceFilesTab({
       qc.invalidateQueries({ queryKey });
       setTimeout(() => setProgress(null), 600);
     },
-    onError: (err: any) => {
+    onError: (err: unknown) => {
       toast.error(errMessage(err));
       setProgress(null);
     },

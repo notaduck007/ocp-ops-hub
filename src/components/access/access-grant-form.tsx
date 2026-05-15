@@ -87,7 +87,7 @@ export function AccessGrantForm({ personId, grant, onSaved, onCancel }: Props) {
       queryClient.invalidateQueries({ queryKey: ["access-grants"] });
       onSaved?.();
     },
-    onError: (err: any) => {
+    onError: (err: unknown) => {
       const msg = errMessage(err);
       if (msg.toLowerCase().includes("duplicate") || msg.includes("access_grants_person_id")) {
         toast.error("This person already has that role on this system.");

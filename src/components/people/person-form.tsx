@@ -93,7 +93,7 @@ export function PersonForm({ mode, person, readOnly, onSaved }: Props) {
       queryClient.invalidateQueries({ queryKey: ["person-audit", row.id] });
       onSaved?.(row.id);
     },
-    onError: (err: any) => {
+    onError: (err: unknown) => {
       const msg = errMessage(err);
       if (msg.includes("people_email_key") || msg.toLowerCase().includes("duplicate")) {
         form.setError("email", { message: "A person with this email already exists." });
