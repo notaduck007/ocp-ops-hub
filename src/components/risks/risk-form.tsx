@@ -80,7 +80,7 @@ export function RiskForm({ mode, risk, readOnly, onSaved }: Props) {
       severity: risk?.severity ?? 2,
       likelihood: risk?.likelihood ?? 2,
       status: (risk?.status ?? "open") as FormValues["status"],
-      owner_id: risk?.owner_id ?? ("" as any),
+      owner_id: risk?.owner_id ?? "",
       system_id: risk?.system_id ?? null,
       vendor_id: risk?.vendor_id ?? null,
       accepted_until: risk?.accepted_until ?? "",
