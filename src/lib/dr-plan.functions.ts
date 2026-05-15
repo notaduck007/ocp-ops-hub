@@ -32,7 +32,7 @@ export type DrPlanData = {
     runbook_title: string;
     system_name: string;
     performed_at: string;
-    result: string;
+    result: DrTestResult;
     performed_by_name: string | null;
     notes_md: string | null;
   }>;
