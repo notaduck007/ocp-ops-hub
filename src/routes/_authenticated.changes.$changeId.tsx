@@ -262,7 +262,7 @@ function OverviewTab({
   onSetSystems,
   incidentSearch,
 }: {
-  change: any;
+  change: ChangeRow;
   canEdit: boolean;
   onSave: (patch: Record<string, unknown>) => void | Promise<void>;
   onSetSystems: (ids: string[]) => void;
@@ -466,7 +466,7 @@ function ApprovalTab({
   onApprove,
   onReject,
 }: {
-  change: any;
+  change: ChangeRow;
   isAdmin: boolean;
   onApprove: () => void;
   onReject: () => void;
@@ -531,7 +531,7 @@ function ExecutionTab({
   onComplete,
   onRollback,
 }: {
-  change: any;
+  change: ChangeRow;
   canEdit: boolean;
   isAdmin: boolean;
   onStart: (scheduled_at: string | null) => void;
