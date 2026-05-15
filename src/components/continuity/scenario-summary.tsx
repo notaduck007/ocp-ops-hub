@@ -6,8 +6,9 @@ import {
 } from "@/components/layout/record-summary";
 import { RecordMetaFooter } from "@/components/layout/record-meta-footer";
 import { RecordLink } from "@/components/record-link";
+import type { ContinuityScenarioRow } from "@/lib/continuity.functions";
 
-export function ContinuityScenarioSummary({ scenario }: { scenario: any }) {
+export function ContinuityScenarioSummary({ scenario }: { scenario: ContinuityScenarioRow }) {
   return (
     <div className="space-y-4">
       <SummarySection>
