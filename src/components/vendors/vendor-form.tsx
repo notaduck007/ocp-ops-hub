@@ -120,7 +120,8 @@ export function VendorForm({
         <Field label="Status">
           <Select
             value={form.watch("status")}
-            onValueChange={(v) => form.setValue("status", v as any, { shouldDirty: true })}
+            // RHF generic narrowing: Select gives `string`, RHF needs the VendorStatus union for this field.
+            onValueChange={(v) => form.setValue("status", v as unknown as VendorStatus, { shouldDirty: true })}
             disabled={disabled}
           >
             <SelectTrigger><SelectValue /></SelectTrigger>
