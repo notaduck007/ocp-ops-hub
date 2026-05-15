@@ -11,8 +11,9 @@ import {
   ChangeClassBadge,
   ChangeStatusBadge,
 } from "@/components/changes/badges";
+import type { ChangeRow } from "@/lib/changes.functions";
 
-export function ChangeSummary({ change }: { change: any }) {
+export function ChangeSummary({ change }: { change: ChangeRow }) {
   return (
     <div>
       <SummarySection>
