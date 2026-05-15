@@ -305,7 +305,7 @@ function DashboardPage() {
               <FeedRowSkeleton />
             </div>
           ) : (
-            <AttentionList items={overdue.data.items as any} maxRows={10} />
+            <AttentionList items={overdue.data.items} maxRows={10} />
           )}
         </div>
       </div>
