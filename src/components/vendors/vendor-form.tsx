@@ -89,7 +89,7 @@ export function VendorForm({
 
   const mutation = useMutation({
     mutationFn: async (values: FormValues) => {
-      const payload: any = {
+      const payload = {
         ...values,
         contract_end_at: values.contract_end_at || null,
         internal_owner_id: values.internal_owner_id || null,
