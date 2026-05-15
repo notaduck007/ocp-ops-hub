@@ -245,7 +245,7 @@ function OverviewForm({
   incident: NonNullable<Awaited<ReturnType<typeof getIncident>>>;
   canEdit: boolean;
   isAdmin: boolean;
-  onSave: (patch: any) => void | Promise<void>;
+  onSave: (patch: IncidentPatch) => void | Promise<void>;
   saving: boolean;
 }) {
   const [title, setTitle] = useState(incident.title);
