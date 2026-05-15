@@ -32,7 +32,7 @@ import { useCanEdit, useIsAdmin } from "@/hooks/use-role";
 import { AdminOnly } from "@/components/auth/role-gate";
 import { archiveVendor, getVendor, listVendorSystems } from "@/lib/vendors.functions";
 import {
-  BREACH_STATUSES, listBreaches, listSlas, updateBreach,
+  BREACH_STATUSES, listBreaches, listSlas, updateBreach, type BreachStatus,
 } from "@/lib/slas.functions";
 import { errMessage } from "@/lib/utils";
 
