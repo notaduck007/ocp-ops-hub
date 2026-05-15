@@ -11,8 +11,9 @@ import {
   IncidentStatusBadge,
   SeverityBadge,
 } from "@/components/incidents/badges";
+import type { IncidentRow } from "@/lib/incidents.functions";
 
-export function IncidentSummary({ incident }: { incident: any }) {
+export function IncidentSummary({ incident }: { incident: IncidentRow }) {
   return (
     <div>
       <SummarySection>
