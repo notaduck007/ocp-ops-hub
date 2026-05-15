@@ -118,7 +118,8 @@ export function SlaForm({
         <Field label="Target type">
           <Select
             value={form.watch("target_type")}
-            onValueChange={(v) => form.setValue("target_type", v as any, { shouldDirty: true })}
+            // RHF generic narrowing: Select gives `string`, RHF needs the literal union for this field.
+            onValueChange={(v) => form.setValue("target_type", v as unknown as FormValues["target_type"], { shouldDirty: true })}
             disabled={disabled}
           >
             <SelectTrigger><SelectValue /></SelectTrigger>
