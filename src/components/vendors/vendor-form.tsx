@@ -19,6 +19,7 @@ import {
   createVendor,
   updateVendor,
   type VendorRow,
+  type VendorStatus,
 } from "@/lib/vendors.functions";
 import { errMessage } from "@/lib/utils";
 
