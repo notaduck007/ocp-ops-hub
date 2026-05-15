@@ -31,7 +31,7 @@ import { RecordLink } from "@/components/record-link";
 import { detailSearchValidator } from "@/lib/detail-search";
 import { useCanEdit, useIsAdmin } from "@/hooks/use-role";
 import {
-  BREACH_STATUSES, getSla, listBreaches, listSlaAudit, updateBreach,
+  BREACH_STATUSES, getSla, listBreaches, listSlaAudit, updateBreach, type BreachStatus,
 } from "@/lib/slas.functions";
 import { errMessage } from "@/lib/utils";
 
