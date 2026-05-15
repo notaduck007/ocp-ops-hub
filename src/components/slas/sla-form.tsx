@@ -74,7 +74,7 @@ export function SlaForm({
 
   const mutation = useMutation({
     mutationFn: async (values: FormValues) => {
-      const payload: any = {
+      const payload = {
         ...values,
         system_id: values.system_id || null,
         last_reviewed_at: values.last_reviewed_at ? new Date(values.last_reviewed_at).toISOString() : null,
