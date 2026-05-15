@@ -11,6 +11,7 @@ import { useAuth } from "@/hooks/use-auth";
 import { useCanEdit } from "@/hooks/use-role";
 import { supabase } from "@/integrations/supabase/client";
 import {
+import { errMessage } from "@/lib/utils";
   listEvidence,
   createEvidence,
   getEvidenceSignedUrl,
