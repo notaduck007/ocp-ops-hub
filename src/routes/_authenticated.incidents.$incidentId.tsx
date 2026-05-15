@@ -45,6 +45,7 @@ import {
   INCIDENT_STATUSES,
   COMMS_AUDIENCES,
   type CommsAudience,
+  type IncidentPatch,
   type IncidentStatus,
 } from "@/lib/incidents.functions";
 import { errMessage } from "@/lib/utils";
