@@ -43,6 +43,8 @@ import {
   CRITICALITIES,
   SYSTEM_CATEGORIES,
   listSystems,
+  type Criticality,
+  type SystemCategory,
   type SystemRow,
 } from "@/lib/systems.functions";
 
