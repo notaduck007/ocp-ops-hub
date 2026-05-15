@@ -110,7 +110,7 @@ export function VendorSummary({ vendor }: { vendor: VendorRow }) {
           </SummaryField>
         </SummaryGrid>
       </SummarySection>
-      <RecordMetaFooter record={vendor as any} />
+      <RecordMetaFooter record={vendor} />
     </div>
   );
 }

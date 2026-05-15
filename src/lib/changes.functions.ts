@@ -32,6 +32,8 @@ export type ChangeRow = Database["public"]["Tables"]["changes"]["Row"] & {
   approver: UserLite | null;
   systems: SystemLite[];
   linked_incident: IncidentLite | null;
+  created_by_user: { id: string; full_name: string | null; email: string; avatar_url: string | null } | null;
+  updated_by_user: { id: string; full_name: string | null; email: string; avatar_url: string | null } | null;
 };
 
 async function loadUsers(supabase: any, ids: string[]) {
@@ -186,7 +188,7 @@ export const getChange = createServerFn({ method: "POST" })
     if (!row) return null;
     const decorated = await decorate(supabase, [row]);
     const first = decorated[0];
-    return first ? ((await attachActors(supabase, first)) as any) : null;
+    return first ? ((await attachActors(supabase, first)) as ChangeRow) : null;
   });
 
 export const proposeChange = createServerFn({ method: "POST" })

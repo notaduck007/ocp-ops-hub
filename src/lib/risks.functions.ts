@@ -23,6 +23,8 @@ export type RiskRow = Database["public"]["Tables"]["risks"]["Row"] & {
   accepter: OwnerLite | null;
   system: { id: string; name: string } | null;
   vendor: { id: string; name: string } | null;
+  created_by_user: { id: string; full_name: string | null; email: string; avatar_url: string | null } | null;
+  updated_by_user: { id: string; full_name: string | null; email: string; avatar_url: string | null } | null;
 };
 
 const writeSchema = z.object({
@@ -126,7 +128,7 @@ export const getRisk = createServerFn({ method: "POST" })
     if (!row) return null;
     const decorated = await decorate(supabase, [row]);
     const first = decorated[0];
-    return first ? ((await attachActors(supabase, first)) as any) : null;
+    return first ? ((await attachActors(supabase, first)) as RiskRow) : null;
   });
 
 async function isAdmin(supabase: any): Promise<boolean> {

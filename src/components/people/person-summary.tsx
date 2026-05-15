@@ -5,9 +5,9 @@ import {
 } from "@/components/layout/record-summary";
 import { RecordMetaFooter } from "@/components/layout/record-meta-footer";
 import { PersonStatusBadge, PersonTypeBadge } from "@/components/people/badges";
-import type { PersonRow } from "@/lib/people.functions";
+import type { PersonDetailRow } from "@/lib/people.functions";
 
-export function PersonSummary({ person }: { person: PersonRow }) {
+export function PersonSummary({ person }: { person: PersonDetailRow }) {
   return (
     <div>
       <SummarySection>
@@ -46,7 +46,7 @@ export function PersonSummary({ person }: { person: PersonRow }) {
           </SummaryField>
         </SummaryGrid>
       </SummarySection>
-      <RecordMetaFooter record={person as any} />
+      <RecordMetaFooter record={person} />
     </div>
   );
 }

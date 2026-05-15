@@ -23,6 +23,8 @@ type SystemLite = { id: string; name: string; criticality: string };
 export type RunbookRow = Database["public"]["Tables"]["runbooks"]["Row"] & {
   owner: UserLite | null;
   system: SystemLite | null;
+  created_by_user: { id: string; full_name: string | null; email: string; avatar_url: string | null } | null;
+  updated_by_user: { id: string; full_name: string | null; email: string; avatar_url: string | null } | null;
 };
 
 export type DrTestRow = Database["public"]["Tables"]["dr_tests"]["Row"] & {
@@ -95,7 +97,7 @@ export const getRunbook = createServerFn({ method: "POST" })
       ...row,
       owner: users.get(row.owner_id) ?? null,
       system: systems.get(row.system_id) ?? null,
-    })) as any;
+    })) as RunbookRow;
   });
 
 const createSchema = z.object({

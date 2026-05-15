@@ -17,6 +17,8 @@ export const VENDOR_STATUSES = [
 export type VendorRow = Database["public"]["Tables"]["vendors"]["Row"] & {
   internal_owner: { id: string; full_name: string | null; email: string } | null;
   linked_systems_count: number;
+  created_by_user: { id: string; full_name: string | null; email: string; avatar_url: string | null } | null;
+  updated_by_user: { id: string; full_name: string | null; email: string; avatar_url: string | null } | null;
 };
 
 const writeSchema = z.object({
@@ -102,11 +104,11 @@ export const getVendor = createServerFn({ method: "POST" })
     if (!row) return null;
     const owners = await loadOwners(supabase, [row.internal_owner_id].filter(Boolean) as string[]);
     const counts = await loadSystemCounts(supabase, [row.id]);
-    return attachActors(supabase, {
+    return (await attachActors(supabase, {
       ...row,
       internal_owner: row.internal_owner_id ? (owners.get(row.internal_owner_id) as any) ?? null : null,
       linked_systems_count: counts.get(row.id) ?? 0,
-    }) as any;
+    })) as VendorRow;
   });
 
 export const createVendor = createServerFn({ method: "POST" })

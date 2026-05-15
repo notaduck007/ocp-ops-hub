@@ -26,6 +26,8 @@ export type SlaRow = Database["public"]["Tables"]["slas"]["Row"] & {
   vendor: { id: string; name: string } | null;
   system: { id: string; name: string } | null;
   is_overdue: boolean;
+  created_by_user: { id: string; full_name: string | null; email: string; avatar_url: string | null } | null;
+  updated_by_user: { id: string; full_name: string | null; email: string; avatar_url: string | null } | null;
 };
 export type BreachRow = Database["public"]["Tables"]["sla_breaches"]["Row"];
 

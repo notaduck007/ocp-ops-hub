@@ -31,6 +31,8 @@ export const COMMS_AUDIENCES = [
 export type IncidentRow = Database["public"]["Tables"]["incidents"]["Row"] & {
   declarer: UserLite | null;
   systems: SystemLite[];
+  created_by_user: { id: string; full_name: string | null; email: string; avatar_url: string | null } | null;
+  updated_by_user: { id: string; full_name: string | null; email: string; avatar_url: string | null } | null;
 };
 
 const writeSchema = z.object({
@@ -149,7 +151,7 @@ export const getIncident = createServerFn({ method: "POST" })
     if (!row) return null;
     const decorated = await decorate(supabase, [row]);
     const first = decorated[0];
-    return first ? ((await attachActors(supabase, first)) as any) : null;
+    return first ? ((await attachActors(supabase, first)) as IncidentRow) : null;
   });
 
 const createSchema = z.object({
