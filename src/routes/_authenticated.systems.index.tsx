@@ -315,9 +315,9 @@ function SystemRowItem({ system }: { system: SystemRow }) {
       </TableCell>
       <TableCell className="text-sm text-muted-foreground">
         <div>{new Date(system.updated_at).toLocaleString()}</div>
-        {(system as any).updated_by_user && (
+        {system.updated_by_user && (
           <div className="text-xs">
-            by {(system as any).updated_by_user.full_name || (system as any).updated_by_user.email}
+            by {system.updated_by_user.full_name || system.updated_by_user.email}
           </div>
         )}
       </TableCell>
