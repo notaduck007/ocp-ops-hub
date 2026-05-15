@@ -23,7 +23,7 @@ import { Badge } from "@/components/ui/badge";
 import { VendorStatusBadge, ContractEndBadge } from "@/components/vendors/badges";
 import { VendorForm } from "@/components/vendors/vendor-form";
 import { useCanEdit } from "@/hooks/use-role";
-import { listVendors, VENDOR_STATUSES } from "@/lib/vendors.functions";
+import { listVendors, VENDOR_STATUSES, type VendorStatus } from "@/lib/vendors.functions";
 
 export const Route = createFileRoute("/_authenticated/vendors/")({
   component: VendorsListPage,

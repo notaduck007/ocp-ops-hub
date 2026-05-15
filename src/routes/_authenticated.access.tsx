@@ -28,11 +28,7 @@ import {
 import { RoleLevelBadge, PersonTypeBadge } from "@/components/people/badges";
 import { CategoryBadge } from "@/components/systems/badges";
 import { useCanEdit } from "@/hooks/use-role";
-import {
-  PERSON_TYPES,
-  listAccessGrants,
-  markGrantsReviewed,
-} from "@/lib/people.functions";
+import { PERSON_TYPES, listAccessGrants, markGrantsReviewed, type PersonType } from "@/lib/people.functions";
 import { TableSkeleton } from "@/components/layout/skeletons";
 import { errMessage } from "@/lib/utils";
 

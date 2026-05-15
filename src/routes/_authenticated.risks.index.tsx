@@ -43,12 +43,7 @@ import {
 } from "@/components/risks/badges";
 import { RiskForm } from "@/components/risks/risk-form";
 import { useCanEdit } from "@/hooks/use-role";
-import {
-  RISK_KINDS,
-  RISK_STATUSES,
-  listRisks,
-  type RiskRow,
-} from "@/lib/risks.functions";
+import { RISK_KINDS, RISK_STATUSES, listRisks, type RiskRow, type RiskKind, type RiskStatus } from "@/lib/risks.functions";
 
 export const Route = createFileRoute("/_authenticated/risks/")({
   component: RisksListPage,
