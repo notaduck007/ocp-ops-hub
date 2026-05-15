@@ -17,6 +17,8 @@ export const VENDOR_STATUSES = [
 export type VendorRow = Database["public"]["Tables"]["vendors"]["Row"] & {
   internal_owner: { id: string; full_name: string | null; email: string } | null;
   linked_systems_count: number;
+  created_by_user: ActorLiteT | null;
+  updated_by_user: ActorLiteT | null;
 };
 
 const writeSchema = z.object({

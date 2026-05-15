@@ -3,7 +3,7 @@ import { z } from "zod";
 
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import type { Database, Json } from "@/integrations/supabase/types";
-import { attachActors } from "@/lib/load-actors";
+import { attachActors, type ActorLite } from "@/lib/load-actors";
 
 type OwnerLite = { id: string; full_name: string | null; email: string };
 
@@ -14,6 +14,8 @@ type DataClass = Database["public"]["Enums"]["data_class"];
 export type SystemRow = Database["public"]["Tables"]["systems"]["Row"] & {
   business_owner: { id: string; full_name: string | null; email: string } | null;
   technical_owner: { id: string; full_name: string | null; email: string } | null;
+  created_by_user: ActorLite | null;
+  updated_by_user: ActorLite | null;
 };
 
 const SYSTEM_CATEGORIES = [
@@ -136,11 +138,11 @@ export const getSystem = createServerFn({ method: "POST" })
       supabase,
       [row.business_owner_id, row.technical_owner_id].filter(Boolean) as string[],
     );
-    return attachActors(supabase, {
+    return (await attachActors(supabase, {
       ...row,
       business_owner: row.business_owner_id ? owners.get(row.business_owner_id) ?? null : null,
       technical_owner: row.technical_owner_id ? owners.get(row.technical_owner_id) ?? null : null,
-    }) as any;
+    })) as SystemRow;
   });
 
 export const createSystem = createServerFn({ method: "POST" })
