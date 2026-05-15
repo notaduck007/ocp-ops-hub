@@ -3,7 +3,7 @@ import { z } from "zod";
 
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import type { Database, Json } from "@/integrations/supabase/types";
-import { attachActors, type ActorLite } from "@/lib/load-actors";
+import { attachActors } from "@/lib/load-actors";
 
 type OwnerLite = { id: string; full_name: string | null; email: string };
 

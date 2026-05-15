@@ -43,7 +43,10 @@ const SYSTEM_CATEGORIES_LIST = [
   "other",
 ] as const satisfies readonly SystemCategory[];
 
-export type PersonRow = Database["public"]["Tables"]["people"]["Row"];
+export type PersonRow = Database["public"]["Tables"]["people"]["Row"] & {
+  created_by_user: { id: string; full_name: string | null; email: string; avatar_url: string | null } | null;
+  updated_by_user: { id: string; full_name: string | null; email: string; avatar_url: string | null } | null;
+};
 export type AccessGrantRow = Database["public"]["Tables"]["access_grants"]["Row"];
 
 export type AccessGrantWithRefs = AccessGrantRow & {
@@ -132,7 +135,7 @@ export const getPerson = createServerFn({ method: "POST" })
       .maybeSingle();
     if (error) throw new Error(error.message);
     if (!row) return null;
-    return (await attachActors(supabase, row)) as any;
+    return (await attachActors(supabase, row)) as PersonRow;
   });
 
 export const createPerson = createServerFn({ method: "POST" })

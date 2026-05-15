@@ -14,6 +14,8 @@ export type ContinuityScenarioRow =
     decision_authority: UserLite | null;
     linked_systems: SystemLite[];
     linked_runbooks: RunbookLite[];
+    created_by_user: { id: string; full_name: string | null; email: string; avatar_url: string | null } | null;
+    updated_by_user: { id: string; full_name: string | null; email: string; avatar_url: string | null } | null;
   };
 
 async function decorate(supabase: any, rows: any[]): Promise<ContinuityScenarioRow[]> {
@@ -84,7 +86,7 @@ export const getContinuityScenario = createServerFn({ method: "POST" })
     if (!row) return null;
     const decorated = await decorate(supabase, [row]);
     const first = decorated[0];
-    return first ? ((await attachActors(supabase, first)) as any) : null;
+    return first ? ((await attachActors(supabase, first)) as ContinuityScenarioRow) : null;
   });
 
 const upsertSchema = z.object({

@@ -13,6 +13,8 @@ type UserLite = { id: string; full_name: string | null; email: string };
 export type PolicyRow = Database["public"]["Tables"]["policies"]["Row"] & {
   owner: UserLite | null;
   approver: UserLite | null;
+  created_by_user: { id: string; full_name: string | null; email: string; avatar_url: string | null } | null;
+  updated_by_user: { id: string; full_name: string | null; email: string; avatar_url: string | null } | null;
 };
 
 export type PolicyVersionRow = Database["public"]["Tables"]["policy_versions"]["Row"] & {
@@ -72,7 +74,7 @@ export const getPolicy = createServerFn({ method: "POST" })
     if (!row) return null;
     const decorated = await decoratePolicies(supabase, [row]);
     const first = decorated[0];
-    return first ? ((await attachActors(supabase, first)) as any) : null;
+    return first ? ((await attachActors(supabase, first)) as PolicyRow) : null;
   });
 
 export const listPolicyVersions = createServerFn({ method: "POST" })
