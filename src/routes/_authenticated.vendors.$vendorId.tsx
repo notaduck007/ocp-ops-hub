@@ -260,7 +260,7 @@ function VendorDetailPage() {
                                 toast.error("Only admins can mark closed without action");
                                 return;
                               }
-                              breachMut.mutate({ id: b.id, status: v });
+                              breachMut.mutate({ id: b.id, status: v as BreachStatus });
                             }}
                           >
                             <SelectTrigger className="h-8 text-xs"><SelectValue /></SelectTrigger>
