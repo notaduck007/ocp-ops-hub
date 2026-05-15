@@ -178,7 +178,7 @@ export function EvidenceFilesTab({
               </tr>
             </thead>
             <tbody className="divide-y">
-              {files.map((f: any) => (
+              {files.map((f) => (
                 <tr key={f.id}>
                   <td className="px-4 py-2">
                     <button

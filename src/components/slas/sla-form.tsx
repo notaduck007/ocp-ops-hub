@@ -82,7 +82,7 @@ export function SlaForm({
       if (mode === "create") return create({ data: payload });
       return update({ data: { id: sla!.id, patch: payload } });
     },
-    onSuccess: (row: any) => {
+    onSuccess: (row) => {
       toast.success(mode === "create" ? "SLA created" : "SLA updated");
       qc.invalidateQueries({ queryKey: ["slas"] });
       qc.invalidateQueries({ queryKey: ["sla", row.id] });

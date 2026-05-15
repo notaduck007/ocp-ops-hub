@@ -80,7 +80,7 @@ export function ContinuityScenarioDialog({
           linked_runbook_ids: rbIds,
         },
       }),
-    onSuccess: (row: any) => {
+    onSuccess: (row) => {
       toast.success(initial ? "Saved" : "Scenario created");
       qc.invalidateQueries({ queryKey: ["continuity"] });
       qc.invalidateQueries({ queryKey: ["continuity", row.id] });

@@ -128,7 +128,7 @@ function AuditPage() {
             No matching audit entries.
           </div>
         ) : (
-          rows.map((r: any) => <AuditEntry key={r.id} entry={r} showEntity />)
+          rows.map((r) => <AuditEntry key={r.id} entry={r} showEntity />)
         )}
       </div>
 

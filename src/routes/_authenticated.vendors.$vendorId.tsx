@@ -166,7 +166,7 @@ function VendorDetailPage() {
               <TableBody>
                 {systems.length === 0 ? (
                   <TableRow><TableCell colSpan={3} className="text-center text-sm text-muted-foreground">No systems linked. Set vendor on a system from the Systems page.</TableCell></TableRow>
-                ) : systems.map((s: any) => (
+                ) : systems.map((s) => (
                   <TableRow key={s.id}>
                     <TableCell className="font-medium">
                       <Link to="/systems/$systemId" params={{ systemId: s.id }} className="hover:underline">{s.name}</Link>

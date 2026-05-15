@@ -47,7 +47,7 @@ export function NewPolicyDialog({
           review_cadence_days: cadence,
         },
       }),
-    onSuccess: (row: any) => {
+    onSuccess: (row) => {
       toast.success("Draft policy created");
       qc.invalidateQueries({ queryKey: ["policies"] });
       onOpenChange(false);

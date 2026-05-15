@@ -190,7 +190,7 @@ function RunbookDetail() {
             {activity.length === 0 ? (
               <EmptyState icon={ScrollText} title="No activity yet" description="Edits to this record will appear here." variant="card" />
             ) : (
-              activity.map((a: any) => <AuditEntry key={a.id} entry={a} />)
+              activity.map((a) => <AuditEntry key={a.id} entry={a} />)
             )}
           </div>
         </TabsContent>

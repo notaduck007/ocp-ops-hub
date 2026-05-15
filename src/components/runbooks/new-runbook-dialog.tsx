@@ -65,7 +65,7 @@ export function NewRunbookDialog({
           test_cadence_days: cadence,
         },
       }),
-    onSuccess: (row: any) => {
+    onSuccess: (row) => {
       toast.success("Runbook created");
       qc.invalidateQueries({ queryKey: ["runbooks"] });
       onOpenChange(false);

@@ -206,7 +206,7 @@ function SlaDetailPage() {
             {auditRows.length === 0 ? (
               <EmptyState icon={ScrollText} title="No activity yet" description="Edits to this record will appear here." variant="card" />
             ) : (
-              auditRows.map((e: any) => <AuditEntry key={e.id} entry={e} />)
+              auditRows.map((e) => <AuditEntry key={e.id} entry={e} />)
             )}
           </div>
         </TabsContent>

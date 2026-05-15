@@ -97,7 +97,7 @@ export function VendorForm({
       if (mode === "create") return create({ data: payload });
       return update({ data: { id: vendor!.id, patch: payload } });
     },
-    onSuccess: (row: any) => {
+    onSuccess: (row) => {
       toast.success(mode === "create" ? "Vendor created" : "Vendor updated");
       qc.invalidateQueries({ queryKey: ["vendors"] });
       qc.invalidateQueries({ queryKey: ["vendor", row.id] });
