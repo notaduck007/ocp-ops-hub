@@ -88,7 +88,7 @@ export function AccessGrantForm({ personId, grant, onSaved, onCancel }: Props) {
       onSaved?.();
     },
     onError: (err: any) => {
-      const msg = String(err?.message ?? err);
+      const msg = errMessage(err);
       if (msg.toLowerCase().includes("duplicate") || msg.includes("access_grants_person_id")) {
         toast.error("This person already has that role on this system.");
       } else {

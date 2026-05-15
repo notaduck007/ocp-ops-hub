@@ -70,7 +70,7 @@ export function LogTestDialog({
       qc.invalidateQueries({ queryKey: ["dash"] });
       onOpenChange(false);
     },
-    onError: (e: any) => toast.error(e?.message ?? "Failed"),
+    onError: (err: unknown) => toast.error(errMessage(err, "Failed")),
   });
 
   const can = performedAt && performedById && result;

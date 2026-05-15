@@ -94,7 +94,7 @@ export function PersonForm({ mode, person, readOnly, onSaved }: Props) {
       onSaved?.(row.id);
     },
     onError: (err: any) => {
-      const msg = String(err?.message ?? err);
+      const msg = errMessage(err);
       if (msg.includes("people_email_key") || msg.toLowerCase().includes("duplicate")) {
         form.setError("email", { message: "A person with this email already exists." });
         toast.error("Email must be unique");

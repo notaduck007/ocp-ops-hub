@@ -86,7 +86,7 @@ export function ContinuityScenarioDialog({
       onOpenChange(false);
       if (!initial) navigate({ to: "/continuity/$scenarioId", params: { scenarioId: row.id } });
     },
-    onError: (e: any) => toast.error(e?.message ?? "Failed"),
+    onError: (err: unknown) => toast.error(errMessage(err, "Failed")),
   });
 
   const can = name.trim() && auth;

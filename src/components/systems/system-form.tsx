@@ -108,7 +108,7 @@ export function SystemForm({ mode, system, readOnly, onSaved }: Props) {
       onSaved?.(row.id);
     },
     onError: (err: any) => {
-      const msg = String(err?.message ?? err);
+      const msg = errMessage(err);
       if (msg.includes("systems_name_key") || msg.toLowerCase().includes("duplicate")) {
         form.setError("name", { message: "A system with this name already exists." });
         toast.error("Name must be unique");

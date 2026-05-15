@@ -102,7 +102,7 @@ export function VendorForm({
       qc.invalidateQueries({ queryKey: ["vendor", row.id] });
       onSaved?.(row.id);
     },
-    onError: (e: any) => toast.error(String(e?.message ?? e)),
+    onError: (err: unknown) => toast.error(errMessage(err)),
   });
 
   const disabled = readOnly || mutation.isPending;

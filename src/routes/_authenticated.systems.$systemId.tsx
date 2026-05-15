@@ -70,7 +70,7 @@ function SystemDetailPage() {
       queryClient.invalidateQueries({ queryKey: ["system-audit", systemId] });
       queryClient.invalidateQueries({ queryKey: ["systems"] });
     },
-    onError: (err: any) => toast.error(String(err?.message ?? err)),
+    onError: (err: unknown) => toast.error(errMessage(err)),
   });
 
   const enterEdit = () => navigate({ to: ".", search: { edit: true } });

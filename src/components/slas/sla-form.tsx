@@ -88,7 +88,7 @@ export function SlaForm({
       qc.invalidateQueries({ queryKey: ["vendor-slas"] });
       onSaved?.(row.id);
     },
-    onError: (e: any) => toast.error(String(e?.message ?? e)),
+    onError: (err: unknown) => toast.error(errMessage(err)),
   });
 
   const disabled = readOnly || mutation.isPending;

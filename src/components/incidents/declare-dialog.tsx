@@ -84,7 +84,7 @@ export function DeclareIncidentDialog({ open, onOpenChange }: Props) {
         params: { incidentId: row.id },
       });
     },
-    onError: (err: any) => toast.error(String(err?.message ?? err)),
+    onError: (err: unknown) => toast.error(errMessage(err)),
   });
 
   return (

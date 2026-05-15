@@ -98,7 +98,7 @@ export function ProposeChangeDialog({ open, onOpenChange }: Props) {
       setSystems([]);
       navigate({ to: "/changes/$changeId", params: { changeId: row.id } });
     },
-    onError: (err: any) => toast.error(String(err?.message ?? err)),
+    onError: (err: unknown) => toast.error(errMessage(err)),
   });
 
   return (

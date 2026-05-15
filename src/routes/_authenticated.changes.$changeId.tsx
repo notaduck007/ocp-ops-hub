@@ -93,7 +93,7 @@ function ChangeDetailPage() {
       toast.success("Saved");
       invalidate();
     },
-    onError: (err: any) => toast.error(String(err?.message ?? err)),
+    onError: (err: unknown) => toast.error(errMessage(err)),
   });
 
   const transitionMutation = useMutation({
@@ -114,7 +114,7 @@ function ChangeDetailPage() {
       toast.success(`Status → ${String(v.status).replace("_", " ")}`);
       invalidate();
     },
-    onError: (err: any) => toast.error(String(err?.message ?? err)),
+    onError: (err: unknown) => toast.error(errMessage(err)),
   });
 
   const systemsMutation = useMutation({
@@ -124,7 +124,7 @@ function ChangeDetailPage() {
       toast.success("Systems updated");
       invalidate();
     },
-    onError: (err: any) => toast.error(String(err?.message ?? err)),
+    onError: (err: unknown) => toast.error(errMessage(err)),
   });
 
   if (!change) {

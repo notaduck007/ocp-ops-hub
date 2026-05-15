@@ -93,7 +93,7 @@ function IncidentDetailPage() {
       qc.invalidateQueries({ queryKey: ["incidents"] });
       qc.invalidateQueries({ queryKey: ["dash"] });
     },
-    onError: (err: any) => toast.error(String(err?.message ?? err)),
+    onError: (err: unknown) => toast.error(errMessage(err)),
   });
 
   if (isError) {
@@ -186,8 +186,8 @@ function IncidentDetailPage() {
                   qc.invalidateQueries({
                     queryKey: ["incident-comms", incidentId],
                   });
-                } catch (err: any) {
-                  toast.error(String(err?.message ?? err));
+                } catch (err: unknown) {
+                  toast.error(errMessage(err));
                 }
               }}
             />
@@ -218,8 +218,8 @@ function IncidentDetailPage() {
                 toast.success("Linked systems updated");
                 qc.invalidateQueries({ queryKey: ["incident", incidentId] });
                 qc.invalidateQueries({ queryKey: ["incidents"] });
-              } catch (err: any) {
-                toast.error(String(err?.message ?? err));
+              } catch (err: unknown) {
+                toast.error(errMessage(err));
               }
             }}
           />

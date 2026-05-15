@@ -86,7 +86,7 @@ export function EvidenceFilesTab({
       setTimeout(() => setProgress(null), 600);
     },
     onError: (err: any) => {
-      toast.error(String(err?.message ?? err));
+      toast.error(errMessage(err));
       setProgress(null);
     },
   });
@@ -103,8 +103,8 @@ export function EvidenceFilesTab({
     try {
       const { url } = await sign({ data: { id } });
       window.open(url, "_blank");
-    } catch (err: any) {
-      toast.error(String(err?.message ?? err));
+    } catch (err: unknown) {
+      toast.error(errMessage(err));
     }
   };
 

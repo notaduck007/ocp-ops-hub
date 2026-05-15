@@ -57,7 +57,7 @@ function NewCampaignWizard() {
       toast.success(`Campaign created with ${res.items} items`);
       navigate({ to: "/reviews/$campaignId", params: { campaignId: res.id } });
     },
-    onError: (e: any) => toast.error(e?.message ?? "Failed"),
+    onError: (err: unknown) => toast.error(errMessage(err, "Failed")),
   });
 
   const toggleSys = (id: string) =>

@@ -75,7 +75,7 @@ function SlaDetailPage() {
       toast.success("Breach updated");
       qc.invalidateQueries({ queryKey: ["breaches"] });
     },
-    onError: (e: any) => toast.error(String(e?.message ?? e)),
+    onError: (err: unknown) => toast.error(errMessage(err)),
   });
 
   if (isLoading) return (<PageShell><PageHeaderSkeleton /><DetailFormSkeleton /></PageShell>);

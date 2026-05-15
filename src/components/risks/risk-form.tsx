@@ -121,7 +121,7 @@ export function RiskForm({ mode, risk, readOnly, onSaved }: Props) {
       queryClient.invalidateQueries({ queryKey: ["risk-audit", row.id] });
       onSaved?.(row.id);
     },
-    onError: (err: any) => toast.error(String(err?.message ?? err)),
+    onError: (err: unknown) => toast.error(errMessage(err)),
   });
 
   async function onSubmit(values: FormValues) {

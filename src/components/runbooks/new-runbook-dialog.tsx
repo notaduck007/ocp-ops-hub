@@ -71,7 +71,7 @@ export function NewRunbookDialog({
       setTitle(""); setBody("");
       navigate({ to: "/runbooks/$runbookId", params: { runbookId: row.id } });
     },
-    onError: (e: any) => toast.error(e?.message ?? "Failed"),
+    onError: (err: unknown) => toast.error(errMessage(err, "Failed")),
   });
 
   const can = systemId && title.trim() && body.trim() && ownerId;

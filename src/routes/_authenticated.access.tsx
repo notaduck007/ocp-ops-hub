@@ -102,7 +102,7 @@ function AccessListPage() {
       setSelected(new Set());
       queryClient.invalidateQueries({ queryKey: ["access-grants"] });
     },
-    onError: (err: any) => toast.error(String(err?.message ?? err)),
+    onError: (err: unknown) => toast.error(errMessage(err)),
   });
 
   return (

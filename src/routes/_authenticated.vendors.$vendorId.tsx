@@ -85,7 +85,7 @@ function VendorDetailPage() {
       qc.invalidateQueries({ queryKey: ["vendor", vendorId] });
       qc.invalidateQueries({ queryKey: ["vendors"] });
     },
-    onError: (e: any) => toast.error(String(e?.message ?? e)),
+    onError: (err: unknown) => toast.error(errMessage(err)),
   });
 
   const breachMut = useMutation({
@@ -96,7 +96,7 @@ function VendorDetailPage() {
       qc.invalidateQueries({ queryKey: ["breaches"] });
       qc.invalidateQueries({ queryKey: ["vendor-health"] });
     },
-    onError: (e: any) => toast.error(String(e?.message ?? e)),
+    onError: (err: unknown) => toast.error(errMessage(err)),
   });
 
   if (isLoading) return (<PageShell><PageHeaderSkeleton /><DetailFormSkeleton /></PageShell>);

@@ -88,7 +88,7 @@ function RunbookDetail() {
       qc.invalidateQueries({ queryKey: ["runbook", runbookId] });
       exitEdit();
     },
-    onError: (e: any) => toast.error(e?.message ?? "Failed"),
+    onError: (err: unknown) => toast.error(errMessage(err, "Failed")),
   });
 
   if (isLoading) return (<PageShell><PageHeaderSkeleton /><DetailFormSkeleton /></PageShell>);

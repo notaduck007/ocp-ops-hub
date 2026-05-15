@@ -54,7 +54,7 @@ export function NewPolicyDialog({
       setBody("");
       navigate({ to: "/policies/$policyId", params: { policyId: row.id } });
     },
-    onError: (e: any) => toast.error(e?.message ?? "Failed to create policy"),
+    onError: (err: unknown) => toast.error(errMessage(err, "Failed to create policy")),
   });
 
   const canSubmit = title.trim() && body.trim() && ownerId;
