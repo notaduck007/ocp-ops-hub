@@ -23,8 +23,8 @@ export type RiskRow = Database["public"]["Tables"]["risks"]["Row"] & {
   accepter: OwnerLite | null;
   system: { id: string; name: string } | null;
   vendor: { id: string; name: string } | null;
-  created_by_user: ActorLiteT | null;
-  updated_by_user: ActorLiteT | null;
+  created_by_user: { id: string; full_name: string | null; email: string; avatar_url: string | null } | null;
+  updated_by_user: { id: string; full_name: string | null; email: string; avatar_url: string | null } | null;
 };
 
 const writeSchema = z.object({
