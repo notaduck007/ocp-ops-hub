@@ -86,8 +86,8 @@ function IncidentDetailPage() {
   });
 
   const updateMutation = useMutation({
-    mutationFn: (patch: Record<string, unknown>) =>
-      update({ data: { id: incidentId, patch: patch as any } }),
+    mutationFn: (patch: IncidentPatch) =>
+      update({ data: { id: incidentId, patch } }),
     onSuccess: () => {
       toast.success("Saved");
       qc.invalidateQueries({ queryKey: ["incident", incidentId] });
