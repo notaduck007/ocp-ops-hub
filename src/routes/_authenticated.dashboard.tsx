@@ -213,7 +213,6 @@ function DashboardPage() {
               </div>
               <Link
                 to="/risks"
-                search={{ overdue: true } as any}
                 className="mt-2 inline-block text-xs text-primary hover:underline"
               >
                 View all →
