@@ -7,9 +7,9 @@ import { attachActors } from "@/lib/load-actors";
 
 type OwnerLite = { id: string; full_name: string | null; email: string };
 
-type SystemCategory = Database["public"]["Enums"]["system_category"];
-type Criticality = Database["public"]["Enums"]["criticality"];
-type DataClass = Database["public"]["Enums"]["data_class"];
+export type SystemCategory = Database["public"]["Enums"]["system_category"];
+export type Criticality = Database["public"]["Enums"]["criticality"];
+export type DataClass = Database["public"]["Enums"]["data_class"];
 
 export type SystemRow = Database["public"]["Tables"]["systems"]["Row"] & {
   business_owner: { id: string; full_name: string | null; email: string } | null;
