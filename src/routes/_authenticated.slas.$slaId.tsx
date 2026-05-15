@@ -70,7 +70,7 @@ function SlaDetailPage() {
   });
 
   const breachMut = useMutation({
-    mutationFn: (v: { id: string; status: any }) =>
+    mutationFn: (v: { id: string; status: BreachStatus }) =>
       updBreach({ data: { id: v.id, patch: { status: v.status } } }),
     onSuccess: () => {
       toast.success("Breach updated");
