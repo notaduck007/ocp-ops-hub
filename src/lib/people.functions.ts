@@ -43,7 +43,8 @@ const SYSTEM_CATEGORIES_LIST = [
   "other",
 ] as const satisfies readonly SystemCategory[];
 
-export type PersonRow = Database["public"]["Tables"]["people"]["Row"] & {
+export type PersonRow = Database["public"]["Tables"]["people"]["Row"];
+export type PersonDetailRow = PersonRow & {
   created_by_user: { id: string; full_name: string | null; email: string; avatar_url: string | null } | null;
   updated_by_user: { id: string; full_name: string | null; email: string; avatar_url: string | null } | null;
 };
@@ -126,7 +127,7 @@ export const listPeople = createServerFn({ method: "POST" })
 export const getPerson = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((input: unknown) => z.object({ id: z.string().uuid() }).parse(input))
-  .handler(async ({ data, context }): Promise<PersonRow | null> => {
+  .handler(async ({ data, context }): Promise<PersonDetailRow | null> => {
     const { supabase } = context;
     const { data: row, error } = await supabase
       .from("people")
@@ -135,7 +136,7 @@ export const getPerson = createServerFn({ method: "POST" })
       .maybeSingle();
     if (error) throw new Error(error.message);
     if (!row) return null;
-    return (await attachActors(supabase, row)) as PersonRow;
+    return (await attachActors(supabase, row)) as PersonDetailRow;
   });
 
 export const createPerson = createServerFn({ method: "POST" })

@@ -14,8 +14,8 @@ type DataClass = Database["public"]["Enums"]["data_class"];
 export type SystemRow = Database["public"]["Tables"]["systems"]["Row"] & {
   business_owner: { id: string; full_name: string | null; email: string } | null;
   technical_owner: { id: string; full_name: string | null; email: string } | null;
-  created_by_user: ActorLite | null;
-  updated_by_user: ActorLite | null;
+  created_by_user: { id: string; full_name: string | null; email: string; avatar_url: string | null } | null;
+  updated_by_user: { id: string; full_name: string | null; email: string; avatar_url: string | null } | null;
 };
 
 const SYSTEM_CATEGORIES = [
