@@ -31,7 +31,7 @@ import { RecordLink } from "@/components/record-link";
 import { detailSearchValidator } from "@/lib/detail-search";
 import { useCanEdit, useIsAdmin } from "@/hooks/use-role";
 import {
-  BREACH_STATUSES, getSla, listBreaches, listSlaAudit, updateBreach,
+  BREACH_STATUSES, getSla, listBreaches, listSlaAudit, updateBreach, type BreachStatus,
 } from "@/lib/slas.functions";
 import { errMessage } from "@/lib/utils";
 
@@ -70,7 +70,7 @@ function SlaDetailPage() {
   });
 
   const breachMut = useMutation({
-    mutationFn: (v: { id: string; status: any }) =>
+    mutationFn: (v: { id: string; status: BreachStatus }) =>
       updBreach({ data: { id: v.id, patch: { status: v.status } } }),
     onSuccess: () => {
       toast.success("Breach updated");
@@ -176,7 +176,7 @@ function SlaDetailPage() {
                               toast.error("Only admins can mark closed without action");
                               return;
                             }
-                            breachMut.mutate({ id: b.id, status: v });
+                            breachMut.mutate({ id: b.id, status: v as BreachStatus });
                           }}
                         >
                           <SelectTrigger className="h-8 text-xs"><SelectValue /></SelectTrigger>

@@ -1,6 +1,7 @@
 import { createServerFn } from "@tanstack/react-start";
 
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
+import type { DrTestResult } from "@/lib/runbooks.functions";
 
 export type DrPlanData = {
   generated_at: string;
@@ -32,7 +33,7 @@ export type DrPlanData = {
     runbook_title: string;
     system_name: string;
     performed_at: string;
-    result: string;
+    result: DrTestResult;
     performed_by_name: string | null;
     notes_md: string | null;
   }>;

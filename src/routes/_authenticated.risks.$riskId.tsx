@@ -237,7 +237,7 @@ function AuditTable({
   entries,
   emptyText = "No activity yet",
 }: {
-  entries: { id: string; action: string; before: any; after: any; created_at: string; actor: { full_name: string | null; email: string } | null }[];
+  entries: { id: string; action: string; before: unknown; after: unknown; created_at: string; actor: { full_name: string | null; email: string } | null }[];
   emptyText?: string;
 }) {
   if (entries.length === 0) {

@@ -74,7 +74,7 @@ export function SlaForm({
 
   const mutation = useMutation({
     mutationFn: async (values: FormValues) => {
-      const payload: any = {
+      const payload = {
         ...values,
         system_id: values.system_id || null,
         last_reviewed_at: values.last_reviewed_at ? new Date(values.last_reviewed_at).toISOString() : null,
@@ -118,7 +118,8 @@ export function SlaForm({
         <Field label="Target type">
           <Select
             value={form.watch("target_type")}
-            onValueChange={(v) => form.setValue("target_type", v as any, { shouldDirty: true })}
+            // RHF generic narrowing: Select gives `string`, RHF needs the literal union for this field.
+            onValueChange={(v) => form.setValue("target_type", v as unknown as FormValues["target_type"], { shouldDirty: true })}
             disabled={disabled}
           >
             <SelectTrigger><SelectValue /></SelectTrigger>

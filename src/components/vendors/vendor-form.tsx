@@ -19,6 +19,7 @@ import {
   createVendor,
   updateVendor,
   type VendorRow,
+  type VendorStatus,
 } from "@/lib/vendors.functions";
 import { errMessage } from "@/lib/utils";
 
@@ -89,7 +90,7 @@ export function VendorForm({
 
   const mutation = useMutation({
     mutationFn: async (values: FormValues) => {
-      const payload: any = {
+      const payload = {
         ...values,
         contract_end_at: values.contract_end_at || null,
         internal_owner_id: values.internal_owner_id || null,
@@ -120,7 +121,8 @@ export function VendorForm({
         <Field label="Status">
           <Select
             value={form.watch("status")}
-            onValueChange={(v) => form.setValue("status", v as any, { shouldDirty: true })}
+            // RHF generic narrowing: Select gives `string`, RHF needs the VendorStatus union for this field.
+            onValueChange={(v) => form.setValue("status", v as unknown as VendorStatus, { shouldDirty: true })}
             disabled={disabled}
           >
             <SelectTrigger><SelectValue /></SelectTrigger>

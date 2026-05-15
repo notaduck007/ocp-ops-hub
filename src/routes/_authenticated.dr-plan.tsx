@@ -170,7 +170,7 @@ function DrPlanPage() {
                     <TableCell className="text-sm">{format(new Date(t.performed_at), "PP")}</TableCell>
                     <TableCell className="text-sm">{t.runbook_title}</TableCell>
                     <TableCell className="text-sm">{t.system_name}</TableCell>
-                    <TableCell><DrResultBadge value={t.result as any} /></TableCell>
+                    <TableCell><DrResultBadge value={t.result} /></TableCell>
                     <TableCell className="text-sm">{t.performed_by_name ?? "—"}</TableCell>
                   </TableRow>
                 ))

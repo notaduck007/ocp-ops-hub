@@ -213,7 +213,6 @@ function DashboardPage() {
               </div>
               <Link
                 to="/risks"
-                search={{ overdue: true } as any}
                 className="mt-2 inline-block text-xs text-primary hover:underline"
               >
                 View all →
@@ -306,7 +305,7 @@ function DashboardPage() {
               <FeedRowSkeleton />
             </div>
           ) : (
-            <AttentionList items={overdue.data.items as any} maxRows={10} />
+            <AttentionList items={overdue.data.items} maxRows={10} />
           )}
         </div>
       </div>

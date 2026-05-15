@@ -32,7 +32,7 @@ import { useCanEdit, useIsAdmin } from "@/hooks/use-role";
 import { AdminOnly } from "@/components/auth/role-gate";
 import { archiveVendor, getVendor, listVendorSystems } from "@/lib/vendors.functions";
 import {
-  BREACH_STATUSES, listBreaches, listSlas, updateBreach,
+  BREACH_STATUSES, listBreaches, listSlas, updateBreach, type BreachStatus,
 } from "@/lib/slas.functions";
 import { errMessage } from "@/lib/utils";
 
@@ -90,7 +90,7 @@ function VendorDetailPage() {
   });
 
   const breachMut = useMutation({
-    mutationFn: (v: { id: string; status: any }) =>
+    mutationFn: (v: { id: string; status: BreachStatus }) =>
       updBreach({ data: { id: v.id, patch: { status: v.status } } }),
     onSuccess: () => {
       toast.success("Breach updated");
@@ -260,7 +260,7 @@ function VendorDetailPage() {
                                 toast.error("Only admins can mark closed without action");
                                 return;
                               }
-                              breachMut.mutate({ id: b.id, status: v });
+                              breachMut.mutate({ id: b.id, status: v as BreachStatus });
                             }}
                           >
                             <SelectTrigger className="h-8 text-xs"><SelectValue /></SelectTrigger>
