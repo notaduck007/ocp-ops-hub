@@ -104,7 +104,7 @@ function GovernanceBody({ from, to }: { from: string; to: string }) {
     <div className="space-y-6">
       <Section title={`Risks (accepted/closed): ${data.risks.length}`}>
         <ul className="list-inside list-disc text-sm">
-          {data.risks.map((r: any) => (
+          {data.risks.map((r) => (
             <li key={r.id}>{r.title} — score {r.score} · {r.status}</li>
           ))}
           {data.risks.length === 0 && <li className="list-none text-muted-foreground">None</li>}
@@ -116,28 +116,28 @@ function GovernanceBody({ from, to }: { from: string; to: string }) {
           Sev3: {data.incidents_by_severity[3] ?? 0} · Sev4: {data.incidents_by_severity[4] ?? 0}
         </p>
         <ul className="list-inside list-disc text-sm">
-          {data.incidents.map((i: any) => (
+          {data.incidents.map((i) => (
             <li key={i.id}>Sev{i.severity} · {i.title} ({i.status})</li>
           ))}
         </ul>
       </Section>
       <Section title={`Changes completed: ${data.changes.length}`}>
         <ul className="list-inside list-disc text-sm">
-          {data.changes.map((c: any) => (
+          {data.changes.map((c) => (
             <li key={c.id}>{c.title} — {c.class}</li>
           ))}
         </ul>
       </Section>
       <Section title={`Policies approved/retired: ${data.policies.length}`}>
         <ul className="list-inside list-disc text-sm">
-          {data.policies.map((p: any) => (
+          {data.policies.map((p) => (
             <li key={p.id}>{p.title} v{p.version} ({p.status})</li>
           ))}
         </ul>
       </Section>
       <Section title={`Access review campaigns completed: ${data.reviews.length}`}>
         <ul className="list-inside list-disc text-sm">
-          {data.reviews.map((c: any) => (
+          {data.reviews.map((c) => (
             <li key={c.id}>{c.name}</li>
           ))}
         </ul>
@@ -162,7 +162,7 @@ function MfaBody() {
         </tr>
       </thead>
       <tbody>
-        {data.systems.map((s: any) => (
+        {data.systems.map((s) => (
           <tr key={s.system_id} className="border-b">
             <td className="py-2 font-medium">{s.system}</td>
             <td>{s.criticality}</td>
@@ -186,7 +186,7 @@ function VendorSlaBody() {
     <div className="space-y-6">
       <Section title={`Open SLA breaches: ${data.open_breaches.length}`}>
         <ul className="list-inside list-disc text-sm">
-          {data.open_breaches.map((b: any) => (
+          {data.open_breaches.map((b) => (
             <li key={b.id}>{new Date(b.occurred_at).toLocaleDateString()} — {b.impact_summary}</li>
           ))}
         </ul>
@@ -197,7 +197,7 @@ function VendorSlaBody() {
             <tr><th className="py-2">Vendor</th><th>Contract end</th><th>≤90d</th><th>≤180d</th><th>SLAs</th></tr>
           </thead>
           <tbody>
-            {data.vendors.map((v: any) => (
+            {data.vendors.map((v) => (
               <tr key={v.id} className="border-b">
                 <td className="py-2 font-medium">{v.name}</td>
                 <td>{v.contract_end_at ?? "—"}</td>
@@ -219,13 +219,13 @@ function DrBody() {
   if (isLoading || !data) return <DetailFormSkeleton rows={3} />;
   return (
     <div className="space-y-6">
-      {data.systems.map((s: any) => (
+      {data.systems.map((s) => (
         <Section key={s.id} title={s.name}>
           <p className="text-xs text-muted-foreground">
             RTO {s.rto_minutes ?? "?"}m · RPO {s.rpo_minutes ?? "?"}m
           </p>
           <ul className="list-inside list-disc text-sm">
-            {s.runbooks.map((r: any) => (
+            {s.runbooks.map((r) => (
               <li key={r.id}>
                 <strong>{r.title}</strong> ({r.scenario}) — last test:{" "}
                 {r.last_test ? `${r.last_test.result} on ${new Date(r.last_test.performed_at).toLocaleDateString()}` : "never"}
