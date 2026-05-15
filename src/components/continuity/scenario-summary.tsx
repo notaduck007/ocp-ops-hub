@@ -48,7 +48,7 @@ export function ContinuityScenarioSummary({ scenario }: { scenario: ContinuitySc
               <p className="text-sm text-muted-foreground">None linked.</p>
             ) : (
               <div className="flex flex-wrap gap-1.5">
-                {scenario.linked_systems.map((sys: any) => (
+                {scenario.linked_systems.map((sys) => (
                   <RecordLink
                     key={sys.id}
                     kind="system"
@@ -67,7 +67,7 @@ export function ContinuityScenarioSummary({ scenario }: { scenario: ContinuitySc
               <p className="text-sm text-muted-foreground">None linked.</p>
             ) : (
               <div className="flex flex-wrap gap-1.5">
-                {scenario.linked_runbooks.map((rb: any) => (
+                {scenario.linked_runbooks.map((rb) => (
                   <RecordLink
                     key={rb.id}
                     kind="runbook"
