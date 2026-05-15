@@ -127,6 +127,8 @@ const updateSchema = z.object({
   linked_incident_id: z.string().uuid().nullable().optional(),
 });
 
+export type ChangePatch = z.infer<typeof updateSchema>;
+
 const transitionSchema = z.object({
   id: z.string().uuid(),
   status: z.enum(CHANGE_STATUSES),
