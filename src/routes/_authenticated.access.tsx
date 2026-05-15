@@ -73,8 +73,8 @@ function AccessListPage() {
     queryFn: () =>
       list({
         data: {
-          personType: personType === "all" ? undefined : (personType as any),
-          systemCategory: systemCategory === "all" ? undefined : (systemCategory as any),
+          personType: personType === "all" ? undefined : (personType as PersonType),
+          systemCategory: systemCategory === "all" ? undefined : (systemCategory as SystemCategory),
           adminOnly: adminOnly || undefined,
           unreviewed90d: unreviewed || undefined,
         },

@@ -90,7 +90,7 @@ function ChangesListPage() {
           onChange={(e) => setQ(e.target.value)}
           className="w-64"
         />
-        <Select value={status} onValueChange={(v) => setStatus(v as any)}>
+        <Select value={status} onValueChange={(v) => setStatus(v as ChangeStatus | "all")}>
           <SelectTrigger className="w-[180px]">
             <SelectValue placeholder="Status" />
           </SelectTrigger>
@@ -103,7 +103,7 @@ function ChangesListPage() {
             ))}
           </SelectContent>
         </Select>
-        <Select value={klass} onValueChange={(v) => setKlass(v as any)}>
+        <Select value={klass} onValueChange={(v) => setKlass(v as ChangeClass | "all")}>
           <SelectTrigger className="w-[160px]">
             <SelectValue placeholder="Class" />
           </SelectTrigger>

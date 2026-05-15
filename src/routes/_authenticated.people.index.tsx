@@ -65,8 +65,8 @@ function PeopleListPage() {
       list({
         data: {
           search: search || undefined,
-          type: type === "all" ? undefined : (type as any),
-          status: status === "all" ? undefined : (status as any),
+          type: type === "all" ? undefined : (type as PersonType),
+          status: status === "all" ? undefined : (status as PersonStatus),
           includeArchived,
         },
       }),

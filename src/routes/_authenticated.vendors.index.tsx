@@ -43,7 +43,7 @@ function VendorsListPage() {
     queryFn: () => list({
       data: {
         search: search || undefined,
-        status: status === "all" ? undefined : (status as any),
+        status: status === "all" ? undefined : (status as VendorStatus),
         includeArchived,
       },
     }),

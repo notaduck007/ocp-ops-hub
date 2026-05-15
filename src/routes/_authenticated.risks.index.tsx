@@ -71,8 +71,8 @@ function RisksListPage() {
     queryFn: () =>
       list({
         data: {
-          kind: kind === "all" ? undefined : (kind as any),
-          status: status === "all" ? undefined : (status as any),
+          kind: kind === "all" ? undefined : (kind as RiskKind),
+          status: status === "all" ? undefined : (status as RiskStatus),
           severityGte: severity === "all" ? undefined : Number(severity),
           ownerId: ownerId ?? undefined,
           overdueOnly,
