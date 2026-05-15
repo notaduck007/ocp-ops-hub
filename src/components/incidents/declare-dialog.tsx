@@ -11,7 +11,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import {
-import { errMessage } from "@/lib/utils";
   Dialog,
   DialogContent,
   DialogDescription,
@@ -36,6 +35,7 @@ import {
 } from "@/components/ui/form";
 import { SystemMultiCombobox } from "@/components/incidents/system-multi-combobox";
 import { declareIncident } from "@/lib/incidents.functions";
+import { errMessage } from "@/lib/utils";
 
 const schema = z.object({
   title: z.string().trim().min(1, "Title is required").max(200),

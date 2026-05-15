@@ -8,7 +8,6 @@ import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import {
-import { errMessage } from "@/lib/utils";
   Table,
   TableBody,
   TableCell,
@@ -34,6 +33,7 @@ import {
   getSystem,
   listSystemAudit,
 } from "@/lib/systems.functions";
+import { errMessage } from "@/lib/utils";
 
 export const Route = createFileRoute("/_authenticated/systems/$systemId")({
   validateSearch: detailSearchValidator,

@@ -11,7 +11,6 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import {
-import { errMessage } from "@/lib/utils";
   Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
 } from "@/components/ui/select";
 import { OwnerCombobox } from "@/components/owner-combobox";
@@ -21,6 +20,7 @@ import {
   updateVendor,
   type VendorRow,
 } from "@/lib/vendors.functions";
+import { errMessage } from "@/lib/utils";
 
 const formSchema = z.object({
   name: z.string().trim().min(1, "Name is required").max(200),

@@ -10,7 +10,6 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
-import { errMessage } from "@/lib/utils";
   Table,
   TableBody,
   TableCell,
@@ -48,6 +47,7 @@ import {
   revokeAccessGrant,
   type AccessGrantWithRefs,
 } from "@/lib/people.functions";
+import { errMessage } from "@/lib/utils";
 
 export const Route = createFileRoute("/_authenticated/people/$personId")({
   validateSearch: detailSearchValidator,

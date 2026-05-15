@@ -15,7 +15,6 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import {
-import { errMessage } from "@/lib/utils";
   Card,
   CardContent,
   CardDescription,
@@ -49,6 +48,7 @@ import {
 } from "@/lib/changes.functions";
 import { useCanEdit, useIsAdmin } from "@/hooks/use-role";
 import { AdminOnly } from "@/components/auth/role-gate";
+import { errMessage } from "@/lib/utils";
 
 export const Route = createFileRoute(
   "/_authenticated/changes/$changeId",

@@ -11,7 +11,6 @@ import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import {
-import { errMessage } from "@/lib/utils";
   Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger,
 } from "@/components/ui/sheet";
 import {
@@ -34,6 +33,7 @@ import { useCanEdit, useIsAdmin } from "@/hooks/use-role";
 import {
   BREACH_STATUSES, getSla, listBreaches, listSlaAudit, updateBreach,
 } from "@/lib/slas.functions";
+import { errMessage } from "@/lib/utils";
 
 export const Route = createFileRoute("/_authenticated/slas/$slaId")({
   validateSearch: detailSearchValidator,

@@ -10,7 +10,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import {
-import { errMessage } from "@/lib/utils";
   Select,
   SelectContent,
   SelectItem,
@@ -37,6 +36,7 @@ import {
   updateRisk,
   type RiskRow,
 } from "@/lib/risks.functions";
+import { errMessage } from "@/lib/utils";
 
 const formSchema = z.object({
   kind: z.enum(RISK_KINDS),

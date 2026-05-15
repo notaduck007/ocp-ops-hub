@@ -11,7 +11,6 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import {
-import { errMessage } from "@/lib/utils";
   Select,
   SelectContent,
   SelectItem,
@@ -35,6 +34,7 @@ import {
   markGrantsReviewed,
 } from "@/lib/people.functions";
 import { TableSkeleton } from "@/components/layout/skeletons";
+import { errMessage } from "@/lib/utils";
 
 const SYSTEM_CATEGORIES = [
   "idp",

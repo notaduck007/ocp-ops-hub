@@ -13,7 +13,6 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import {
-import { errMessage } from "@/lib/utils";
   Table,
   TableBody,
   TableCell,
@@ -36,6 +35,7 @@ import {
   updateRunbook,
 } from "@/lib/runbooks.functions";
 import { useCanEdit } from "@/hooks/use-role";
+import { errMessage } from "@/lib/utils";
 
 export const Route = createFileRoute("/_authenticated/runbooks/$runbookId")({
   validateSearch: detailSearchValidator,

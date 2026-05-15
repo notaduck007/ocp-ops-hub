@@ -20,7 +20,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import {
-import { errMessage } from "@/lib/utils";
   Select,
   SelectContent,
   SelectItem,
@@ -48,6 +47,7 @@ import {
   type CommsAudience,
   type IncidentStatus,
 } from "@/lib/incidents.functions";
+import { errMessage } from "@/lib/utils";
 
 export const Route = createFileRoute(
   "/_authenticated/incidents/$incidentId",
