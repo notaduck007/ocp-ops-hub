@@ -84,8 +84,8 @@ function SystemsListPage() {
   const sorted = useMemo(() => {
     const arr = [...rows];
     arr.sort((a, b) => {
-      const av = (a as any)[sortKey] ?? "";
-      const bv = (b as any)[sortKey] ?? "";
+      const av = a[sortKey] ?? "";
+      const bv = b[sortKey] ?? "";
       if (av < bv) return sortAsc ? -1 : 1;
       if (av > bv) return sortAsc ? 1 : -1;
       return 0;
