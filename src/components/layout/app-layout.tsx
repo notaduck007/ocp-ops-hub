@@ -6,6 +6,7 @@ import { NotificationBell } from "@/components/notifications/notification-bell";
 import { CommandPalette } from "@/components/command-palette";
 import { Logo } from "@/components/brand/logo";
 import { AppErrorBoundary } from "@/components/states/error-boundary";
+import { ThemeToggle } from "@/components/theme-toggle";
 import { APP_VERSION } from "@/lib/build-info";
 
 import { cn } from "@/lib/utils";
@@ -339,6 +340,7 @@ function TopBar() {
         <span className="flex-1 text-left">Search…</span>
         <kbd className="hidden rounded bg-muted px-1.5 py-0.5 text-[10px] font-medium lg:inline-flex">⌘K</kbd>
       </button>
+      <ThemeToggle />
       <NotificationBell />
       <UserMenu />
     </header>
