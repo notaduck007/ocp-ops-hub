@@ -71,8 +71,8 @@ function SystemsListPage() {
       list({
         data: {
           search: search || undefined,
-          category: category === "all" ? undefined : (category as any),
-          criticality: criticality === "all" ? undefined : (criticality as any),
+          category: category === "all" ? undefined : (category as SystemCategory),
+          criticality: criticality === "all" ? undefined : (criticality as Criticality),
           ownerId: ownerId ?? undefined,
           includeArchived,
         },
